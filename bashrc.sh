@@ -1,0 +1,1 @@
+source ${GIT_TOOLS_DIR}/git_config.sh

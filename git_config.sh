@@ -47,9 +47,15 @@ function gls-files-from-commit()
     target_files=$(git show $target_commit:$target_directory | tail -n +3)
 
     # echo $target_files
+    # echo $target_commit
 
-    # for a in ${target_files}; do git log --pretty=format:"%h%x09$a%x09[%s]" -1 -- "$a"; done
-    for a in ${target_files}; do echo $a && git log --pretty=format:"%h%x09$a%x09[%s]" -1 -- "$a"; done
+    if [ -z "$target_directory" ]
+    then
+        for a in ${target_files}; do git log --pretty=format:"%h%x09$a%x09[%s]%x09%ar" -1 -- $target_commit $a; done
+    else
+        for a in ${target_files}; do git log --pretty=format:"%h%x09$a%x09[%s]%x09%ar" -1 -- $target_commit $target_directory/$a; done
+    fi
+
 }
 
 function ghard-reset()

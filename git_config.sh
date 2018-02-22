@@ -35,7 +35,7 @@ alias load-local-properties='git cherry-pick local/props && git reset HEAD~1'
 
 function gls-files()
 {
-    for a in $(ls); do git log --pretty=format:"%h%x09$a%x09[%s]" -1 -- "$a"; done
+    for a in $(ls); do git log --pretty=format:"%h%x09$a%x09[%s]%x09%ar" -1 -- "$a"; done
 }
 
 function gls-files-from-commit()

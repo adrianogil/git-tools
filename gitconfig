@@ -1,0 +1,44 @@
+[alias]
+  co = checkout
+  ci = commit
+  st = status
+  br = branch
+  hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+  type = cat-file -t
+  dump = cat-file -p
+  wc = whatchanged
+  accept-ours = "!f() { git checkout --ours -- \"${@:-.}\"; git add -u \"${@:-.}\"; }; f"
+  accept-theirs = "!f() { git checkout --theirs -- \"${@:-.}\"; git add -u \"${@:-.}\"; }; f"
+[color]
+  branch = auto
+  diff = auto
+  status = auto
+  interactive = true
+[color "branch"]
+  current = yellow reverse
+  local = yellow
+  remote = green
+[color "diff"]
+  meta = yellow bold
+  frag = magenta bold
+  old = red bold
+  new = green bold
+[color "status"]
+  added = yellow
+  changed = green
+  untracked = cyan
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+[rerere]
+	enabled = true
+	autoupdate = true
+[core]
+	editor = sublime -n -w
+	pager = diff-so-fancy | less --tabs=4 -RFX
+	precomposeunicode = true
+  quotepath = false
+[diff]
+	renameLimit = 20540

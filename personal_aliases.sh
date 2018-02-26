@@ -1,4 +1,3 @@
-alias gunity-all='git add Assets/ ProjectSettings/ '
 alias gs='git status '
 alias gss='git status | less'
 alias gsu='git status -uno'
@@ -29,6 +28,13 @@ alias gil='git '
 
 alias git-author-update="gc --amend --author='Adriano Gil <adrianogil.san@gmail.com>'"
 
+# Specific command related to my own scripts that exchange commits and CL between P4 and git repos
 alias perforce-push='git push local master:perforce-master'
 
+# I have the habit of creating in each git workspace a local tag 'local/props'
+# with my local modification. So I can use this command to quickly load all
+# my private settings
 alias load-local-properties='git cherry-pick local/props && git reset HEAD~1'
+
+# Unity dev
+alias gunity-all='git add Assets/ ProjectSettings/ '

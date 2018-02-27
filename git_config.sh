@@ -1,19 +1,22 @@
 
+
+# gls-files
+# Github-like vision of repo, shows last commit that changed each 
+# file in current directory
 function gls-files()
 {
     for a in $(ls); do git log --pretty=format:"%h%x09$a%x09[%s]%x09%ar" -1 -- "$a"; done
 }
 
+# gls-files $target_commit $target_directory
+# Github-like vision of repo, shows last commit that changed each 
+# file in $2 directory 
 function gls-files-from-commit()
 {
-    # WIP: Fix when files are from different branches
     target_commit=$1
     target_directory=$2
 
     target_files=$(git show $target_commit:$target_directory | tail -n +3)
-
-    # echo $target_files
-    # echo $target_commit
 
     if [ -z "$target_directory" ]
     then
@@ -24,6 +27,7 @@ function gls-files-from-commit()
 
 }
 
+# ghard-reset $target_commit
 function ghard-reset()
 {
     if [ -z "$1" ]
@@ -37,7 +41,7 @@ function ghard-reset()
     git reset --hard $target_commit
 }
 
-# git
+# git clone and enter repo directory
 function gol
 {
     git_url=$1
@@ -48,11 +52,13 @@ function gol
     cd $git_repo
 }
 
+# generate a random commit message
 function random-commit-msg()
 {
     curl -s whatthecommit.com/index.txt
 }
 
+# generate random messages
 function create-random-commits()
 {
     number_commits=$1

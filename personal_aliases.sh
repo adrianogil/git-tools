@@ -38,3 +38,15 @@ alias load-local-properties='git cherry-pick local/props && git reset HEAD~1'
 
 # Unity dev
 alias gunity-all='git add Assets/ ProjectSettings/ '
+
+function gpush2gerrit()
+{
+    if [ -z "$1" ]
+    then
+        target_branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/ ')
+    else
+        target_commit=$1
+    fi
+
+    git push gerrit HEAD:refs/for/$target_branch
+}

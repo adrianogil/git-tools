@@ -52,6 +52,20 @@ function gol
     cd $git_repo
 }
 
+function gnew-commits()
+{
+    if [ -z "$1" ]
+    then
+        target_commit=$(git for-each-ref --format='%(upstream:short)' $(git symbolic-ref -q HEAD))
+    else
+        target_commit=$1
+    fi
+    
+    new_commits=$(git log HEAD..$target_commit --pretty=oneline| wc -l)
+    
+    echo $new_commits" new commits"
+}
+
 # generate a random commit message
 function random-commit-msg()
 {

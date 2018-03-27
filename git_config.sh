@@ -1,16 +1,23 @@
 
 
 # gls-files
-# Github-like vision of repo, shows last commit that changed each 
+# Github-like vision of repo, shows last commit that changed each
 # file in current directory
 function gls-files()
 {
-    for a in $(ls); do git log --pretty=format:"%h%x09$a%x09[%s]%x09%ar" -1 -- "$a"; done
+    if [ -z "$1" ]
+    then
+        target_directory='.'
+    else
+        target_directory=$1
+    fi
+
+    for a in $(ls $target_directory); do git log --pretty=format:"%h%x09$a%x09[%s]%x09%ar" -1 -- "$a"; done
 }
 
 # gls-files $target_commit $target_directory
-# Github-like vision of repo, shows last commit that changed each 
-# file in $2 directory 
+# Github-like vision of repo, shows last commit that changed each
+# file in $2 directory
 function gls-files-from-commit()
 {
     target_commit=$1

@@ -22,6 +22,8 @@ alias gshow='git show '
 alias gcereja='git cherry-pick '
 alias gflog="git reflog --format='%C(auto)%h %<|(17)%gd %C(blue)%ci%C(reset) %s'"
 
+alias gckout='git checkout'
+
 alias got='git '
 alias get='git '
 alias gil='git '
@@ -48,5 +50,5 @@ function gpush2gerrit()
         target_commit=$1
     fi
 
-    git push gerrit HEAD:refs/for/$target_branch
+    git push origin HEAD:refs/for/$target_branch
 }

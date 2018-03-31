@@ -69,10 +69,15 @@ function gnew-commits()
     else
         target_commit=$1
     fi
-    
+
     new_commits=$(git log HEAD..$target_commit --pretty=oneline| wc -l)
-    
+
     echo $new_commits" new commits"
+}
+
+function gstats-short()
+{
+    git log --author="$1" --oneline --shortstat $2
 }
 
 # generate a random commit message

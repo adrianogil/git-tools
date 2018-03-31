@@ -48,6 +48,8 @@ function ghard-reset()
     git reset --hard $target_commit
 }
 
+alias gupdate-hard="gr && ghard-reset"
+
 # git clone and enter repo directory
 function gol
 {

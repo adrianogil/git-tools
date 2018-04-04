@@ -75,6 +75,16 @@ function gnew-commits()
     echo $new_commits" new commits"
 }
 
+function gcount-commits()
+{
+    old_commit=$1
+    new_commit=$2
+
+    number_commits=$(($(git rev-list --count $old_commit..$new_commit) - 1))
+
+    echo 'There are '$number_commits' commits of difference between revisions'
+}
+
 function gstats-short()
 {
     git log --author="$1" --oneline --shortstat $2

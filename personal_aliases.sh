@@ -8,7 +8,6 @@ alias gca='git commit --amend '
 alias gcg="git commit --author='Adriano Gil <adrianogil.san@gmail.com>'"
 alias gd='git diff '
 alias gdc='git diff --cached'
-alias gco='git checkout '
 alias gk='gitk --all&'
 alias gx='gitx --all'
 alias gr='git remote update '
@@ -22,7 +21,10 @@ alias gshow='git show '
 alias gcereja='git cherry-pick '
 alias gflog="git reflog --format='%C(auto)%h %<|(17)%gd %C(blue)%ci%C(reset) %s'"
 
+alias gco='git checkout '
 alias gckout='git checkout'
+
+alias gckt='git checkout --track'
 
 alias got='git '
 alias get='git '

@@ -1,10 +1,10 @@
 
 
-# gls-files
-# Github-like vision of repo, shows last commit that changed each
-# file in current directory
 function gls-files()
 {
+    # gls-files
+    # Github-like vision of repo, shows last commit that changed each
+    # file in current directory
     if [ -z "$1" ]
     then
         target_directory='.'
@@ -15,11 +15,12 @@ function gls-files()
     for a in $(ls $target_directory); do git log --pretty=format:"%h%x09$a%x09[%s]%x09%ar" -1 -- "$a"; done
 }
 
-# gls-files $target_commit $target_directory
-# Github-like vision of repo, shows last commit that changed each
-# file in $2 directory
 function gls-files-from-commit()
 {
+    # gls-files $target_commit $target_directory
+    # Github-like vision of repo, shows last commit that changed each
+    # file in $2 directory
+
     target_commit=$1
     target_directory=$2
 
@@ -34,9 +35,9 @@ function gls-files-from-commit()
 
 }
 
-# ghard-reset $target_commit
 function ghard-reset()
 {
+    # ghard-reset $target_commit
     if [ -z "$1" ]
     then
         target_commit=$(git for-each-ref --format='%(upstream:short)' $(git symbolic-ref -q HEAD))
@@ -50,9 +51,9 @@ function ghard-reset()
 
 alias gupdate-hard="gr && ghard-reset"
 
-# git clone and enter repo directory
 function gol
 {
+    # git clone and enter repo directory
     git_url=$1
     git_repo=$(basename $git_url)
     git_repo=${git_repo%.*}
@@ -90,15 +91,15 @@ function gstats-short()
     git log --author="$1" --oneline --shortstat $2
 }
 
-# generate a random commit message
 function random-commit-msg()
 {
+    # generate a random commit message
     curl -s whatthecommit.com/index.txt
 }
 
-# generate random messages
 function create-random-commits()
 {
+    # generate random messages
     number_commits=$1
 
     for i in `seq 1 ${number_commits}`;

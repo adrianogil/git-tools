@@ -23,8 +23,9 @@ alias gflog="git reflog --format='%C(auto)%h %<|(17)%gd %C(blue)%ci%C(reset) %s'
 
 alias gco='git checkout '
 alias gckout='git checkout'
-
 alias gckt='git checkout --track'
+
+alias gp='echo "Lets push to repo" && git push'
 
 alias got='git '
 alias get='git '

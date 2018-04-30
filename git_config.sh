@@ -1,4 +1,16 @@
 
+function gs-files()
+{
+    # gs-files
+    # Git status files
+    if [ -z "$1" ]
+    then
+        git status --porcelain | awk '{print $2}'
+    else
+        extension=$1
+        git status --porcelain | awk '{print $2}' | grep \.$extension
+    fi
+}
 
 function gls-files()
 {

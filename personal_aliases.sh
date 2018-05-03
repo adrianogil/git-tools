@@ -27,6 +27,7 @@ alias gckout='git checkout'
 alias gckt='git checkout --track'
 
 alias gp='echo "Lets push to repo" && git push'
+alias gpick='python3 $GIT_TOOLS_DIR/python/git_pick.py'
 
 alias got='git '
 alias get='git '

@@ -12,6 +12,11 @@ function gs-files()
     fi
 }
 
+function gs-count()
+{
+    echo $(gs-files $1 | wc -l)
+}
+
 function gls-files()
 {
     # gls-files

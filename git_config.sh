@@ -68,7 +68,7 @@ function ghard-reset()
 
 alias gupdate-hard="gr && ghard-reset"
 
-function gol
+function gol()
 {
     # git clone and enter repo directory
     git_url=$1
@@ -76,6 +76,17 @@ function gol
     git_repo=${git_repo%.*}
 
     git clone $git_url
+    cd $git_repo
+}
+
+function golp()
+{
+     # git clone with depth 1 and enter repo directory
+    git_url=$1
+    git_repo=$(basename $git_url)
+    git_repo=${git_repo%.*}
+
+    git clone $git_url --depth 1
     cd $git_repo
 }
 

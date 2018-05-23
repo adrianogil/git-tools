@@ -2,6 +2,7 @@
 A collection of small tools for git
 
 ## Planned features
+- Suggest commit message from "git diff --cached"
 - An easier way to install
 
 ## Installation

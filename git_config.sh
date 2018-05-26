@@ -19,27 +19,24 @@ function gs-count()
 
 function gls-files()
 {
-    # gls-files
-    # Github-like vision of repo, shows last commit that changed each
-    # file in current directory
-    if [ -z "$1" ]
-    then
-        target_directory='.'
-    else
-        target_directory=$1
-    fi
-
-    for a in $(ls $target_directory); do git log --pretty=format:"%h%x09$a%x09[%s]%x09%ar" -1 -- "$a"; done
-}
-
-function gls-files-from-commit()
-{
     # gls-files $target_commit $target_directory
     # Github-like vision of repo, shows last commit that changed each
     # file in $2 directory
 
-    target_commit=$1
-    target_directory=$2
+    if [ -z "$1" ]
+    then
+        target_directory=''
+        target_commit='HEAD'
+    else
+        target_directory=$1
+
+        if [ -z "$2" ]
+        then
+            target_commit='HEAD'
+        else
+            target_commit=$2
+        fi
+    fi
 
     target_files=$(git show $target_commit:$target_directory | tail -n +3)
 

@@ -4,6 +4,7 @@ alias gsu='git status -uno'
 alias ga='git add '
 alias gai='git add -i'
 alias gb='git rebase'
+alias gbupstream='git branch --set-upstream-to=origin/master'
 alias gbranch='git branch'
 alias gc='git commit '
 alias gca='git commit --amend '
@@ -28,6 +29,8 @@ alias gckout='git checkout'
 alias gckt='git checkout --track'
 
 alias gp='echo "Lets push to repo" && git push'
+alias gpupstream='git push --set-upstream origin master'
+
 alias gpick='python3 $GIT_TOOLS_DIR/python/git_pick.py'
 alias gsquash='python3 $GIT_TOOLS_DIR/python/git_squash.py'
 

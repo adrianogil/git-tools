@@ -38,6 +38,9 @@ alias got='git '
 alias get='git '
 alias gil='git '
 
+alias gl1='git log -1'
+alias gh10='gh -10'
+
 alias git-author-update="gc --amend --author='Adriano Gil <adrianogil.san@gmail.com>'"
 
 # Specific command related to my own scripts that exchange commits and CL between P4 and git repos

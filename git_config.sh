@@ -101,6 +101,12 @@ function gnew-commits()
     echo $new_commits" new commits"
 }
 
+function gcount()
+{
+    total_commits=$(gh | wc -l)
+    echo 'There are'$total_commits' commits in current local branch'
+}
+
 function gcount-commits()
 {
     old_commit=$1

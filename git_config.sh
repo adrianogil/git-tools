@@ -149,3 +149,10 @@ function create-random-commits()
             git commit -m "$(random-commit-msg)"
         done
 }
+
+# Git Internals
+
+function gdetails()
+{
+    git cat-file -p $1
+}

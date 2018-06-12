@@ -161,3 +161,5 @@ function gdetails()
 {
     git cat-file -p $1
 }
+
+alias gdetails-obj-count='git count-objects -v '

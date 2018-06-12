@@ -63,6 +63,11 @@ function ghard-reset()
     git reset --hard $target_commit
 }
 
+function ghard-reset-head()
+{
+    ghard-reset HEAD
+}
+
 alias gupdate-hard="gr && ghard-reset"
 
 function gol()

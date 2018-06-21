@@ -163,3 +163,5 @@ function gdetails()
 }
 
 alias gdetails-obj-count='git count-objects -v '
+
+alias gfind-big-files=$HOME'/Softwares/git/findbig/git_find_big.sh'

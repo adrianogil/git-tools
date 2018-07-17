@@ -41,6 +41,8 @@ alias gil='git '
 alias gl1='git log -1'
 alias gh10='gh -10'
 
+alias gignore-file='git update-index --assume-unchanged '
+
 alias git-author-update="gc --amend --author='Adriano Gil <adrianogil.san@gmail.com>'"
 
 # Specific command related to my own scripts that exchange commits and CL between P4 and git repos
@@ -53,6 +55,14 @@ alias load-local-properties='git cherry-pick local/props && git reset HEAD~1'
 
 # Unity dev
 alias gunity-all='git add Assets/ ProjectSettings/ '
+
+# Generate commit message
+function gcm()
+{
+    commit_message="Updated changes at "$(date +%F-%H:%M)
+    echo "Generating commit: "$commit_message
+    gc -m "$commit_message"
+}
 
 function gpush2gerrit()
 {

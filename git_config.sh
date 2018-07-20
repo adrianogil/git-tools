@@ -63,6 +63,20 @@ function ghard-reset()
     git reset --hard $target_commit
 }
 
+# Based on http://scriptedonachip.com/git-sparse-checkout
+function gsparse-checkout()
+{
+    git_url=$1
+    target_folder=$2
+    total_commits=$3
+
+    git init
+    git remote add origin $git_url
+    git config core.sparsecheckout true
+    echo $target_folder"/*" >> .git/info/sparse-checkout
+    git pull --depth=$total_commits origin master
+}
+
 function ghard-reset-head()
 {
     ghard-reset HEAD

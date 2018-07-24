@@ -41,6 +41,7 @@ alias gil='git '
 
 alias gl1='git log -1'
 alias gh10='gh -10'
+alias gw1='git whatchanged -1 '
 
 alias gignore-file='git update-index --assume-unchanged '
 

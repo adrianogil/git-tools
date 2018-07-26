@@ -44,6 +44,8 @@ alias gl1='git log -1'
 alias gh10='gh -10'
 alias gw1='git whatchanged -1 '
 
+alias gtoday='gh --since="6am"'
+
 alias gignore-file='git update-index --assume-unchanged '
 
 alias git-author-update="gc --amend --author='Adriano Gil <adrianogil.san@gmail.com>'"

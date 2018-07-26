@@ -126,6 +126,12 @@ function gcount()
     echo 'There are'$total_commits' commits in current local branch'
 }
 
+function gcount-today()
+{
+    total_commits=$(gh  --since="1am" | wc -l)
+    echo 'Today, there are'$total_commits' commits in current local branch'
+}
+
 function gcount-commits()
 {
     old_commit=$1

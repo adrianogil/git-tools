@@ -8,6 +8,7 @@ alias gbc='git rebase --continue'
 alias gbupstream='git branch --set-upstream-to=origin/master'
 alias gbranch='git branch'
 alias gc='git commit '
+alias gm='git commit -m '
 alias gca='git commit --amend '
 alias gcg="git commit --author='Adriano Gil <adrianogil.san@gmail.com>'"
 alias gd='git diff '

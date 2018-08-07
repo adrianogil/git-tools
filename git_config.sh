@@ -122,7 +122,7 @@ function gnew-commits()
 
 function gcount()
 {
-    total_commits=$(gh | wc -l)
+    total_commits=$(gh $1 | wc -l)
     echo 'There are'$total_commits' commits in current local branch'
 }
 
@@ -140,6 +140,11 @@ function gcount-commits()
     number_commits=$(($(git rev-list --count $old_commit..$new_commit) - 1))
 
     echo 'There are '$number_commits' commits of difference between revisions'
+}
+
+function gcountbranches()
+{
+    python3 $GIT_TOOLS_DIR/python/gcount_branch.py $1
 }
 
 function gstats-short()

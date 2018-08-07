@@ -144,7 +144,7 @@ function gcount-commits()
 
 function gcountbranches()
 {
-    python3 $GIT_TOOLS_DIR/python/gcount_branch.py $1
+    python3 $GIT_TOOLS_DIR/python/gcount_branch.py $1 $2
 }
 
 function gstats-short()

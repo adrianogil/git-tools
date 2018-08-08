@@ -74,9 +74,12 @@ function gpush2gerrit()
     if [ -z "$1" ]
     then
         target_branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/ ')
+
+        remote=$(git config "branch.${target_branch}.remote")
     else
         target_commit=$1
+        remote=origin
     fi
 
-    git push origin HEAD:refs/for/$target_branch
+    git push $remote HEAD:refs/for/$target_branch
 }

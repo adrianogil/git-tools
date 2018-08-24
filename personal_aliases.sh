@@ -44,6 +44,8 @@ alias gl1='git log -1'
 alias gh10='gh -10'
 alias gw1='git whatchanged -1 '
 
+alias gremotes="git remote -v"
+
 alias gtoday='gh --since="6am"'
 
 alias gignore-file='git update-index --assume-unchanged '

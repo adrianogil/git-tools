@@ -187,6 +187,16 @@ function gdetails()
     git cat-file -p $1
 }
 
+function gstats-repo()
+{
+    echo $1
+}
+
+function gfrepos()
+{
+    f '.git' | xa echo {} | rev | cut -c6- | rev
+}
+
 alias gdetails-obj-count='git count-objects -v '
 
 alias gfind-big-files=$HOME'/Softwares/git/findbig/git_find_big.sh'

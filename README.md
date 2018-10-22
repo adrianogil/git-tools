@@ -18,3 +18,10 @@ source $GIT_TOOLS_DIR/bashrc.sh
 
 Feel free to submit PRs. I will do my best to review and merge them if I consider them essential.
 
+## Interesting Links
+
+* [https://github.com/stevemao/awesome-git-addons](awesome-git-addons): very interesting commands you should check out
+    * recent
+    * git-standup
+    * [https://github.com/MitMaro/git-interactive-rebase-tool](git interactive rebase tool)
+    * [https://github.com/so-fancy/diff-so-fancy](diff-so-fancy)

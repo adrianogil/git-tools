@@ -71,6 +71,11 @@ function gcm()
     gc -m "$commit_message"
 }
 
+function ghs()
+{
+    gh $1 $2 | less
+}
+
 function gpush2gerrit()
 {
     if [ -z "$1" ]

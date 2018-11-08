@@ -90,3 +90,5 @@ function gpush2gerrit()
 
     git push $remote HEAD:refs/for/$target_branch
 }
+
+alias gfind-big-files=$HOME'/Softwares/git/findbig/git_find_big.sh'

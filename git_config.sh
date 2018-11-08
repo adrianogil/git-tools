@@ -199,4 +199,20 @@ function gfrepos()
 
 alias gdetails-obj-count='git count-objects -v '
 
-alias gfind-big-files=$HOME'/Softwares/git/findbig/git_find_big.sh'
+function gfunction()
+{
+    function_name=$1
+    file_name=$2
+
+    git log -L :$function_name:$file_name
+}
+
+function gcreate-attributes-python()
+{
+    path=$1
+
+    py_attributes_from_github=https://raw.githubusercontent.com/alexkaratarakis/gitattributes/master/Python.gitattributes
+
+    curl $py_attributes_from_github >> $path/.attributes
+}
+

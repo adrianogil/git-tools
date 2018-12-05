@@ -219,5 +219,5 @@ function gcreate-attributes-python()
 function gremove-from-tree()
 {
     remove_target=$1
-    git filter-branch --tree-filter "rm -rf $remove_target" --prune-empty HEAD
+    git filter-branch -f --tree-filter "rm -rf $remove_target" --prune-empty HEAD
 }

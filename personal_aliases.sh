@@ -24,6 +24,7 @@ alias gshow='git show '
 alias gcereja='git cherry-pick '
 alias gflog="git reflog --format='%C(auto)%h %<|(17)%gd %C(blue)%ci%C(reset) %s'"
 
+alias grb="gr && gb"
 alias grbp="gr && gb && gp"
 
 alias gco='git checkout '

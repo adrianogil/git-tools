@@ -221,3 +221,8 @@ function gremove-from-tree()
     remove_target=$1
     git filter-branch -f --tree-filter "rm -rf $remove_target" --prune-empty HEAD
 }
+
+function gignore-file()
+{
+    python3 $GIT_TOOLS_DIR/python/gignore_file.py $(abspath $1)
+}

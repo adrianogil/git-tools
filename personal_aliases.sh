@@ -49,7 +49,7 @@ alias gremotes="git remote -v"
 
 alias gtoday='gh --since="1am"'
 
-alias gignore-file='git update-index --assume-unchanged '
+alias gignore-file-hard='git update-index --assume-unchanged '
 
 alias git-author-update="gc --amend --author='Adriano Gil <adrianogil.san@gmail.com>'"
 

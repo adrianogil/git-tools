@@ -197,6 +197,11 @@ function gfrepos()
     f '.git' | xa echo {} | rev | cut -c6- | rev
 }
 
+function gfrepos-urls()
+{
+    gfrepos | xa cat {}/.git/config | grep "url = " | cut -c8-
+}
+
 alias gdetails-obj-count='git count-objects -v '
 
 function gfunction()

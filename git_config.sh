@@ -88,11 +88,18 @@ function gol()
 {
     # git clone and enter repo directory
     git_url=$1
-    git_repo=$(basename $git_url)
-    git_repo=${git_repo%.*}
 
-    git clone $git_url
-    cd $git_repo
+    if [ -z "$2" ]
+    then
+        git_repo=$(basename $git_url)
+        git_repo=${git_repo%.*}    
+        git clone $git_url
+        cd $git_repo
+    else
+        git_repo=$2
+        git clone $git_url $git_repo
+        cd $git_repo
+    fi
 }
 
 function golp()

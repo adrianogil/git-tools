@@ -209,6 +209,11 @@ function gfrepos-urls()
     gfrepos | xa cat {}/.git/config | grep "url = " | cut -c8-
 }
 
+function gurls()
+{
+    cat $(git rev-parse --show-toplevel)/.git/config  | grep "url = " | cut -c8-
+}
+
 alias gdetails-obj-count='git count-objects -v '
 
 function gfunction()

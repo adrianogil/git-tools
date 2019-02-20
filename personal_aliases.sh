@@ -88,6 +88,13 @@ function ghs()
     gh $1 $2 | less
 }
 
+function gtbkp()
+{
+    bkp_tag=bkp-$(date +%F)
+    echo "Generating git tag BKP: "$bkp_tag
+    git tag $bkp_tag
+}
+
 function gpush2gerrit()
 {
     if [ -z "$1" ]

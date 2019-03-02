@@ -1,4 +1,18 @@
 
+function gok()
+{
+    target_branch=$(git branch -a | cut -c3- | sk)
+    echo "Let's checkout to branch: "$target_branch
+    git checkout ${target_branch}
+}
+
+function gsk-kt()
+{
+    target_branch=$(git branch -r | cut -c3- | sk)
+    echo "Let's track a new branch: "$target_branch
+    git checkout --track ${target_branch}
+}
+
 function gs-files()
 {
     # gs-files
@@ -92,7 +106,7 @@ function gol()
     if [ -z "$2" ]
     then
         git_repo=$(basename $git_url)
-        git_repo=${git_repo%.*}    
+        git_repo=${git_repo%.*}
         git clone $git_url
         cd $git_repo
     else

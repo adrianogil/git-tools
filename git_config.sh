@@ -1,16 +1,42 @@
 
-function gok()
+function gt-zip-repo()
+{
+    zip_name=$1
+    if [ -z "$2" ]
+    then
+        target_ref=HEAD
+    else
+        target_ref=$2
+    fi
+    git archive -o ${zip_name}.zip ${target_ref}
+}
+
+function gt-cktout()
+{
+    target_branch=$(git branch -r | cut -c3- | sk)
+    echo "Let's track a new branch: "$target_branch
+    git checkout --track ${target_branch}
+}
+
+function gt-go()
 {
     target_branch=$(git branch -a | cut -c3- | sk)
     echo "Let's checkout to branch: "$target_branch
     git checkout ${target_branch}
 }
 
-function gsk-kt()
+function gt-send-branch()
 {
-    target_branch=$(git branch -r | cut -c3- | sk)
-    echo "Let's track a new branch: "$target_branch
-    git checkout --track ${target_branch}
+    target_branch=$1
+    current_branch=$(git rev-parse --abbrev-ref HEAD)
+    git push origin ${current_branch}:${target_branch}
+}
+
+function gt-merge-branch()
+{
+    target_branch=$(git branch -a | cut -c3- | sk)
+    echo "Let's merge branch: "$target_branch
+    git merge ${target_branch}
 }
 
 function gs-files()

@@ -32,12 +32,38 @@ function gt-send-branch()
     git push origin ${current_branch}:${target_branch}
 }
 
+function gt-send-branch-force()
+{
+    target_branch=$1
+    current_branch=$(git rev-parse --abbrev-ref HEAD)
+    git push origin --force ${current_branch}:${target_branch}
+}
+
 function gt-merge-branch()
 {
     target_branch=$(git branch -a | cut -c3- | sk)
     echo "Let's merge branch: "$target_branch
     git merge ${target_branch}
 }
+
+function gt-branches-sk()
+{
+    git branch -r | cut -c3- | sk
+}
+
+TMP_BUFFER_LAST_FETCH=/tmp/last_fetch.txt
+function gt-fetch()
+{
+    git remote update | tee $TMP_BUFFER_LAST_FETCH
+    echo "" >> $TMP_BUFFER_LAST_FETCH
+    echo "Log saved at "$(date +%F-%H:%M) >> $TMP_BUFFER_LAST_FETCH
+}
+function gt-fetch-last()
+{
+    cat $TMP_BUFFER_LAST_FETCH
+}
+alias gr='gt-fetch'
+alias gr-last='gt-fetch-last'
 
 function gs-files()
 {

@@ -50,17 +50,19 @@ function gt-branches-sk()
 {
     git branch -r | cut -c3- | sk
 }
+alias gbk='gt-branches-sk'
 
-TMP_BUFFER_LAST_FETCH=/tmp/last_fetch.txt
+TMP_BUFFER_LAST_FETCH=/tmp/last_fetch
 function gt-fetch()
 {
-    git remote update | tee $TMP_BUFFER_LAST_FETCH
-    echo "" >> $TMP_BUFFER_LAST_FETCH
-    echo "Log saved at "$(date +%F-%H:%M) >> $TMP_BUFFER_LAST_FETCH
+    target_buffer_file=$TMP_BUFFER_LAST_FETCH$(basename $PWD).txt
+    git remote update | tee $target_buffer_file
+    echo "" >> $target_buffer_file
+    echo "Log saved at "$(date +%F-%H:%M) >> $target_buffer_file
 }
 function gt-fetch-last()
 {
-    cat $TMP_BUFFER_LAST_FETCH
+    cat $TMP_BUFFER_LAST_FETCH$(basename $PWD).txt
 }
 alias gr='gt-fetch'
 alias gr-last='gt-fetch-last'

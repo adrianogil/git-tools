@@ -27,16 +27,35 @@ function gt-go()
 
 function gt-send-branch()
 {
-    target_branch=$1
+    if [ -z "$1" ]
+    then
+        target_ref=$(git branch -r | cut -c3- | sed 's/origin//g' | cut -c2- | sk)
+    else
+        target_branch=$1
+    fi
+
     current_branch=$(git rev-parse --abbrev-ref HEAD)
     git push origin ${current_branch}:${target_branch}
 }
 
 function gt-send-branch-force()
 {
-    target_branch=$1
+    if [ -z "$1" ]
+    then
+        target_ref=$(git branch -r | cut -c3- | sed 's/origin//g' | cut -c2- | sk)
+    else
+        target_branch=$1
+    fi
+
     current_branch=$(git rev-parse --abbrev-ref HEAD)
     git push origin --force ${current_branch}:${target_branch}
+}
+
+function gt-rebase-branch()
+{
+    target_branch=$(git branch -a | cut -c3- | sed 's/origin//g' | cut -c2- | sk)
+    echo "Let's merge branch: "$target_branch
+    git merge ${target_branch}
 }
 
 function gt-merge-branch()
@@ -66,6 +85,13 @@ function gt-fetch-last()
 }
 alias gr='gt-fetch'
 alias gr-last='gt-fetch-last'
+
+alias gt-get-root-path='git rev-parse --show-toplevel'
+function gt-root()
+{
+    cd $(gt-get-root-path)
+}
+alias groot="gt-root"
 
 function gs-files()
 {

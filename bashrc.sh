@@ -1,6 +1,7 @@
 source ${GIT_TOOLS_DIR}/git_config.sh
 source ${GIT_TOOLS_DIR}/git_smart.sh
 source ${GIT_TOOLS_DIR}/personal_aliases.sh
+source ${GIT_TOOLS_DIR}/git_history.sh
 source ${GIT_TOOLS_DIR}/analysis/git_analysis_tools.sh
 
 if [ -z "$GITTOOLS_PYTHON_PATH" ]

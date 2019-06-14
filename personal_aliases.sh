@@ -43,27 +43,13 @@ alias get='git '
 alias gil='git '
 
 alias gl1='git log -1'
-alias gh10='gh -10'
 alias gw1='git whatchanged -1 '
 
 alias gremotes="git remote -v"
 
-alias gtoday='gh --since="1am"'
-
 alias gignore-file-hard='git update-index --assume-unchanged '
 
 alias git-author-update="gc --amend --author='Adriano Gil <adrianogil.san@gmail.com>'"
-
-alias gh='git hist'
-alias gha='git hist --all '
-alias gha-reflog='gh --decorate `git reflog | cut -d " " -f 1`'
-
-# See https://www.commandlinefu.com/commands/view/15063/list-offsets-from-head-with-git-log.
-function gh-count-from-head()
-{
-    o=0
-    git log --oneline | while read l; do printf "%+9s %s\n" "HEAD~${o}" "$l"; o=$(($o+1)); done | less
-}
 
 # Specific command related to my own scripts that exchange commits and CL between P4 and git repos
 alias perforce-push='git push local master:perforce-master'
@@ -82,11 +68,6 @@ function gcm()
     commit_message="Updated changes at "$(date +%F-%H:%M)
     echo "Generating commit: "$commit_message
     gc -m "$commit_message"
-}
-
-function ghs()
-{
-    gh $1 $2 | less
 }
 
 function gtbkp()

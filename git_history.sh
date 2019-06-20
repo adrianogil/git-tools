@@ -29,3 +29,15 @@ function gh-branches()
       --decorate \
       --pretty=tformat:"%Cblue %h %Creset %<(25)%ci %C(auto)%d%Creset %s"
 }
+
+function gh-test()
+{
+    git --no-pager log \
+      --simplify-by-decoration \
+      --tags --branches --remotes \
+      --date-order \
+      --decorate \
+      --pretty=tformat:"%Cblue %h %C(auto)%d%Creset"
+}
+
+alias gh-update="python3 $GIT_TOOLS_DIR/python/git_update_track.py"

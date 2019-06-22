@@ -14,5 +14,5 @@ function gsmart-add()
     else
         echo 'Unknown project'
     fi
-    # git add *.py
 }
+alias gas="gsmart-add"

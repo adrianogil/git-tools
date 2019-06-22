@@ -1,6 +1,9 @@
 
-alias gh='git hist'
-alias gha='git hist --all '
+
+alias git-hist="git log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short"
+
+alias gh='git-hist'
+alias gha='git-hist --all '
 alias gha-reflog='gh --decorate `git reflog | cut -d " " -f 1`'
 
 alias gh10='gh -10'

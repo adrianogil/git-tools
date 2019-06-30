@@ -44,3 +44,13 @@ function gh-test()
 }
 
 alias gh-update="python3 $GIT_TOOLS_DIR/python/git_update_track.py"
+
+function gfunction()
+{
+    function_name=$1
+    file_name=$2
+
+    git log -L :$function_name:$file_name
+}
+
+

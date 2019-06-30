@@ -1,6 +1,9 @@
 source ${GIT_TOOLS_DIR}/git_config.sh
 source ${GIT_TOOLS_DIR}/git_smart.sh
 source ${GIT_TOOLS_DIR}/personal_aliases.sh
+source ${GIT_TOOLS_DIR}/git_repos.sh
+source ${GIT_TOOLS_DIR}/git_internals.sh
+source ${GIT_TOOLS_DIR}/git_attributes.sh
 source ${GIT_TOOLS_DIR}/git_history.sh
 source ${GIT_TOOLS_DIR}/analysis/git_analysis_tools.sh
 

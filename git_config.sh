@@ -157,6 +157,15 @@ function ghard-reset()
     git reset --hard $target_commit
 }
 
+function ghard-reset-sk()
+{
+    
+    target_commit=$(git branch -a | cut -c3- | sk)
+
+    echo 'Git hard reset to ref '$target_commit
+    git reset --hard $target_commit
+}
+
 # Based on http://scriptedonachip.com/git-sparse-checkout
 function gsparse-checkout()
 {
@@ -283,49 +292,11 @@ function create-random-commits()
 
 # Git Internals
 
-function gdetails()
-{
-    git cat-file -p $1
-}
-
 function gstats-repo()
 {
     echo $1
 }
 
-function gfrepos()
-{
-    f '.git' | xa echo {} | rev | cut -c6- | rev
-}
-
-function gfrepos-urls()
-{
-    gfrepos | xa cat {}/.git/config | grep "url = " | cut -c8-
-}
-
-function gurls()
-{
-    cat $(git rev-parse --show-toplevel)/.git/config  | grep "url = " | cut -c8-
-}
-
-alias gdetails-obj-count='git count-objects -v '
-
-function gfunction()
-{
-    function_name=$1
-    file_name=$2
-
-    git log -L :$function_name:$file_name
-}
-
-function gcreate-attributes-python()
-{
-    path=$1
-
-    py_attributes_from_github=https://raw.githubusercontent.com/alexkaratarakis/gitattributes/master/Python.gitattributes
-
-    curl $py_attributes_from_github >> $path/.attributes
-}
 
 function gremove-from-tree()
 {

@@ -1,4 +1,5 @@
 
+# @tool gt-zip-repo - Zips a git commit
 function gt-zip-repo()
 {
     zip_name=$1
@@ -16,13 +17,6 @@ function gt-cktout()
     target_branch=$(git branch -r | cut -c3- | sk)
     echo "Let's track a new branch: "$target_branch
     git checkout --track ${target_branch}
-}
-
-function gt-go()
-{
-    target_branch=$(git branch -a | cut -c3- | sk)
-    echo "Let's checkout to branch: "$target_branch
-    git checkout ${target_branch}
 }
 
 function gt-send-branch()

@@ -1,5 +1,5 @@
 
-
+# gtool git-hist
 alias git-hist="git log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short"
 
 alias gh='git-hist'
@@ -9,6 +9,27 @@ alias gha-reflog='gh --decorate `git reflog | cut -d " " -f 1`'
 alias gh10='gh -10'
 
 alias gtoday='gh --since="1am"'
+
+# gtool gt-hist-target-sk
+function gt-hist-target-sk()
+{
+    target_ref=$(git branch -a | cut -c3- | sk)
+
+    gh ${target_ref}
+}
+
+# gtool gt-hist-cp-hash
+function gt-hist-cp-hash()
+{
+    echo "Search for Hash"
+
+    target_commit=$(gh | sk | cut -c3- | awk '{print $1}')
+
+    # Copy hash
+    echo "Found hash: "$target_commit
+    echo "Commit:"
+    gh -1 $target_commit
+}
 
 function ghs()
 {

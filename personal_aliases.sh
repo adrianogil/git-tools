@@ -1,8 +1,3 @@
-alias gs='git status '
-alias gss='git status | less'
-alias gsu='git status -uno'
-alias ga='git add '
-alias gai='git add -i'
 alias gb='git rebase'
 alias gbc='git rebase --continue'
 alias gbupstream='git branch --set-upstream-to=origin/master'
@@ -58,9 +53,6 @@ alias perforce-push='git push local master:perforce-master'
 # with my local modification. So I can use this command to quickly load all
 # my private settings
 alias load-local-properties='git cherry-pick local/props && git reset HEAD~1'
-
-# Unity dev
-alias gunity-all='git add Assets/ ProjectSettings/ '
 
 # Generate commit message
 function gcm()

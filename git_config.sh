@@ -65,6 +65,12 @@ function gt-branches-sk()
 }
 alias gbk='gt-branches-sk'
 
+function gt-branches-origin-sk()
+{
+    git branch -r | cut -c3- | sk | cut -c8-
+}
+alias gbko='gt-branches-origin-sk'
+
 TMP_BUFFER_LAST_FETCH=/tmp/last_fetch
 function gt-fetch()
 {

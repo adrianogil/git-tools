@@ -159,11 +159,10 @@ function ghard-reset()
 
 function ghard-reset-sk()
 {
-    
     target_commit=$(git branch -a | cut -c3- | sk)
 
-    echo 'Git hard reset to ref '$target_commit
-    git reset --hard $target_commit
+    echo 'Git hard reset to ref '${target_commit}
+    git reset --hard ${target_commit}
 }
 
 # Based on http://scriptedonachip.com/git-sparse-checkout

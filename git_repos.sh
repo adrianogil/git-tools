@@ -5,13 +5,13 @@ function gfrepos()
 }
 alias gt-repos="gfrepos"
 
-# gtool gfrepos-urls
+# gtool gt-repos-urls-current-folder
 function gt-repos-urls-current-folder()
 {
     gfrepos | xa cat {}/.git/config | grep "url = " | cut -c8-
 }
 
-# gtool gt-repos-current-urls
+# gtool gt-repos-urls
 function gt-repos-urls()
 {
     cat $(git rev-parse --show-toplevel)/.git/config  | grep "url = " | cut -c8-

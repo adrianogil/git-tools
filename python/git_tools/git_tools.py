@@ -22,3 +22,12 @@ def get_commits_with(file=""):
     hash_list = get_hashes_output.split("\n")
 
     return hash_list
+
+
+def get_status():
+    get_git_status_cmd = "git status"
+    get_git_status_output = subprocess.check_output(get_git_status_cmd, shell=True)
+    get_git_status_output = get_git_status_output.strip()
+    get_git_status_output = get_git_status_output.decode("utf8")
+
+    return get_git_status_output

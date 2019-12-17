@@ -1,4 +1,6 @@
 
+alias gcontinue="python3 ${GIT_TOOLS_DIR}/python/git_continue.py"
+
 # @tool gt-zip-repo - Zips a git commit
 function gt-zip-repo()
 {

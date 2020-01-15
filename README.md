@@ -1,18 +1,31 @@
 # git-tools
 A collection of small tools for git
 
+## Commands
+
+Aliases to basic commands:
+```
+ga  # git add
+ga  # git add -i
+gc  # git commit
+gca # git commit --amend
+```
+
 ## Planned features
 - Suggest commit message from "git diff --cached"
-- An easier way to install
 
 ## Installation
+
+### Recommended setup
+Install using [gil-install command](https://github.com/adrianogil/gil-tools)
+
+### Manual setup
 
 Add the following lines to your bashrc:
 ```
 export GIT_TOOLS_DIR=/<path-to>/git-tools/
 source $GIT_TOOLS_DIR/bashrc.sh
 ```
-(WIP I am going to create a better setup)
 
 ## Contributing
 
@@ -20,8 +33,8 @@ Feel free to submit PRs. I will do my best to review and merge them if I conside
 
 ## Interesting Links
 
-* [https://github.com/stevemao/awesome-git-addons](awesome-git-addons): very interesting commands you should check out
+* [awesome-git-addons](https://github.com/stevemao/awesome-git-addons): very interesting commands you should check out
     * recent
     * git-standup
-    * [https://github.com/MitMaro/git-interactive-rebase-tool](git interactive rebase tool)
-    * [https://github.com/so-fancy/diff-so-fancy](diff-so-fancy)
+    * [git interactive rebase tool](https://github.com/MitMaro/git-interactive-rebase-tool)
+    * [diff-so-fancy](https://github.com/so-fancy/diff-so-fancy)

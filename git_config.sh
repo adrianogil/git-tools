@@ -309,3 +309,25 @@ function gignore-file()
 {
     python3 $GIT_TOOLS_DIR/python/gignore_file.py $(abspath $1)
 }
+
+function git-to-sublime()
+{
+    if [ -z "$1" ]
+    then
+        target_ref=HEAD
+    else
+        target_ref=$1
+    fi
+
+    current_dir=$PWD
+
+    gt-root
+
+    for file_name in `git diff-tree --no-commit-id --name-only -r ${target_ref}`;
+    do
+        s $file_name
+    done
+
+    cd ${current_dir}
+}
+alias gts="git-to-sublime"

@@ -25,10 +25,12 @@ function gt-send-branch()
 {
     if [ -z "$1" ]
     then
-        target_ref=$(git branch -r | cut -c3- | sed 's/origin//g' | cut -c2- | sk)
+        target_branch=$(gbko)
     else
         target_branch=$1
     fi
+
+    echo "Sending commits to branch "${target_branch}
 
     current_branch=$(git rev-parse --abbrev-ref HEAD)
     git push origin ${current_branch}:${target_branch}
@@ -38,10 +40,12 @@ function gt-send-branch-force()
 {
     if [ -z "$1" ]
     then
-        target_ref=$(git branch -r | cut -c3- | sed 's/origin//g' | cut -c2- | sk)
+        target_branch=$(gbko)
     else
         target_branch=$1
     fi
+
+    echo "Sending commits to branch "${target_branch}
 
     current_branch=$(git rev-parse --abbrev-ref HEAD)
     git push origin --force ${current_branch}:${target_branch}

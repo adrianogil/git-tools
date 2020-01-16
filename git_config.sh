@@ -21,6 +21,19 @@ function gt-cktout()
     git checkout --track ${target_branch}
 }
 
+function gt-delete-branch()
+{
+    if [ -z "$1" ]
+    then
+        target_branch=$(gbko)
+    else
+        target_branch=$1
+    fi
+
+    git push origin :${target_branch}
+    git branch -d ${target_branch}
+}
+
 function gt-send-branch()
 {
     if [ -z "$1" ]

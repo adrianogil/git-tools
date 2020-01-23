@@ -19,6 +19,11 @@ gca # git commit --amend
 ### Recommended setup
 Install using [gil-install command](https://github.com/adrianogil/gil-tools)
 
+```
+cd /<path-to>/git-tools/
+gil-install -i
+```
+
 ### Manual setup
 
 Add the following lines to your bashrc:
@@ -33,8 +38,9 @@ Feel free to submit PRs. I will do my best to review and merge them if I conside
 
 ## Interesting Links
 
-* [awesome-git-addons](https://github.com/stevemao/awesome-git-addons): very interesting commands you should check out
+* [awesome-git-addons](https://github.com/stevemao/awesome-git-addons): very interesting commands you should check out:
     * recent
     * git-standup
     * [git interactive rebase tool](https://github.com/MitMaro/git-interactive-rebase-tool)
     * [diff-so-fancy](https://github.com/so-fancy/diff-so-fancy)
+* [awesome-git](https://github.com/dictcp/awesome-git)

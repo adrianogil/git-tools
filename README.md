@@ -3,12 +3,24 @@ A collection of small tools for git
 
 ## Commands
 
-Aliases to basic commands:
+Aliases to basic commands (All defined at personal_aliases.sh):
 ```
 ga  # git add
 ga  # git add -i
 gc  # git commit
 gca # git commit --amend
+gflog # git reflog with a pretty format
+```
+
+Commands related to log history
+```
+gh # show commit graph, similar to git log --oneline --graph
+```
+
+Commands related to push commits
+```
+gp # alias to git push
+gt-send-to-branch # powered by skim
 ```
 
 ## Planned features

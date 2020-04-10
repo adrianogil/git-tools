@@ -16,8 +16,6 @@ then
     export PYTHONPATH=$GIT_TOOLS_PYTHON_PATH:$PYTHONPATH
 fi
 
-
-
 # @tool gt-sk
 function gt-sk()
 {

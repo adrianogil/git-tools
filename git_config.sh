@@ -21,6 +21,7 @@ function gt-cktout()
     git checkout --track ${target_branch}
 }
 
+
 function gt-delete-branch()
 {
     if [ -z "$1" ]
@@ -33,6 +34,7 @@ function gt-delete-branch()
     git push origin :${target_branch}
     git branch -d ${target_branch}
 }
+
 
 function gt-send-branch()
 {
@@ -91,18 +93,27 @@ function gt-branches-origin-sk()
 alias gbko='gt-branches-origin-sk'
 
 TMP_BUFFER_LAST_FETCH=/tmp/last_fetch
-function gt-fetch()
+function gt-fetch-save-buffer()
 {
-    target_buffer_file=$TMP_BUFFER_LAST_FETCH$(basename $PWD).txt
-    git remote update | tee $target_buffer_file
-    echo "" >> $target_buffer_file
-    echo "Log saved at "$(date +%F-%H:%M) >> $target_buffer_file
+    target_buffer_file=${TMP_BUFFER_LAST_FETCH}_$(basename $PWD).txt
+    echo "" > ${target_buffer_file}
+    git fetch $1 -v >& ${target_buffer_file}
+    cat ${target_buffer_file}
+    echo "Saving git remote "$(date +%F-%H:%M)":" >> ${target_buffer_file}
+    echo "" >> ${target_buffer_file}
+    echo "Log saved at "${target_buffer_file}
 }
 function gt-fetch-last()
 {
     cat $TMP_BUFFER_LAST_FETCH$(basename $PWD).txt
 }
+
+function gt-fetch()
+{
+    git remote update $1
+}
 alias gr='gt-fetch'
+alias gro='gt-fetch origin'
 alias gr-last='gt-fetch-last'
 
 alias gt-get-root-path='git rev-parse --show-toplevel'

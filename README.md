@@ -43,4 +43,5 @@ Feel free to submit PRs. I will do my best to review and merge them if I conside
     * git-standup
     * [git interactive rebase tool](https://github.com/MitMaro/git-interactive-rebase-tool)
     * [diff-so-fancy](https://github.com/so-fancy/diff-so-fancy)
-* [awesome-git](https://github.com/dictcp/awesome-git)
+    * [awesome-git](https://github.com/dictcp/awesome-git)
+    * [method_log](https://github.com/freerange/method_log): tool to analyze the change history of methods (see more on [this blog post](https://www.urbanautomaton.com/blog/2014/09/22/tracking-method-history-in-git/))

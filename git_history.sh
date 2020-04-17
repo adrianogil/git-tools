@@ -1,6 +1,6 @@
 
 # gtool git-hist
-alias git-hist="git log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short"
+alias git-hist="git log --pretty=format:'%C(red)%h%Creset %C(cyan)%ad%Creset | %s%C(magenta)%d%Creset [%C(blue)%an%Creset]' --graph --date=short"
 
 alias gh='git-hist'
 alias gha='git-hist --all '

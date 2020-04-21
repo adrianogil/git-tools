@@ -1,6 +1,14 @@
 
 alias gcontinue="python3 ${GIT_TOOLS_DIR}/python/git_continue.py"
 
+function gt-rename-url()
+{
+    remote_name=$1
+    remote_url=$2
+
+    git remote set-url ${remote_name} ${remote_url}
+}
+
 # @tool gt-zip-repo - Zips a git commit
 function gt-zip-repo()
 {

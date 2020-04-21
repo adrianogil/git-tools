@@ -12,9 +12,15 @@ alias ga='git add '
 # gtool gt-add-interactive
 function gt-add-interactive()
 {
-	git add -i	
+	git add -i
 }
 alias gai='git add -i'
+
+function gt-add-sk()
+{
+    git add $(gs-files $1 | sk)
+}
+alias gak="gt-add-sk"
 
 # Unity dev
 alias gunity-all='git add Assets/ ProjectSettings/ '

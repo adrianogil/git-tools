@@ -1,5 +1,6 @@
 
 alias gcontinue="python3 -m gittools.continue"
+alias gt-continue="gcontinue"
 
 function gt-rename-url()
 {

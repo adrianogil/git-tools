@@ -1,5 +1,5 @@
 
-alias gcontinue="python3 ${GIT_TOOLS_DIR}/python/git_continue.py"
+alias gcontinue="python3 -m gittools.continue"
 
 function gt-rename-url()
 {

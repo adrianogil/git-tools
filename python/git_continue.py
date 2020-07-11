@@ -1,5 +1,5 @@
 
-from git_tools import git_tools
+from gittools import git_tools
 import subprocess
 
 

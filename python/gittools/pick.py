@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
+from . import clitools
+
 import sys
-import subprocess
+
 
 def is_int(s):
     try:
@@ -10,6 +12,7 @@ def is_int(s):
         pass
 
     return False
+
 
 commits_order = []
 
@@ -22,16 +25,15 @@ for i in range(1, len(sys.argv)):
             max_commit_backtrack = commits_order_number
 
         # Get ref for each commit
-        commit = subprocess.check_output("git rev-parse --short HEAD~" + sys.argv[i], shell=True)
-        commit = commit.decode("utf8").strip()
+        commit = clitools.run_cmd("git rev-parse --short HEAD~" + sys.argv[i])
         commits_order.append(commit)
         print('debug: ' + commit)
 
 max_commit_backtrack = max_commit_backtrack + 1
-subprocess.check_output("git reset --hard HEAD~" + str(max_commit_backtrack), shell=True)
+clitools.run_cmd("git reset --hard HEAD~" + str(max_commit_backtrack))
 
 print('max_commit_backtrack: ' + str(max_commit_backtrack))
 
 # Apply each ref in the correct order
 for c in reversed(commits_order):
-    subprocess.check_output("git cherry-pick " + c, shell=True)
+    clitools.run_cmd("git cherry-pick " + c, shell=True)

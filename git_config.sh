@@ -125,6 +125,8 @@ alias gr='gt-fetch'
 alias gro='gt-fetch origin'
 alias gr-last='gt-fetch-last'
 
+alias gt-update='python3 -m gittools.commits.updatetracking'
+
 alias gt-get-root-path='git rev-parse --show-toplevel'
 function gt-root()
 {

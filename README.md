@@ -12,6 +12,7 @@ gca # git commit --amend
 ```
 
 ## Planned features
+- Save and track each branch update
 - Suggest commit message from "git diff --cached"
 
 ## Installation

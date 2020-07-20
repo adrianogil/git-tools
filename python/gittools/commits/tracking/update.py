@@ -69,7 +69,8 @@ def update_tracking():
             if last_hashes_by_branch[branch] is None:
                 print("%s - %s commits" % (branch, get_total_commits(new_hashes_by_branch[branch])))
             else:
-                print("%s - %s commits" % (branch, get_diverge_commits(new_hashes_by_branch[branch], last_hashes_by_branch[branch])))
+                total_diverge = get_diverge_commits(new_hashes_by_branch[branch], last_hashes_by_branch[branch])
+                print("%s - %s commits" % (branch, int(total_diverge) + 1))
 
         with open(tracking_json_path, 'w') as json_file:
             json.dump(tracking_data, json_file)

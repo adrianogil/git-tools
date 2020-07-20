@@ -12,7 +12,7 @@ alias gtoday='gh --since="1am"'
 
 export GIT_TOOLS_TRACKING_JSON="${GIT_TOOLS_DIR}/.gitdata"
 
-alias gt-update-tracking="python3 -m gittools.commits.updatetracking"
+alias gt-update-tracking="python3 -m gittools.commits.tracking.update"
 
 # gtool gt-hist-target-sk
 function gt-hist-target-sk()

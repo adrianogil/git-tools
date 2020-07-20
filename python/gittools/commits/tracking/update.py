@@ -1,5 +1,6 @@
 """ """
 from gittools import clitools
+from gittools.commits import get_diverge_commits, get_total_commits
 
 import json
 import os
@@ -28,7 +29,7 @@ def update_tracking():
         if '->' not in b:
             remote_branches.append(b.strip())
 
-    print(remote_branches)
+    # print(remote_branches)
 
     hashes_by_branch = {}
 
@@ -40,23 +41,35 @@ def update_tracking():
             print("error" + str(exception))
 
     new_hashes_by_branch = {}
+    last_hashes_by_branch = {}
 
     for branch1 in hashes_by_branch:
         new_hash = True
+        last_hash = None
 
         for branches_update in reversed(tracking_hashes):
             for branch2 in branches_update:
-                if branch1 == branch2 and branches_update[branch2] == hashes_by_branch[branch1]:
-                    new_hash = False
-                    break
+                if branch1 == branch2:
+                    last_hash = branches_update[branch2]
+                    if branches_update[branch2] == hashes_by_branch[branch1]:
+                        new_hash = False
+                        break
             if not new_hash:
                 break
 
         if new_hash:
             new_hashes_by_branch[branch1] = hashes_by_branch[branch1]
+            last_hashes_by_branch[branch1] = last_hash
     if new_hashes_by_branch:
         tracking_hashes.append(new_hashes_by_branch)
         tracking_data[current_path] = tracking_hashes
+
+        print("Updates since last tracking:")
+        for branch in new_hashes_by_branch:
+            if last_hashes_by_branch[branch] is None:
+                print("%s - %s commits" % (branch, get_total_commits(new_hashes_by_branch[branch])))
+            else:
+                print("%s - %s commits" % (branch, get_diverge_commits(new_hashes_by_branch[branch], last_hashes_by_branch[branch])))
 
         with open(tracking_json_path, 'w') as json_file:
             json.dump(tracking_data, json_file)

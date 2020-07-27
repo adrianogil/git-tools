@@ -1,5 +1,5 @@
 
-# gtool git-hist
+# gtool git-hist: Show commits history
 alias git-hist="git log --pretty=format:'%C(red)%h%Creset %C(cyan)%ad%Creset | %s%C(magenta)%d%Creset [%C(blue)%an%Creset]' --graph --date=short"
 
 alias gh='git-hist'

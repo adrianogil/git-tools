@@ -1,4 +1,4 @@
-# gtool gt-commit
+# gtool gt-commit: Create a new commit for author 'adrianogil.san@gmail.com'
 function gt-commit()
 {
     # Commit as Adriano Gil (personal email)

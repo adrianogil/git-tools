@@ -19,7 +19,7 @@ fi
 # @tool gt-sk
 function gt-sk()
 {
-    gitaction=$(cat ${GIT_TOOLS_DIR}/git_*.sh | grep '# gtool' | cut -c9- | sk)
+    gitaction=$(cat ${GIT_TOOLS_DIR}/git_*.sh | grep '# gtool' | cut -c9- | sk | tr ":" " " | awk '{print $1}')
 
     eval ${gitaction}
 }

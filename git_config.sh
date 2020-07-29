@@ -1,4 +1,5 @@
 
+# gtool gt-continue: Continue a rebase or cherry-pick operation
 alias gcontinue="python3 -m gittools.continue"
 alias gt-continue="gcontinue"
 
@@ -267,6 +268,7 @@ function gnew-commits()
 
     echo $new_commits" new commits"
 }
+
 
 function gcount()
 {

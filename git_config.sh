@@ -1,7 +1,10 @@
 
-# gtool gt-continue: Continue a rebase or cherry-pick operation
+# gtool gt-continue: Continue a rebase or cherry-pick operationx
 alias gcontinue="python3 -m gittools.continue"
 alias gt-continue="gcontinue"
+
+alias gabort="python3 -m gittools.abort"
+alias gt-abort="gcontinue"
 
 function gt-rename-url()
 {

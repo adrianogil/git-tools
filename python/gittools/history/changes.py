@@ -1,12 +1,12 @@
-from gittools.clitools import run_cmd
+from gittools.history.log import get_hash_log
+from gittools.commits.commit import get_commit_files
 import sys
 
-hashes = run_cmd('git log --pretty=format:"%h" ' + " ".join(sys.argv[1:]))
-hashes = hashes.split("\n")
+hashes = get_hash_log(sys.argv[1:])
 
 for git_hash in hashes:
     git_hash = git_hash.strip()
-    commit_change_info = run_cmd('git log --name-status --oneline -1 %s ' % (git_hash,))
+    commit_change_info = get_commit_files(ref=git_hash)
     # print(commit_change_info)
 
     commit_change_info = commit_change_info.split("\n")

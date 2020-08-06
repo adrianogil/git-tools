@@ -18,3 +18,9 @@ def get_commits_with(file=""):
     hash_list = get_hashes_output.split("\n")
 
     return hash_list
+
+
+def get_commit_files(ref):
+    commit_info = clitools.run_cmd('git log --name-status --oneline -1 %s ' % (ref,))
+
+    return commit_info

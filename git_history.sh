@@ -25,6 +25,14 @@ function gt-hist-target-sk()
     gh ${target_ref}
 }
 
+
+function gt-hist-pick-commit()
+{
+    target_commit=$(gh | sk | cut -c3- | awk '{print $1}')
+    echo ${target_commit} | pbcopy
+    echo ${target_commit}
+}
+
 # gtool gt-hist-cp-hash
 function gt-hist-cp-hash()
 {

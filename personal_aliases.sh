@@ -27,7 +27,7 @@ alias gco='git checkout '
 alias gckout='git checkout'
 alias gckt='git checkout --track'
 
-alias gp='echo "Lets push to repo" && git push'
+# alias gp='echo "Lets push to repo" && git push'
 alias gpupstream='git push --set-upstream origin master'
 
 alias gpick='python3 -m git.pick'

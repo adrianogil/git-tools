@@ -63,6 +63,7 @@ function gt-send-branch()
     current_branch=$(git rev-parse --abbrev-ref HEAD)
     git push origin ${current_branch}:${target_branch}
 }
+alias gp='gt-send-branch'
 
 function gt-send-branch-force()
 {

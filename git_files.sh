@@ -16,7 +16,7 @@ function gt-file-previous-version()
     git show ${target_commit}:${target_file}
 }
 
-# gtool gt-file-previous-version
+# gtool gt-file-history
 function gt-file-history()
 {
     if [ -z "$1" ]
@@ -29,7 +29,7 @@ function gt-file-history()
     gh ${target_file}
 }
 
-# gtool gt-file-previous-version
+# gtool gt-file-history-version
 function gt-file-history-version()
 {
     if [ -z "$1" ]

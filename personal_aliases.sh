@@ -30,7 +30,7 @@ alias gckt='git checkout --track'
 # alias gp='echo "Lets push to repo" && git push'
 alias gpupstream='git push --set-upstream origin master'
 
-alias gpick='python3 -m git.pick'
+alias gpick='python3 -m gittools.pick'
 alias gsquash='python3 $GIT_TOOLS_DIR/python/git_squash.py'
 
 alias got='git '

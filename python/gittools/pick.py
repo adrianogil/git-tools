@@ -36,4 +36,4 @@ print('max_commit_backtrack: ' + str(max_commit_backtrack))
 
 # Apply each ref in the correct order
 for c in reversed(commits_order):
-    clitools.run_cmd("git cherry-pick " + c, shell=True)
+    clitools.run_cmd("git cherry-pick " + c)

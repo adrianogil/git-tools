@@ -209,6 +209,13 @@ function ghard-reset-sk()
     git reset --hard ${target_commit}
 }
 
+
+function ghard-reset-flog()
+{
+    target_commit=$(gflog | sk | awk '{print $1}')
+    ghard-reset ${target_commit}
+}
+
 # Based on http://scriptedonachip.com/git-sparse-checkout
 function gsparse-checkout()
 {

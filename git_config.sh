@@ -6,14 +6,6 @@ alias gt-continue="gcontinue"
 alias gabort="python3 -m gittools.abort"
 alias gt-abort="gcontinue"
 
-function gt-rename-url()
-{
-    remote_name=$1
-    remote_url=$2
-
-    git remote set-url ${remote_name} ${remote_url}
-}
-
 # @tool gt-zip-repo - Zips a git commit
 function gt-zip-repo()
 {
@@ -136,19 +128,6 @@ function gt-root()
     cd $(gt-get-root-path)
 }
 alias groot="gt-root"
-
-function gs-files()
-{
-    # gs-files
-    # Git status files
-    if [ -z "$1" ]
-    then
-        git status --porcelain | awk '{print $2}'
-    else
-        extension=$1
-        git status --porcelain | awk '{print $2}' | grep \.$extension
-    fi
-}
 
 function gs-count()
 {

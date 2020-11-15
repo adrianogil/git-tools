@@ -16,6 +16,20 @@ function gt-add-interactive()
 }
 alias gai='git add -i'
 
+function gs-files()
+{
+    # gs-files
+    # Git status files
+    if [ -z "$1" ]
+    then
+        git status --porcelain | awk '{print $2}'
+    else
+        extension=$1
+        git status --porcelain | awk '{print $2}' | grep \.$extension
+    fi
+}
+
+# gtool gt-add-sk - Add file to be staged (alias gsk)
 function gt-add-sk()
 {
     git add $(gs-files $1 | sk)

@@ -9,6 +9,7 @@ source ${GIT_TOOLS_DIR}/git_internals.sh
 source ${GIT_TOOLS_DIR}/git_attributes.sh
 source ${GIT_TOOLS_DIR}/git_history.sh
 source ${GIT_TOOLS_DIR}/git_navigation.sh
+source ${GIT_TOOLS_DIR}/git_remote.sh
 source ${GIT_TOOLS_DIR}/analysis/git_analysis_tools.sh
 
 if [ -z "$GITTOOLS_PYTHON_PATH" ]

@@ -1,6 +1,6 @@
 
 
-function gt-branch-delete()
+function gt-delete-branch()
 {
     if [ -z "$1" ]
     then
@@ -9,5 +9,8 @@ function gt-branch-delete()
         target_branch=$1
     fi
 
+    echo "Deleting branch "${target_branch}
+
     git push origin :${target_branch}
+    git branch -d ${target_branch}
 }

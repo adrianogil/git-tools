@@ -6,7 +6,13 @@ alias gt-continue="gcontinue"
 alias gabort="python3 -m gittools.abort"
 alias gt-abort="gcontinue"
 
-# @tool gt-zip-repo - Zips a git commit
+# gtool gt-config-show: Show the config file related to current git file
+function gt-config-show()
+{
+    cat $(gt-get-root-path)/.git/config
+}
+
+# gtool gt-zip-repo: Zips a git commit
 function gt-zip-repo()
 {
     zip_name=$1

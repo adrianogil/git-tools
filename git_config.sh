@@ -86,7 +86,9 @@ alias gbk='gt-branches-sk'
 
 function gt-branches-origin-sk()
 {
-    git branch -r | cut -c3- | sk | cut -c8-
+    complete_branch_name=$(gt-branches-sk)
+    only_branch_name=$(python3 -m gittools.cli.removeremotename ${complete_branch_name})
+    echo ${only_branch_name}
 }
 alias gbko='gt-branches-origin-sk'
 

@@ -8,6 +8,7 @@ alias gss='git status | less'
 
 alias gsu='git status -uno'
 alias ga='git add '
+alias gaf='git add -f '
 
 # gtool gt-add-interactive
 function gt-add-interactive()

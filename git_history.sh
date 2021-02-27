@@ -89,4 +89,17 @@ function gfunction()
     git log -L :$function_name:$file_name
 }
 
+# gtool gh-new-files: Log of commits in which files were added
+function gh-new-files()
+{
+    if [ -z "$1" ]
+    then
+        echo "Add params to log: (ex: *.js) "
+        read log_params
+    else
+        log_params=$1
+    fi
+
+    git whatchanged --diff-filter=A ${log_params}
+}
 

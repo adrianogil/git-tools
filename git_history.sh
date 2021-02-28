@@ -65,18 +65,9 @@ function gh-branches()
       --simplify-by-decoration \
       --tags --branches --remotes \
       --date-order \
+      --reverse \
       --decorate \
-      --pretty=tformat:"%Cblue %h %Creset %<(25)%ci %C(auto)%d%Creset %s"
-}
-
-function gh-test()
-{
-    git --no-pager log \
-      --simplify-by-decoration \
-      --tags --branches --remotes \
-      --date-order \
-      --decorate \
-      --pretty=tformat:"%Cblue %h %C(auto)%d%Creset"
+      --pretty=tformat:"%Cblue %h %Creset %<(25)%ci %C(auto)%d%Creset %s [%C(blue)%an%Creset]"
 }
 
 alias gh-update="python3 $GIT_TOOLS_DIR/python/git_update_track.py"
@@ -90,7 +81,7 @@ function gfunction()
 }
 
 # gtool gh-new-files: Log of commits in which files were added
-function gh-new-files()
+function gw-new-files()
 {
     if [ -z "$1" ]
     then

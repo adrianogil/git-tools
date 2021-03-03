@@ -1,5 +1,5 @@
 
-
+# gtool gt-delete-branch: Delete a target branch (local and remotely)
 function gt-delete-branch()
 {
     if [ -z "$1" ]
@@ -9,8 +9,17 @@ function gt-delete-branch()
         target_branch=$1
     fi
 
-    echo "Deleting branch "${target_branch}
+    if [ -z "$target_branch" ]
+    then
+        echo "Branch to be deleted:"
+        read target_branch
+    fi
 
-    git push origin :${target_branch}
-    git branch -d ${target_branch}
+    if [ -z "$target_branch" ]
+    then
+          echo "No branch selected"
+    else
+          git push origin :${target_branch}
+        git branch -d ${target_branch}
+    fi
 }

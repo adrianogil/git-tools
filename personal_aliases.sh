@@ -50,24 +50,12 @@ alias git-author-update="gc --amend --author='Adriano Gil <adrianogil.san@gmail.
 # Specific command related to my own scripts that exchange commits and CL between P4 and git repos
 alias perforce-push='git push local master:perforce-master'
 
-# I have the habit of creating in each git workspace a local tag 'local/props'
-# with my local modification. So I can use this command to quickly load all
-# my private settings
-alias load-local-properties='git cherry-pick local/props && git reset HEAD~1'
-
 # Generate commit message
 function gcm()
 {
     commit_message="Updated changes at "$(date +%F-%H:%M)
     echo "Generating commit: "$commit_message
     gc -m "$commit_message"
-}
-
-function gtbkp()
-{
-    bkp_tag=bkp-$(date +%F)
-    echo "Generating git tag BKP: "$bkp_tag
-    git tag $bkp_tag
 }
 
 function gpush2gerrit()

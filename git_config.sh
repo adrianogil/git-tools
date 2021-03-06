@@ -108,9 +108,17 @@ function gt-fetch-last()
     cat $TMP_BUFFER_LAST_FETCH$(basename $PWD).txt
 }
 
+# gtool gt-fetch: Fetch new commits
 function gt-fetch()
 {
-    git remote update $1
+    if [ -z "$1" ]
+    then
+          target_remote=$(git remote | sk)
+    else
+          target_remote=$1
+    fi
+
+    git remote update ${target_remote}
 }
 alias gr='gt-fetch'
 alias gro='gt-fetch origin'

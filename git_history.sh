@@ -94,3 +94,4 @@ function gw-new-files()
     git whatchanged --diff-filter=A ${log_params}
 }
 
+alias gh-diff="python3 -m gittools.history.commitsdiff"

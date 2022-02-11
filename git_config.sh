@@ -182,18 +182,23 @@ function ghard-reset()
     git reset --hard $target_commit
 }
 
-function ghard-reset-sk()
+function ghard-reset-fz()
 {
-    target_commit=$(git branch -a | cut -c3- | sk)
+    target_commit=$(git branch -a | cut -c3- | default-fuzzy-finder)
 
     echo 'Git hard reset to ref '${target_commit}
     git reset --hard ${target_commit}
 }
 
+function ghard-reset-tags()
+{
+    # ghard-reset $target_commit
+    ghard-reset $(git tag -l | default-fuzzy-finder)
+}
 
 function ghard-reset-flog()
 {
-    target_commit=$(gflog | sk | awk '{print $1}')
+    target_commit=$(gflog | default-fuzzy-finder | awk '{print $1}')
     ghard-reset ${target_commit}
 }
 

@@ -21,7 +21,7 @@ function gt-bkp()
 }
 
 # gtool gt-list-bkp: List backup tags
-function gt-list-bkp()
+function gt-tags-bkp()
 {
     git tag -l 'bkp-*' -n1
 }

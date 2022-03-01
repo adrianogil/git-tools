@@ -125,6 +125,7 @@ alias gro='gt-fetch origin'
 alias gr-last='gt-fetch-last'
 
 alias gt-get-root-path='git rev-parse --show-toplevel'
+# gtool gt-root: Go to root level of current repo
 function gt-root()
 {
     cd $(gt-get-root-path)

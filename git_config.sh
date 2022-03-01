@@ -35,17 +35,26 @@ function gt-cktout()
 
 function gt-send-branch()
 {
-    if [ -z "$1" ]
+    if [ -z "$2" ]
     then
-        target_branch=$(gbko)
+        if [ -z "$1" ]
+        then
+            complete_branch_name=$(gt-branches-sk)
+            target_branch=$(python3 -m gittools.cli.removeremotename ${complete_branch_name})
+            target_remote=$(python3 -m gittools.cli.removeremotename ${complete_branch_name} --get-only-remote)
+        else
+            target_branch=$1
+            target_remote=$(git remote | sk)
+        fi
     else
         target_branch=$1
+        target_remote=$2
     fi
 
-    echo "Sending commits to branch "${target_branch}
+    echo "Sending commits to branch "${target_branch}" on remote "${target_remote}
 
     current_branch=$(git rev-parse --abbrev-ref HEAD)
-    git push origin ${current_branch}:${target_branch}
+    git push ${target_remote} ${current_branch}:${target_branch}
 }
 alias gp='gt-send-branch'
 

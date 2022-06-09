@@ -25,7 +25,6 @@ function gt-hist-target-sk()
     gh ${target_ref}
 }
 
-
 function gt-hist-pick-commit()
 {
     target_commit=$(gh | sk | cut -c3- | awk '{print $1}')
@@ -44,6 +43,14 @@ function gt-hist-cp-hash()
     echo "Found hash: "$target_commit
     echo "Commit:"
     gh -1 $target_commit
+}
+
+# gtool gt-hist-find-string: Find string in all commit history
+function gt-hist-find-string()
+{
+    target_string=$1
+
+    git log -S ${target_string} --source --all
 }
 
 function ghs()

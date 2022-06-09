@@ -17,8 +17,8 @@ alias gh-changes='python3 -m gittools.history.changes'
 # gtool gt-tracking-update: Track commits updates on branches
 alias gt-tracking-update='python3 -m gittools.commits.tracking.update'
 
-# gtool gt-hist-target-sk
-function gt-hist-target-sk()
+# gtool gt-hist-target-fz
+function gt-hist-target-fz()
 {
     target_ref=$(git branch -a | cut -c3- | sk)
 

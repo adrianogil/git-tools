@@ -39,7 +39,7 @@ function gt-send-branch()
     then
         if [ -z "$1" ]
         then
-            complete_branch_name=$(gt-branches-sk)
+            complete_branch_name=$(gt-branches-fz)
             target_branch=$(python3 -m gittools.cli.removeremotename ${complete_branch_name})
             target_remote=$(python3 -m gittools.cli.removeremotename ${complete_branch_name} --get-only-remote)
         else
@@ -87,19 +87,19 @@ function gt-merge-branch()
     git merge ${target_branch}
 }
 
-function gt-branches-sk()
+function gt-branches-fz()
 {
     git branch -r | cut -c3- | sk
 }
-alias gbk='gt-branches-sk'
+alias gbk='gt-branches-fz'
 
-function gt-branches-origin-sk()
+function gt-branches-origin-fz()
 {
-    complete_branch_name=$(gt-branches-sk)
+    complete_branch_name=$(gt-branches-fz)
     only_branch_name=$(python3 -m gittools.cli.removeremotename ${complete_branch_name})
     echo ${only_branch_name}
 }
-alias gbko='gt-branches-origin-sk'
+alias gbko='gt-branches-origin-fz'
 
 TMP_BUFFER_LAST_FETCH=/tmp/last_fetch
 function gt-fetch-save-buffer()
@@ -199,12 +199,14 @@ function ghard-reset-fz()
     echo 'Git hard reset to ref '${target_commit}
     git reset --hard ${target_commit}
 }
+alias grk="ghard-reset-fz"
 
 function ghard-reset-tags()
 {
     # ghard-reset $target_commit
     ghard-reset $(git tag -l | default-fuzzy-finder)
 }
+alias ght="ghard-reset-tags"
 
 function ghard-reset-flog()
 {

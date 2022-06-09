@@ -20,11 +20,11 @@ then
     export PYTHONPATH=$GIT_TOOLS_PYTHON_PATH:$PYTHONPATH
 fi
 
-# @tool gt-sk
-function gt-sk()
+# @tool gt-fz: Git Tools
+function gt-fz()
 {
     gitaction=$(cat ${GIT_TOOLS_DIR}/git_*.sh | grep '# gtool' | cut -c9- | sk | tr ":" " " | awk '{print $1}')
 
     eval ${gitaction}
 }
-alias g="gt-sk"
+alias g="gt-fz"

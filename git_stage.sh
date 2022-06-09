@@ -31,11 +31,11 @@ function gs-files()
 }
 
 # gtool gt-add-sk - Add file to be staged (alias gsk)
-function gt-add-sk()
+function gt-add-fz()
 {
     git add $(gs-files $1 | sk)
 }
-alias gak="gt-add-sk"
+alias gak="gt-add-fz"
 
 # Unity dev
 alias gunity-all='git add Assets/ ProjectSettings/ '

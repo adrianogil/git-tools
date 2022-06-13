@@ -235,6 +235,7 @@ function ghard-reset-head()
 
 alias gupdate-hard="gr && ghard-reset"
 
+# gtool gol: git clone and enter repo directory
 function gol()
 {
     # git clone and enter repo directory
@@ -278,7 +279,7 @@ function gnew-commits()
     echo $new_commits" new commits"
 }
 
-
+# gtool gcount: count commits in current ref
 function gcount()
 {
     total_commits=$(gh $1 | wc -l)
@@ -291,6 +292,7 @@ function gcount-today()
     echo 'Today, there are'$total_commits' commits in current local branch'
 }
 
+# gtool gcount-commits: count commits between two refs
 function gcount-commits()
 {
     old_commit=$1
@@ -306,6 +308,7 @@ function gcountbranches()
     python3 $GIT_TOOLS_DIR/python/gcount_branch.py $1 $2
 }
 
+# gtool gstats-short: get commit stats
 function gstats-short()
 {
     git log --author="$1" --oneline --shortstat $2
@@ -317,10 +320,16 @@ function random-commit-msg()
     curl -s whatthecommit.com/index.txt
 }
 
-function create-random-commits()
+# gtool gcreate-random-commits: create random commits
+function gcreate-random-commits()
 {
-    # generate random messages
-    number_commits=$1
+    
+    if [ -z "$1" ]
+    then
+        number_commits=1
+    else
+        number_commits=$1
+    fi
 
     for i in `seq 1 ${number_commits}`;
         do
@@ -335,30 +344,32 @@ function create-random-commits()
                 echo $text_file_name >> $text_file_name
                 git add $text_file_name
             done
+            # generate random messages
             git commit -m "$(random-commit-msg)"
         done
 }
 
 # Git Internals
+# function gstats-repo()
+# {
+#     echo $1
+# }
 
-function gstats-repo()
-{
-    echo $1
-}
-
-
+# gtool gremove-from-tree: remote file from git tree
 function gremove-from-tree()
 {
     remove_target=$1
     git filter-branch -f --tree-filter "rm -rf $remove_target" --prune-empty HEAD
 }
 
+# gtool gignore-file: add file to .gitignore file
 function gignore-file()
 {
     python3 $GIT_TOOLS_DIR/python/gignore_file.py $(abspath $1)
 }
 
-function git-to-sublime()
+# gtool gopen-commit-files-in-sublime: open commit files in sublime (alias gts)
+function gopen-commit-files-in-sublime()
 {
     if [ -z "$1" ]
     then
@@ -378,4 +389,4 @@ function git-to-sublime()
 
     cd ${current_dir}
 }
-alias gts="git-to-sublime"
+alias gts="gopen-commit-files-in-sublime"

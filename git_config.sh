@@ -51,6 +51,15 @@ function gt-send-branch()
         target_remote=$2
     fi
 
+    if [ -z ${GIT_TOOLS_ALLOW_PUSH_TO_MAIN_BRANCH} ]; then
+        # variable not set
+        if [[ "$target_branch" == *"main"* ]]; then
+          echo "For the main branch you need to push it manually (to avoid mistakes)"
+          echo "or set the variable 'GIT_TOOLS_ALLOW_PUSH_TO_MAIN_BRANCH'"
+          return 1
+        fi
+    fi
+
     echo "Sending commits to branch "${target_branch}" on remote "${target_remote}
 
     current_branch=$(git rev-parse --abbrev-ref HEAD)
@@ -66,6 +75,15 @@ function gt-send-branch-force()
     else
         target_branch=$1
     fi
+
+    if [ -z ${GIT_TOOLS_ALLOW_PUSH_TO_MAIN_BRANCH} ]; then
+        # variable not set
+        if [[ "$target_branch" == *"main"* ]]; then
+          echo "For the main branch you need to push it manually (to avoid mistakes)"
+          echo "or set the variable 'GIT_TOOLS_ALLOW_PUSH_TO_MAIN_BRANCH'"
+          return 1
+        fi
+    fi    
 
     echo "Sending commits to branch "${target_branch}
 

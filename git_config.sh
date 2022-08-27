@@ -146,6 +146,9 @@ function gt-fetch()
     fi
 
     git remote update ${target_remote}
+
+    # Updating tracking everytime the repo is updated
+    gt-tracking-update
 }
 alias gr='gt-fetch'
 alias gro='gt-fetch origin'

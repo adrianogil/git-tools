@@ -12,6 +12,7 @@ alias gtoday='gh --since="1am"'
 
 export GIT_TOOLS_TRACKING_JSON="${GIT_TOOLS_DIR}/.gitdata"
 
+#gtool gh-changes: see summarized changes of each commit
 alias gh-changes='python3 -m gittools.history.changes'
 
 # gtool gt-tracking-update: Track commits updates on branches

@@ -1,4 +1,6 @@
 """ """
+import datetime
+
 from gittools import clitools
 from gittools.commits import get_diverge_commits, get_total_commits
 from gittools.config.root import  get_git_root
@@ -10,19 +12,22 @@ import os
 def update_tracking():
     current_path = os.getcwd()
     root_path = get_git_root(current_path)
+    current_date = datetime.datetime.now().strftime("%Y-%m-%d-%H:%M:%S")
 
     tracking_json_path = os.environ["GIT_TOOLS_TRACKING_JSON"]
+    tracking_branches_data = {}
     tracking_data = {
-        root_path: []
+        root_path: tracking_branches_data
     }
-    tracking_hashes = []
 
+    # Update tracking data according to saved JSON file
     if os.path.exists(tracking_json_path):
         with open(tracking_json_path, 'r') as json_file:
             tracking_data = json.load(json_file)
         if root_path in tracking_data:
-            tracking_hashes = tracking_data[root_path]
+            tracking_branches_data = tracking_data[root_path]
 
+    # Get list of remote branches
     branches = clitools.run_cmd("git branch -r ")
     branches = branches.split('\n')
 
@@ -31,51 +36,59 @@ def update_tracking():
         if '->' not in b:
             remote_branches.append(b.strip())
 
-    # print(remote_branches)
+    # print(remote_branches) # For debug purposes
 
-    hashes_by_branch = {}
+    current_hashes_by_branch = {}
 
-    for b in remote_branches:
+    # Get current hash for each remote branch
+    for remote_branch_name in remote_branches:
         try:
-            git_hash = clitools.run_cmd("git rev-parse " + b)
-            hashes_by_branch[b] = git_hash
+            git_hash = clitools.run_cmd("git rev-parse " + remote_branch_name)
+            current_hashes_by_branch[remote_branch_name] = git_hash
         except Exception as exception:
             print("error" + str(exception))
 
     new_hashes_by_branch = {}
     last_hashes_by_branch = {}
 
-    for branch1 in hashes_by_branch:
-        new_hash = True
-        last_hash = None
+    # Update tracking data
+    for remote_branch_name in current_hashes_by_branch:
+        current_hash = current_hashes_by_branch[remote_branch_name]
 
-        for branches_update in reversed(tracking_hashes):
-            for branch2 in branches_update:
-                if branch1 == branch2:
-                    last_hash = branches_update[branch2]
-                    if branches_update[branch2] == hashes_by_branch[branch1]:
-                        new_hash = False
-                        break
-            if not new_hash:
-                break
+        tracking_branch_history = []
+        if remote_branch_name in tracking_branches_data:
+            tracking_branch_history = tracking_branches_data[remote_branch_name]
 
-        if new_hash:
-            new_hashes_by_branch[branch1] = hashes_by_branch[branch1]
-            last_hashes_by_branch[branch1] = last_hash
+        # Check if hash is new in branch history
+        if tracking_branch_history:
+            last_branch_data = tracking_branch_history[-1]
+            last_branch_hash = last_branch_data['hash']
+            last_hashes_by_branch[remote_branch_name] = last_branch_hash
+            if last_branch_hash == current_hash:
+                continue
+
+        new_hashes_by_branch[remote_branch_name] = current_hash
+        # Add hash to branch history
+        current_branch_data = {
+            'date': current_date,
+            'hash': current_hash
+        }
+        tracking_branch_history.append(current_branch_data)
+        tracking_branches_data[remote_branch_name] = tracking_branch_history
+
     if new_hashes_by_branch:
-        tracking_hashes.append(new_hashes_by_branch)
-        tracking_data[root_path] = tracking_hashes
+        tracking_data[root_path] = tracking_branches_data
 
         print("Updates since last tracking:")
         for branch in new_hashes_by_branch:
-            if last_hashes_by_branch[branch] is None:
+            if branch not in last_hashes_by_branch or last_hashes_by_branch[branch] is None:
                 print("%s - %s commits" % (branch, get_total_commits(new_hashes_by_branch[branch])))
             else:
                 total_diverge = get_diverge_commits(new_hashes_by_branch[branch], last_hashes_by_branch[branch])
                 print("%s - %s commits" % (branch, int(total_diverge) + 1))
 
         with open(tracking_json_path, 'w') as json_file:
-            json.dump(tracking_data, json_file)
+            json.dump(tracking_data, json_file, indent=4)
 
 
 if __name__ == '__main__':

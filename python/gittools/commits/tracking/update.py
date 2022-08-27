@@ -1,6 +1,7 @@
 """ """
 from gittools import clitools
 from gittools.commits import get_diverge_commits, get_total_commits
+from gittools.config.root import  get_git_root
 
 import json
 import os
@@ -8,18 +9,19 @@ import os
 
 def update_tracking():
     current_path = os.getcwd()
+    root_path = get_git_root(current_path)
 
     tracking_json_path = os.environ["GIT_TOOLS_TRACKING_JSON"]
     tracking_data = {
-        current_path: []
+        root_path: []
     }
     tracking_hashes = []
 
     if os.path.exists(tracking_json_path):
         with open(tracking_json_path, 'r') as json_file:
             tracking_data = json.load(json_file)
-        if current_path in tracking_data:
-            tracking_hashes = tracking_data[current_path]
+        if root_path in tracking_data:
+            tracking_hashes = tracking_data[root_path]
 
     branches = clitools.run_cmd("git branch -r ")
     branches = branches.split('\n')
@@ -62,7 +64,7 @@ def update_tracking():
             last_hashes_by_branch[branch1] = last_hash
     if new_hashes_by_branch:
         tracking_hashes.append(new_hashes_by_branch)
-        tracking_data[current_path] = tracking_hashes
+        tracking_data[root_path] = tracking_hashes
 
         print("Updates since last tracking:")
         for branch in new_hashes_by_branch:

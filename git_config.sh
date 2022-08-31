@@ -140,7 +140,11 @@ function gt-fetch()
 {
     if [ -z "$1" ]
     then
-          target_remote=$(git remote | sk)
+        if [[ $(git remote | wc -l) -le 1 ]]; then
+            target_remote=$(git remote | head -1)
+        else
+            target_remote=$(git remote | sk)
+        fi
     else
           target_remote=$1
     fi

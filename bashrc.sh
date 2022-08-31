@@ -1,3 +1,4 @@
+source ${GIT_TOOLS_DIR}/git_history.sh
 source ${GIT_TOOLS_DIR}/git_smart.sh
 source ${GIT_TOOLS_DIR}/git_files.sh
 source ${GIT_TOOLS_DIR}/git_config.sh
@@ -7,7 +8,6 @@ source ${GIT_TOOLS_DIR}/git_stage.sh
 source ${GIT_TOOLS_DIR}/git_commit.sh
 source ${GIT_TOOLS_DIR}/git_internals.sh
 source ${GIT_TOOLS_DIR}/git_attributes.sh
-source ${GIT_TOOLS_DIR}/git_history.sh
 source ${GIT_TOOLS_DIR}/git_navigation.sh
 source ${GIT_TOOLS_DIR}/git_remote.sh
 source ${GIT_TOOLS_DIR}/git_branch.sh

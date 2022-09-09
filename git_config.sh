@@ -91,20 +91,6 @@ function gt-send-branch-force()
     git push origin --force ${current_branch}:${target_branch}
 }
 
-function gt-rebase-branch()
-{
-    target_branch=$(git branch -a | cut -c3- | sed 's/origin//g' | cut -c2- | sk)
-    echo "Let's merge branch: "$target_branch
-    git merge ${target_branch}
-}
-
-function gt-merge-branch()
-{
-    target_branch=$(git branch -a | cut -c3- | sk)
-    echo "Let's merge branch: "$target_branch
-    git merge ${target_branch}
-}
-
 function gt-branches-fz()
 {
     git branch -r | cut -c3- | sk

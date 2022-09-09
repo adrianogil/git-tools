@@ -390,7 +390,7 @@ function gremove-from-tree()
 # gtool gignore-file: add file to .gitignore file
 function gignore-file()
 {
-    python3 $GIT_TOOLS_DIR/python/gignore_file.py $(abspath $1)
+    python3 ${GIT_TOOLS_DIR}/python/gignore_file.py $(abspath $1)
 }
 
 # gtool gopen-commit-files-in-sublime: open commit files in sublime (alias gts)

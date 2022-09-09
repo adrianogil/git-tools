@@ -1,6 +1,3 @@
-alias gb='git rebase'
-alias gbc='git rebase --continue'
-alias gb-fz='git rebase $(gbk)'
 alias gbupstream='git branch --set-upstream-to=origin/master'
 alias gbranch='git branch'
 alias gc='git commit '

@@ -12,6 +12,7 @@ source ${GIT_TOOLS_DIR}/git_navigation.sh
 source ${GIT_TOOLS_DIR}/git_remote.sh
 source ${GIT_TOOLS_DIR}/git_branch.sh
 source ${GIT_TOOLS_DIR}/git_tag.sh
+source ${GIT_TOOLS_DIR}/git_merge.sh
 source ${GIT_TOOLS_DIR}/analysis/git_analysis_tools.sh
 
 if [ -z "$GITTOOLS_PYTHON_PATH" ]

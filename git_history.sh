@@ -88,7 +88,7 @@ function gfunction()
     git log -L :$function_name:$file_name
 }
 
-# gtool gh-new-files: Log of commits in which files were added
+# gtool gw-new-files: Log of commits in which files were added
 function gw-new-files()
 {
     if [ -z "$1" ]
@@ -100,6 +100,14 @@ function gw-new-files()
     fi
 
     git whatchanged --diff-filter=A ${log_params}
+}
+
+# gtool gw-file: Log of commits in which a given file is included
+function gw-file()
+{
+    target_file=$1
+
+    git whatchanged -- ${target_file}
 }
 
 alias gh-diff="python3 -m gittools.history.commitsdiff"

@@ -210,14 +210,14 @@ function ghard-reset-fz()
     echo 'Git hard reset to ref '${target_commit}
     git reset --hard ${target_commit}
 }
-alias grk="ghard-reset-fz"
+alias ghrk="ghard-reset-fz"
 
 function ghard-reset-tags()
 {
     # ghard-reset $target_commit
     ghard-reset $(git tag -l | default-fuzzy-finder)
 }
-alias ght="ghard-reset-tags"
+alias ghrt="ghard-reset-tags"
 
 function ghard-reset-flog()
 {

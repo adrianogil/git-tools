@@ -33,12 +33,20 @@ function gt-hist-pick-commit()
     echo ${target_commit}
 }
 
+# gtool gt-hist-tag: search for a tag and shows its git logs
+function gt-hist-tag()
+{
+    target_tag=$(git tag -l | sk)
+    gh ${target_tag}
+}
+alias gh-tags="gt-hist-tag"
+
 # gtool gt-hist-cp-hash
 function gt-hist-cp-hash()
 {
     echo "Search for Hash"
 
-    target_commit=$(gh | sk | cut -c3- | awk '{print $1}')
+    target_commit=$(gha | sk | cut -c3- | awk '{print $1}')
 
     # Copy hash
     echo "Found hash: "$target_commit

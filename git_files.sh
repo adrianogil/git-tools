@@ -1,5 +1,5 @@
 
-# gtool gt-file-previous-version
+# gtool gt-file-previous-version: select a commit and then a file to see its previous version
 function gt-file-previous-version()
 {
     if [ -z "$1" ]
@@ -29,7 +29,7 @@ function gt-file-history()
     gh ${target_file}
 }
 
-# gtool gt-file-history-version: 
+# gtool gt-file-history-version: select a file and then a commit to see its previous version
 function gt-file-history-version()
 {
     if [ -z "$1" ]
@@ -41,7 +41,7 @@ function gt-file-history-version()
 
     target_commit=$(gh ${target_file} | default-fuzzy-finder | cut -c3- | awk '{print $1}')
 
-    echo "Let's see previous version of "${target_file}" in ref "${target_commit}
+    echo "Let's see previous version of "${target_file}" in ref "${target_commit}"\n"
 
     git show ${target_commit}:${target_file}
 }

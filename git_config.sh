@@ -93,7 +93,7 @@ function gt-send-branch-force()
 
 function gt-branches-fz()
 {
-    git branch -r | cut -c3- | sk
+    git branch -r | grep -v "/HEAD " | cut -c3- | sk
 }
 alias gbk='gt-branches-fz'
 

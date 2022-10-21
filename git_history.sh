@@ -57,7 +57,12 @@ function gt-hist-cp-hash()
 # gtool gt-hist-find-string: Find string in all commit history
 function gt-hist-find-string()
 {
-    target_string=$1
+    if [ -z "$1" ]
+    then
+        read -p "Target string: " word
+    else
+        target_string=$1
+    fi
 
     git log -S ${target_string} --source --all
 }

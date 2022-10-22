@@ -67,3 +67,42 @@ function gt-file-checkout-version()
 
     git checkout ${target_commit} ${target_file}
 }
+
+# gtool gls-files: see most recent commit that changed each file in a target directory
+function gls-files()
+{
+    # gls-files $target_commit $target_directory
+    # Github-like vision of repo, shows last commit that changed each
+    # file in $2 directory
+
+    if [ -z "$1" ]
+    then
+        target_directory=''
+        target_commit='HEAD'
+    else
+        target_directory=$1
+
+        if [ -z "$2" ]
+        then
+            target_commit='HEAD'
+        else
+            target_commit=$2
+        fi
+    fi
+
+    target_files=$(git show $target_commit:$target_directory | tail -n +3)
+    # target_files=$(echo -e $target_files | tr '\n' ' ')
+
+    line='----------------------------------------'
+
+    if [ -z "$target_directory" ]
+    then
+        echo ${target_files} | xargs -I {} git log -n 1 --pretty=format:""{}" - %h%x09[%><(35,trunc)%s]%x09%ar" -- ${target_commit} {}
+    else
+        echo ${target_files} | xargs -I {} git log -n 1 --pretty=format:""{}" - %h%x09[%><(35,trunc)%s]%x09%ar" -- ${target_commit} $target_directory/{}    
+    fi
+
+    total_files=$(echo $target_files | wc -l)
+    echo ${total_files}" files"
+
+}

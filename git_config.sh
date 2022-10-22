@@ -1,4 +1,4 @@
-
+# !/bin/bash
 # gtool gt-continue: Continue a rebase or cherry-pick operationx
 alias gcontinue="python3 -m gittools.continue"
 alias gt-continue="gcontinue"
@@ -155,38 +155,6 @@ alias groot="gt-root"
 function gs-count()
 {
     echo $(gs-files $1 | wc -l)
-}
-
-function gls-files()
-{
-    # gls-files $target_commit $target_directory
-    # Github-like vision of repo, shows last commit that changed each
-    # file in $2 directory
-
-    if [ -z "$1" ]
-    then
-        target_directory=''
-        target_commit='HEAD'
-    else
-        target_directory=$1
-
-        if [ -z "$2" ]
-        then
-            target_commit='HEAD'
-        else
-            target_commit=$2
-        fi
-    fi
-
-    target_files=$(git show $target_commit:$target_directory | tail -n +3)
-
-    if [ -z "$target_directory" ]
-    then
-        for a in ${target_files}; do git log --pretty=format:"%h%x09$a%x09[%s]%x09%ar" -1 -- $target_commit $a; done
-    else
-        for a in ${target_files}; do git log --pretty=format:"%h%x09$a%x09[%s]%x09%ar" -1 -- $target_commit $target_directory/$a; done
-    fi
-
 }
 
 function ghard-reset()

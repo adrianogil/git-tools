@@ -37,9 +37,3 @@ function gt-add-fz()
 }
 alias gak="gt-add-fz"
 
-# Unity dev
-alias gunity-all='git add Assets/ ProjectSettings/ '
-function gunity-meta-all()
-{
-    f '*.meta' $1 | xargs -I {} git add {}
-}

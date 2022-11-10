@@ -31,8 +31,6 @@ alias gpupstream='git push --set-upstream origin master'
 alias gpick='python3 -m gittools.pick'
 alias gsquash='python3 $GIT_TOOLS_DIR/python/git_squash.py'
 
-alias got='git '
-alias get='git '
 alias gil='git '
 
 alias gl1='git log -1'

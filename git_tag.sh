@@ -31,3 +31,9 @@ function gt-tags()
 {
     git tag -l -n1
 }
+
+# gtool gt-tags-by-date: List all tags ordered by date
+function gt-tags-by-date()
+{
+    git for-each-ref --sort=creatordate --format '%(refname) %(creatordate)' refs/tags | cut -c11-
+}

@@ -352,6 +352,12 @@ function gignore-file()
     python3 ${GIT_TOOLS_DIR}/python/gignore_file.py $(abspath $1)
 }
 
+# gtool gt-list-untracked-files: list untracked files
+function gt-list-untracked-files()
+{
+    git ls-files --others --exclude-standard
+}
+
 # gtool gopen-commit-files-in-sublime: open commit files in sublime (alias gts)
 function gopen-commit-files-in-sublime()
 {

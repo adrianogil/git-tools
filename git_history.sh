@@ -21,14 +21,14 @@ alias gt-tracking-update='python3 -m gittools.commits.tracking.update'
 # gtool gt-hist-target-fz
 function gt-hist-target-fz()
 {
-    target_ref=$(git branch -a | cut -c3- | sk)
+    target_ref=$(git branch -a | cut -c3- | default-fuzzy-finder)
 
     gh ${target_ref}
 }
 
 function gt-hist-pick-commit()
 {
-    target_commit=$(gh | sk | cut -c3- | awk '{print $1}')
+    target_commit=$(gh | default-fuzzy-finder | cut -c3- | awk '{print $1}')
     echo ${target_commit} | pbcopy
     echo ${target_commit}
 }
@@ -36,7 +36,7 @@ function gt-hist-pick-commit()
 # gtool gt-hist-tag: search for a tag and shows its git logs
 function gt-hist-tag()
 {
-    target_tag=$(git tag -l | sk)
+    target_tag=$(git tag -l | default-fuzzy-finder)
     gh ${target_tag}
 }
 alias gh-tags="gt-hist-tag"
@@ -46,7 +46,7 @@ function gt-hist-cp-hash()
 {
     echo "Search for Hash"
 
-    target_commit=$(gha | sk | cut -c3- | awk '{print $1}')
+    target_commit=$(gha | default-fuzzy-finder | cut -c3- | awk '{print $1}')
 
     # Copy hash
     echo "Found hash: "$target_commit

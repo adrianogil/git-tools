@@ -27,7 +27,7 @@ function gt-zip-repo()
 
 function gt-cktout()
 {
-    target_branch=$(git branch -r | cut -c3- | sk)
+    target_branch=$(git branch -r | cut -c3- | default-fuzzy-finder)
     echo "Let's track a new branch: "$target_branch
     git checkout --track ${target_branch}
 }
@@ -44,7 +44,7 @@ function gt-send-branch()
             target_remote=$(python3 -m gittools.cli.removeremotename ${complete_branch_name} --get-only-remote)
         else
             target_branch=$1
-            target_remote=$(git remote | sk)
+            target_remote=$(git remote | default-fuzzy-finder)
         fi
     else
         target_branch=$1
@@ -96,7 +96,7 @@ function gt-branches-fz()
     if [[ $(git branch -r | grep -v "/HEAD " | wc -l) -le 1 ]]; then
         git branch -r | grep -v "/HEAD " | cut -c3- | head -1
     else
-        git branch -r | grep -v "/HEAD " | cut -c3- | sk
+        git branch -r | grep -v "/HEAD " | cut -c3- | default-fuzzy-finder
     fi
     
 }
@@ -134,7 +134,7 @@ function gt-fetch()
         if [[ $(git remote | wc -l) -le 1 ]]; then
             target_remote=$(git remote | head -1)
         else
-            target_remote=$(git remote | sk)
+            target_remote=$(git remote | default-fuzzy-finder)
         fi
     else
           target_remote=$1

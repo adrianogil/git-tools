@@ -30,10 +30,10 @@ function gs-files()
     fi
 }
 
-# gtool gt-add-sk - Add file to be staged (alias gsk)
+# gtool gt-add-default-fuzzy-finder - Add file to be staged (alias gdefault-fuzzy-finder)
 function gt-add-fz()
 {
-    git add $(gs-files $1 | sk)
+    git add $(gs-files $1 | default-fuzzy-finder)
 }
 alias gak="gt-add-fz"
 

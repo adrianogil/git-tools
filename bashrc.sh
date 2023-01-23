@@ -25,7 +25,7 @@ fi
 # @tool gt-fz: Git Tools
 function gt-fz()
 {
-    gitaction=$(cat ${GIT_TOOLS_DIR}/git_*.sh | grep '# gtool' | cut -c9- | sk | tr ":" " " | awk '{print $1}')
+    gitaction=$(cat ${GIT_TOOLS_DIR}/git_*.sh | grep '# gtool' | cut -c9- | default-fuzzy-finder | tr ":" " " | awk '{print $1}')
 
     eval ${gitaction}
 }

@@ -1,5 +1,5 @@
 # git-tools
-A collection of small tools for git
+A collection of aliases and tools for git
 
 ## Commands
 
@@ -20,7 +20,7 @@ gh # show commit graph, similar to git log --oneline --graph
 Commands related to push commits
 ```
 gp # alias to git push
-gt-send-to-branch # powered by skim
+gt-send-to-branch # uses a fuzzy-finder to select a branch
 ```
 
 ## Planned features
@@ -43,6 +43,12 @@ Add the following lines to your bashrc:
 ```
 export GIT_TOOLS_DIR=/<path-to>/git-tools/
 source $GIT_TOOLS_DIR/bashrc.sh
+```
+
+And you should also define an alias default-fuzzy-finder to the fuzzy-finder you want to use. For example:
+
+```bash
+alias default-fuzzy-finder='fzf'
 ```
 
 ## Contributing

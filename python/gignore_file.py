@@ -30,6 +30,6 @@ if git_repo is None:
     print("Error: file is not inside a valid git repo")
     exit()
 
-add_to_gitignore_cmd = "echo '" + target_file[len(git_repo)+1:] + "' >> '" + git_repo + "/.gitignore'"
+add_to_gitignore_cmd = "echo '" + target_file[len(git_repo):] + "' >> '" + git_repo + "/.gitignore'"
 add_to_gitignore_output = subprocess.check_output(add_to_gitignore_cmd, shell=True)
 add_to_gitignore_output = add_to_gitignore_output.strip()

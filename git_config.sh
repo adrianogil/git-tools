@@ -349,7 +349,14 @@ function gremove-from-tree()
 # gtool gignore-file: add file to .gitignore file
 function gignore-file()
 {
-    python3 ${GIT_TOOLS_DIR}/python/gignore_file.py $(abspath $1)
+    if [ -z "$1" ]
+    then
+        target_file=$(git ls-files --others --exclude-standard | default-fuzzy-finder)
+    else
+        target_file=$1
+    fi
+
+    python3 ${GIT_TOOLS_DIR}/python/gignore_file.py $(abspath $target_file)
 }
 
 # gtool gt-list-untracked-files: list untracked files

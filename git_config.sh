@@ -387,3 +387,32 @@ function gopen-commit-files-in-sublime()
     cd ${current_dir}
 }
 alias gts="gopen-commit-files-in-sublime"
+
+# gtool gt-config-user: configure user name and email
+function gt-config-user()
+{
+    username=$1
+    email=$2
+
+    if [ -z "$username" ]
+    then
+        echo "Enter your Git username (default: gituser):"
+        read username
+        username=${username:-gituser}
+    fi
+
+    if [ -z "$email" ]
+    then
+        echo "Enter your Git email (default: gituser@example.com):"
+        read email
+        email=${email:-gituser@example.com}
+    fi
+
+    echo "name: "${username}
+    echo "email: "${email}
+
+    git config --global user.name "$username"
+    git config --global user.email "$email"
+
+    echo "Git user name and email set successfully!"
+}

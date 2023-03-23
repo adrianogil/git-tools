@@ -15,6 +15,7 @@ source ${GIT_TOOLS_DIR}/git_tag.sh
 source ${GIT_TOOLS_DIR}/git_merge.sh
 source ${GIT_TOOLS_DIR}/git_unity_dev.sh
 source ${GIT_TOOLS_DIR}/analysis/git_analysis_tools.sh
+source ${GIT_TOOLS_DIR}/git_gerrit.sh
 
 if [ -z "$GITTOOLS_PYTHON_PATH" ]
 then

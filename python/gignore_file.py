@@ -16,20 +16,21 @@ def get_git_root(p):
         return root
 
 
-if len(sys.argv) < 2:
-    print("Error: you should provide a file to be ignored")
-    exit()
+if __name__ == '__main__':
+    if len(sys.argv) < 2:
+        print("Error: you should provide a file to be ignored")
+        exit()
 
-target_file = sys.argv[1]
-target_path = os.path.dirname(target_file)
-git_repo = get_git_root(target_path)
+    target_file = sys.argv[1]
+    target_path = os.path.dirname(target_file)
+    git_repo = get_git_root(target_path)
 
-print("Let's ignore file: " + target_file)
+    print("Let's ignore file: " + target_file)
 
-if git_repo is None:
-    print("Error: file is not inside a valid git repo")
-    exit()
+    if git_repo is None:
+        print("Error: file is not inside a valid git repo")
+        exit()
 
-add_to_gitignore_cmd = "echo '" + target_file[len(git_repo):] + "' >> '" + git_repo + "/.gitignore'"
-add_to_gitignore_output = subprocess.check_output(add_to_gitignore_cmd, shell=True)
-add_to_gitignore_output = add_to_gitignore_output.strip()
+    add_to_gitignore_cmd = "echo '" + target_file[len(git_repo)+1:] + "' >> '" + git_repo + "/.gitignore'"
+    add_to_gitignore_output = subprocess.check_output(add_to_gitignore_cmd, shell=True)
+    add_to_gitignore_output = add_to_gitignore_output.strip()

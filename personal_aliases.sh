@@ -57,11 +57,11 @@ function gt-push2gerrit()
 {
     if [ -z "$1" ]
     then
-        target_branch=$(gbko)
-
-        remote=$(git config "branch.${target_branch}.remote")
+        complete_branch_name=$(gt-branches-fz)
+        target_branch=$(python3 -m gittools.cli.removeremotename ${complete_branch_name})
+        target_remote=$(python3 -m gittools.cli.removeremotename ${complete_branch_name} --get-only-remote)
     else
-        target_commit=$1
+        target_branch=$1
         remote=origin
     fi
 

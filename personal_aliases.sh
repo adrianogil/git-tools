@@ -52,11 +52,12 @@ function gcm()
     gc -m "$commit_message"
 }
 
-function gpush2gerrit()
+# gtool gt-push2gerrit: push commit to gerrit
+function gt-push2gerrit()
 {
     if [ -z "$1" ]
     then
-        target_branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/ ')
+        target_branch=$(gbko)
 
         remote=$(git config "branch.${target_branch}.remote")
     else

@@ -298,10 +298,16 @@ function gstats-short()
     git log --author="$1" --oneline --shortstat $2
 }
 
-function random-commit-msg()
-{
-    # generate a random commit message
-    curl -s whatthecommit.com/index.txt
+function random-commit-msg() {
+    subjects=("Fix" "Add" "Update" "Remove" "Refactor")
+    predicates=("bug in authentication" "new feature for sorting" "readme file" "unused code" "database schema")
+
+    subject_index=$(($RANDOM % ${#subjects[@]}))
+    predicate_index=$(($RANDOM % ${#predicates[@]}))
+
+    commit_message="${subjects[$subject_index]} ${predicates[$predicate_index]}"
+
+    echo "$commit_message"
 }
 
 # gtool gcreate-random-commits: create random commits

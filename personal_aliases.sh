@@ -62,10 +62,10 @@ function gt-push2gerrit()
         target_remote=$(python3 -m gittools.cli.removeremotename ${complete_branch_name} --get-only-remote)
     else
         target_branch=$1
-        remote=origin
+        target_remote=origin
     fi
 
-    git push $remote HEAD:refs/for/$target_branch
+    git push ${target_remote} HEAD:refs/for/${target_branch}
 }
 
 alias gfind-big-files=$HOME'/Softwares/git/findbig/git_find_big.sh'

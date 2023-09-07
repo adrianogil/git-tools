@@ -4,6 +4,7 @@ from . import clitools
 import sys
 
 
+input_numbers = sys.argv[1:]
 def is_int(s):
     try:
         int(s)
@@ -13,14 +14,16 @@ def is_int(s):
 
     return False
 
+if len(input_numbers) == 1 and " " in input_numbers[0].strip():
+    input_numbers = input_numbers.split(" ")
 
 commits_order = []
 
 max_commit_backtrack = 0
 
-for i in range(1, len(sys.argv)):
-    if is_int(sys.argv[i]):
-        commits_order_number = int(sys.argv[i])
+for i in range(1, len(input_numbers)):
+    if is_int(input_numbers[i]):
+        commits_order_number = int(input_numbers[i])
         if commits_order_number > max_commit_backtrack:
             max_commit_backtrack = commits_order_number
 

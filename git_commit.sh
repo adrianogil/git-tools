@@ -35,3 +35,9 @@ function gt-squash() {
 
     git reset --soft HEAD~"$N" && git commit --amend -m "$MSG"
 }
+
+# gtool gt-pick-commits: Reorder commits
+function gt-pick-commits() {
+    python3 -m gittools.pick $*
+}
+alias gpick='gt-pick-commits'

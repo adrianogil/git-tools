@@ -1,5 +1,3 @@
-alias gbupstream='git branch --set-upstream-to=origin/master'
-alias gbranch='git branch'
 alias gc='git commit '
 alias gm='git commit -m '
 alias gca='git commit --amend '

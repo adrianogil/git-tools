@@ -1,7 +1,4 @@
-alias gc='git commit '
-alias gm='git commit -m '
-alias gca='git commit --amend '
-alias gcg="git commit --author='Adriano Gil <adrianogil.san@gmail.com>'"
+
 alias gd='git diff '
 alias gdc='git diff --cached'
 alias gk='gitk --all&'
@@ -36,17 +33,8 @@ alias gremotes="git remote -v"
 
 alias gignore-file-hard='git update-index --assume-unchanged '
 
-alias git-author-update="gc --amend --author='Adriano Gil <adrianogil.san@gmail.com>'"
-
 # Specific command related to my own scripts that exchange commits and CL between P4 and git repos
 alias perforce-push='git push local master:perforce-master'
 
-# Generate commit message
-function gcm()
-{
-    commit_message="Updated changes at "$(date +%F-%H:%M)
-    echo "Generating commit: "$commit_message
-    gc -m "$commit_message"
-}
-
-alias gfind-big-files=$HOME'/Softwares/git/findbig/git_find_big.sh'
+# Deprecated
+# alias gfind-big-files=$HOME'/Softwares/git/findbig/git_find_big.sh'

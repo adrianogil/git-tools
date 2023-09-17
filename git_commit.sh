@@ -41,3 +41,18 @@ function gt-pick-commits() {
     python3 -m gittools.pick $*
 }
 alias gpick='gt-pick-commits'
+
+# gtool gt-commit-generate-date-msg: Generate commit message
+function gt-commit-generate-date-msg()
+{
+    commit_message="Updated changes at "$(date +%F-%H:%M)
+    echo "Generating commit: "$commit_message
+    gc -m "$commit_message"
+}
+alias gcm="gt-commit-generate-date-msg"
+
+alias gc='git commit '
+alias gm='git commit -m '
+alias gca='git commit --amend '
+alias gcg="git commit --author='Adriano Gil <adrianogil.san@gmail.com>'"
+alias git-author-update="gc --amend --author='Adriano Gil <adrianogil.san@gmail.com>'"

@@ -12,19 +12,6 @@ function gt-config-show()
     cat $(gt-get-root-path)/.git/config
 }
 
-# gtool gt-zip-repo: Zips a git commit
-function gt-zip-repo()
-{
-    zip_name=$1
-    if [ -z "$2" ]
-    then
-        target_ref=HEAD
-    else
-        target_ref=$2
-    fi
-    git archive -o ${zip_name}.zip ${target_ref}
-}
-
 function gt-cktout()
 {
     target_branch=$(git branch -r | cut -c3- | default-fuzzy-finder)

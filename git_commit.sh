@@ -36,6 +36,19 @@ function gt-squash() {
     git reset --soft HEAD~"$N" && git commit --amend -m "$MSG"
 }
 
+# gtool gt-zip-repo: Zips a target commit
+function gt-zip-repo()
+{
+    zip_name=$1
+    if [ -z "$2" ]
+    then
+        target_ref=HEAD
+    else
+        target_ref=$2
+    fi
+    git archive -o ${zip_name}.zip ${target_ref}
+}
+
 # gtool gt-pick-commits: Reorder commits
 function gt-pick-commits() {
     python3 -m gittools.pick $*

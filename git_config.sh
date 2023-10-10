@@ -157,6 +157,29 @@ function gt-root()
 }
 alias groot="gt-root"
 
+function gt-root-relative() 
+{
+    # Check if the current directory is inside a Git repository
+    git rev-parse --is-inside-work-tree >/dev/null 2>&1 || {
+        echo "Not inside a Git repository"
+        return 1
+    }
+    
+    # Get the absolute path of the Git root
+    local git_root="$(git rev-parse --show-toplevel)"
+    
+    # Get the absolute path of the current working directory
+    local cwd="$(pwd)"
+    
+    # Get the relative path from the current directory to the Git root
+    local relative_path="$(realpath --relative-to="$git_root" "$cwd")"
+    
+    # Print the relative path
+    echo "./$relative_path"
+}
+alias groot-local="gt-root-relative"
+
+
 function gs-count()
 {
     echo $(gs-files $1 | wc -l)

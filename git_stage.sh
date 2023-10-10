@@ -37,3 +37,17 @@ function gt-add-fz()
 }
 alias gak="gt-add-fz"
 
+
+function gt-add-all()
+{
+    target_files=$1
+    target_dir=$2
+
+    if [ -z "$2" ]
+    then
+        target_dir=.
+    fi
+    
+    find ${target_dir} -name ${target_files} | xargs -I {} git add {}
+}
+alias gaa="gt-add-all"

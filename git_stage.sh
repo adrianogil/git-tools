@@ -38,6 +38,7 @@ function gt-add-fz()
 alias gak="gt-add-fz"
 
 
+# gtool gt-add-all - Add all files given a file name pattern
 function gt-add-all()
 {
     target_files=$1

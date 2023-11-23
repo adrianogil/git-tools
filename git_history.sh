@@ -93,13 +93,27 @@ function gh-branches()
 
 alias gh-update="python3 $GIT_TOOLS_DIR/python/git_update_track.py"
 
-function gfunction()
+# gtool gt-function: Show the history of changes of a given function
+function gt-function()
 {
-    function_name=$1
-    file_name=$2
+    if [ -z "$1" ]
+    then
+        echo "Type function name: "
+        read function_name
+    else
+        function_name=$1
+    fi
+
+    if [ -z "$2" ]
+    then
+        file_name=$(find . -type f -not -path "./.git/*" | default-fuzzy-finder)
+    else
+        file_name=$2
+    fi
 
     git log -L :$function_name:$file_name
 }
+alias gfunction="gt-function"
 
 # gtool gw-new-files: Log of commits in which files were added
 function gw-new-files()

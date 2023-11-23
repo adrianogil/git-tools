@@ -20,4 +20,3 @@ function gt-merge-branch()
     echo "Let's merge branch: "$target_branch
     git merge ${target_branch}
 }
-

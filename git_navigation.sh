@@ -6,5 +6,5 @@ function gt-navigate-to-local-branch()
     echo "Let's checkout to branch: "$target_branch
     git checkout ${target_branch}
 }
-alias gt-nav-go="gt-navigate-to-local-branch"
-
+alias gt-go-local-branch="gt-navigate-to-local-branch"
+alias ggo="gt-navigate-to-local-branch"

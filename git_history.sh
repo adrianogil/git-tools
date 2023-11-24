@@ -79,17 +79,19 @@ function gh-count-from-head()
     git log --oneline | while read l; do printf "%+9s %s\n" "HEAD~${o}" "$l"; o=$(($o+1)); done | less
 }
 
-# https://stackoverflow.com/questions/47142799/git-list-all-branches-tags-and-remotes-with-commit-hash-and-date
-function gh-branches()
+# gtool gt-branches: Show the history of changes for each branch
+function gt-history-by-branches()
 {
+    # https://stackoverflow.com/questions/47142799/git-list-all-branches-tags-and-remotes-with-commit-hash-and-date
     git --no-pager log \
       --simplify-by-decoration \
       --tags --branches --remotes \
       --date-order \
       --reverse \
       --decorate \
-      --pretty=tformat:"%Cblue %h %Creset %<(25)%ci %C(auto)%d%Creset %s [%C(blue)%an%Creset]"
+      --pretty=tformat:"%Cblue %h %Creset %<(25)%ci %C(auto)%d%Creset %s [%C(blue)%an%Creset]" $@
 }
+alias gh-branches="gt-history-by-branches"
 
 alias gh-update="python3 $GIT_TOOLS_DIR/python/git_update_track.py"
 

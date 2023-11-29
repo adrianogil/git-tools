@@ -11,6 +11,7 @@ source ${GIT_TOOLS_DIR}/git_attributes.sh
 source ${GIT_TOOLS_DIR}/git_navigation.sh
 source ${GIT_TOOLS_DIR}/git_remote.sh
 source ${GIT_TOOLS_DIR}/git_branch.sh
+source ${GIT_TOOLS_DIR}/git_status.sh
 source ${GIT_TOOLS_DIR}/git_tag.sh
 source ${GIT_TOOLS_DIR}/git_merge.sh
 source ${GIT_TOOLS_DIR}/git_unity_dev.sh

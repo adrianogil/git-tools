@@ -144,6 +144,14 @@ function gt-root()
 }
 alias groot="gt-root"
 
+# gtool gt-code-root-path: Open root level as a project in VSCode
+function gt-code-root-path()
+{
+    code $(gt-get-root-path)
+}
+alias cgroot="gt-code-root-path"
+
+
 function gt-root-relative() 
 {
     # Check if the current directory is inside a Git repository

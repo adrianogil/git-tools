@@ -70,32 +70,13 @@ function gt-send-branch-force()
           echo "or set the variable 'GIT_TOOLS_ALLOW_PUSH_TO_MAIN_BRANCH'"
           return 1
         fi
-    fi    
+    fi
 
     echo "Sending commits to branch "${target_branch}
 
     current_branch=$(git rev-parse --abbrev-ref HEAD)
     git push origin --force ${current_branch}:${target_branch}
 }
-
-function gt-branches-fz()
-{
-    if [[ $(git branch -r | grep -v "/HEAD " | wc -l) -le 1 ]]; then
-        git branch -r | grep -v "/HEAD " | cut -c3- | head -1
-    else
-        git branch -r | grep -v "/HEAD " | cut -c3- | default-fuzzy-finder
-    fi
-    
-}
-alias gbk='gt-branches-fz'
-
-function gt-branches-origin-fz()
-{
-    complete_branch_name=$(gt-branches-fz)
-    only_branch_name=$(python3 -m gittools.cli.removeremotename ${complete_branch_name})
-    echo ${only_branch_name}
-}
-alias gbko='gt-branches-origin-fz'
 
 TMP_BUFFER_LAST_FETCH=/tmp/last_fetch
 function gt-fetch-save-buffer()
@@ -152,23 +133,23 @@ function gt-code-root-path()
 alias cgroot="gt-code-root-path"
 
 
-function gt-root-relative() 
+function gt-root-relative()
 {
     # Check if the current directory is inside a Git repository
     git rev-parse --is-inside-work-tree >/dev/null 2>&1 || {
         echo "Not inside a Git repository"
         return 1
     }
-    
+
     # Get the absolute path of the Git root
     local git_root="$(git rev-parse --show-toplevel)"
-    
+
     # Get the absolute path of the current working directory
     local cwd="$(pwd)"
-    
+
     # Get the relative path from the current directory to the Git root
     local relative_path="$(realpath --relative-to="$git_root" "$cwd")"
-    
+
     # Print the relative path
     echo "./$relative_path"
 }
@@ -331,7 +312,7 @@ function random-commit-msg() {
 # gtool gcreate-random-commits: create random commits
 function gcreate-random-commits()
 {
-    
+
     if [ -z "$1" ]
     then
         number_commits=1

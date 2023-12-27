@@ -1,3 +1,23 @@
+# gtool gt-branches-fz: List branches and select one
+function gt-branches-fz()
+{
+    if [[ $(git branch -r | grep -v "/HEAD " | wc -l) -le 1 ]]; then
+        git branch -r | grep -v "/HEAD " | cut -c3- | head -1
+    else
+        git branch -r | grep -v "/HEAD " | cut -c3- | default-fuzzy-finder
+    fi
+
+}
+alias gbk='gt-branches-fz'
+
+# gtool gt-branches-origin-fz: List branches from origin and select one
+function gt-branches-origin-fz()
+{
+    complete_branch_name=$(gt-branches-fz)
+    only_branch_name=$(python3 -m gittools.cli.removeremotename ${complete_branch_name})
+    echo ${only_branch_name}
+}
+alias gbko='gt-branches-origin-fz'
 
 # gtool gt-branch-delete: Delete a target branch (local and remotely)
 function gt-branch-delete()

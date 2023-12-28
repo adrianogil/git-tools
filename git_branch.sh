@@ -44,6 +44,30 @@ function gt-branch-delete()
     fi
 }
 
+# gtool gt-branch-local-delete: Delete a target branch (local only)
+function gt-branch-local-delete()
+{
+    if [ -z "$1" ]
+    then
+        target_branch=$(git branch -l | grep -v "*" | default-fuzzy-finder)
+    else
+        target_branch=$1
+    fi
+
+    if [ -z "$target_branch" ]
+    then
+        echo "Branch to be deleted:"
+        read target_branch
+    fi
+
+    if [ -z "$target_branch" ]
+    then
+          echo "No branch selected"
+    else
+        git branch -d ${target_branch}
+    fi
+}
+
 # gtool gt-branch-set-upstream: set branch upstream
 function gt-branch-set-upstream()
 {

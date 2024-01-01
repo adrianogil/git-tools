@@ -1,5 +1,6 @@
 
 function gt-status-count() {
+
   # Count the number of files in HEAD
   local head_count=$(git ls-tree -r HEAD --name-only | wc -l)
 
@@ -14,3 +15,9 @@ function gt-status-count() {
   echo "Worktree: $worktree_count"
 }
 alias gt-st-count="gt-status-count"
+
+# gtool gt-list-untracked-files: list untracked files
+function gt-list-untracked-files()
+{
+    git ls-files --others --exclude-standard
+}

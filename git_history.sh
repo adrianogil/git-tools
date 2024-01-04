@@ -72,12 +72,42 @@ function ghs()
     gh $1 $2 | less
 }
 
-# See https://www.commandlinefu.com/commands/view/15063/list-offsets-from-head-with-git-log.
-function gh-count-from-head()
+# gtool gt-history-count: count commits in current ref
+function gt-history-count()
 {
+    total_commits=$(gh $1 | wc -l)
+    echo 'There are'$total_commits' commits in current local branch'
+}
+alias gcount="gt-history-count"
+
+# gtool gt-history-count-today: count commits made today in current ref
+function gt-history-count-today()
+{
+    total_commits=$(gh  --since="1am" | wc -l)
+    echo 'Today, there are'$total_commits' commits in current local branch'
+}
+alias gcount-today= "gt-history-count-today"
+
+# gtool gt-history-count-commits: count commits between two refs
+function gt-history-count-commits()
+{
+    old_commit=$1
+    new_commit=$2
+
+    number_commits=$(($(git rev-list --count $old_commit..$new_commit) - 1))
+
+    echo 'There are '$number_commits' commits of difference between revisions'
+}
+alias gcount-commits="gt-history-count-commits"
+
+# gtool gt-history-log-count-from-head: Show the history of changes
+function gt-history-log-count-from-head()
+{
+    # See https://www.commandlinefu.com/commands/view/15063/list-offsets-from-head-with-git-log
     o=0
     git log --oneline | while read l; do printf "%+9s %s\n" "HEAD~${o}" "$l"; o=$(($o+1)); done | less
 }
+alias gh-log-count="gt-history-log-count-from-head"
 
 # gtool gt-branches: Show the history of changes for each branch
 function gt-history-by-branches()

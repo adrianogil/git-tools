@@ -262,30 +262,6 @@ function gnew-commits()
     echo $new_commits" new commits"
 }
 
-# gtool gcount: count commits in current ref
-function gcount()
-{
-    total_commits=$(gh $1 | wc -l)
-    echo 'There are'$total_commits' commits in current local branch'
-}
-
-function gcount-today()
-{
-    total_commits=$(gh  --since="1am" | wc -l)
-    echo 'Today, there are'$total_commits' commits in current local branch'
-}
-
-# gtool gcount-commits: count commits between two refs
-function gcount-commits()
-{
-    old_commit=$1
-    new_commit=$2
-
-    number_commits=$(($(git rev-list --count $old_commit..$new_commit) - 1))
-
-    echo 'There are '$number_commits' commits of difference between revisions'
-}
-
 function gcountbranches()
 {
     python3 $GIT_TOOLS_DIR/python/gcount_branch.py $1 $2

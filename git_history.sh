@@ -169,4 +169,3 @@ function gw-file()
     git whatchanged -- ${target_file}
 }
 
-alias gh-diff="python3 -m gittools.history.commitsdiff"

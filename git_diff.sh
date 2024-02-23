@@ -6,3 +6,7 @@ function gt-diff()
     ref2=$2
     python3 -m gittools.history.commitsdiff ${ref1} ${ref2}
 }
+
+alias gd='git diff '
+alias gdc='git diff --cached'
+alias gds='git diff --staged'

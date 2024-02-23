@@ -1,6 +1,4 @@
 
-alias gd='git diff '
-alias gdc='git diff --cached'
 alias gk='gitk --all&'
 alias gx='gitx --all'
 alias gr-tags='git fetch --tags'
@@ -18,9 +16,6 @@ alias grbp="gr && gb && gp"
 alias gco='git checkout '
 alias gckout='git checkout'
 alias gckt='git checkout --track'
-
-# alias gp='echo "Lets push to repo" && git push'
-alias gpupstream='git push --set-upstream origin master'
 
 alias gsquash='python3 $GIT_TOOLS_DIR/python/git_squash.py'
 

@@ -96,12 +96,6 @@ function gt-root-relative()
 }
 alias groot-local="gt-root-relative"
 
-
-function gs-count()
-{
-    echo $(gs-files $1 | wc -l)
-}
-
 function ghard-reset()
 {
     # ghard-reset $target_commit
@@ -208,11 +202,6 @@ function gcountbranches()
     python3 $GIT_TOOLS_DIR/python/gcount_branch.py $1 $2
 }
 
-# gtool gstats-short: get commit stats
-function gstats-short()
-{
-    git log --author="$1" --oneline --shortstat $2
-}
 
 function random-commit-msg() {
     subjects=("Fix" "Add" "Update" "Remove" "Refactor")

@@ -86,7 +86,7 @@ function gt-history-count-today()
     total_commits=$(gh  --since="1am" | wc -l)
     echo 'Today, there are'$total_commits' commits in current local branch'
 }
-alias gcount-today= "gt-history-count-today"
+alias gcount-today="gt-history-count-today"
 
 # gtool gt-history-count-commits: count commits between two refs
 function gt-history-count-commits()

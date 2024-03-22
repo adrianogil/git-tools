@@ -25,6 +25,6 @@ function gignore-add-gitignore()
         project_type=$1
     fi
 
-    git_root_path = $(git rev-parse --show-toplevel)
+    git_root_path=$(git rev-parse --show-toplevel)
     cat ${GIT_TOOLS_DIR}/templates/gitignore/${project_type}_gitignore.txt >> ${git_root_path}/.gitignore
 }

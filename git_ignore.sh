@@ -20,7 +20,7 @@ function gignore-add-gitignore()
 {
     if [ -z "$1" ]
     then
-        project_type=$(echo -e "python\nnodejs\nunity3d" | default-fuzzy-finder)
+        project_type=$(echo -e "python\nnodejs\nunity3d\nlatex" | default-fuzzy-finder)
     else
         project_type=$1
     fi

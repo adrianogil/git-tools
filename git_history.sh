@@ -169,3 +169,9 @@ function gw-file()
     git whatchanged -- ${target_file}
 }
 
+# gtool gt-jira-commit-id: Get JIRA commit ID
+function gt-jira-commit-id()
+{
+    git log -1 --pretty=%B $1 | grep -oE "[A-Z]+-[0-9]+"
+}
+alias gjira="gt-jira-commit-id"

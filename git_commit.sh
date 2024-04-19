@@ -1,5 +1,22 @@
 # Utilities that creates or edit commits
 
+function gt-pop-last-commits()
+{
+    target_number_commits=$1
+    if [ -z "$target_number_commits" ]
+    then
+        read -p "Enter the number of commits to pop: " target_number_commits
+    fi
+
+    if [ -z "$target_number_commits" ]
+    then
+        echo "Invalid number of commits: $target_number_commits"
+        return 1
+    fi
+
+    git reset --hard HEAD~$target_number_commits
+}
+alias gpop='gt-pop-last-commits'
 
 # gtool gt-commit: Create a new commit for author 'adrianogil.san@gmail.com'
 function gt-commit()

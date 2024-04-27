@@ -1,5 +1,6 @@
 # Utilities that creates or edit commits
 
+# gtool gt-pop-last-commits: Pop the last N commits
 function gt-pop-last-commits()
 {
     target_number_commits=$1

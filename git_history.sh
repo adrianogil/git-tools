@@ -169,6 +169,20 @@ function gw-file()
     git whatchanged -- ${target_file}
 }
 
+# gtool gt-reflog: Show reflog
+function gt-reflog()
+{
+    git reflog --format='%C(auto)%h %<|(17)%gd %C(blue)%ci%C(reset) %s' $*
+}
+alias gflog="gt-reflog"
+
+# gtool gt-reflog-pick: Pick a commit from reflog
+function gt-reflog-pick()
+{
+    gflog $* | default-fuzzy-finder | awk '{print $1}' |  copy-clipboard-function
+}
+alias gflog-pick="gt-reflog-pick"
+
 # gtool gt-jira-commit-id: Get JIRA commit ID
 function gt-jira-commit-id()
 {

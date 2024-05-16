@@ -28,3 +28,15 @@ function gignore-add-gitignore()
     git_root_path=$(git rev-parse --show-toplevel)
     cat ${GIT_TOOLS_DIR}/templates/gitignore/${project_type}_gitignore.txt >> ${git_root_path}/.gitignore
 }
+
+# gtool gignore-set-global-ignore: set global ignore file
+function gignore-set-global-ignore()
+{
+    global_ignore_file=$1
+    if [ -z "$global_ignore_file" ]
+    then
+        global_ignore_file=${GIT_TOOLS_DIR}/gitignore_global
+    fi
+
+    git config --global core.excludesfile ${global_ignore_file}
+}

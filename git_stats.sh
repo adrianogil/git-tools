@@ -40,3 +40,60 @@ function gt-stats-by-author()
     git shortlog ${target_ref} --numbered --summary
 }
 
+# gtool gt-stats-summarize: Summarize repository
+function gt-stats-summarize()
+{
+    # Ensure we are in a git repository
+    if [ ! -d .git ]; then
+        echo "Not a git repository. Please navigate to a git repository."
+        return 1
+    fi
+
+    echo "### Repository Summary ###"
+    echo
+
+    # Repository details
+    echo "Repository: $(basename "$(git rev-parse --show-toplevel)")"
+    echo "Remote URL: $(git config --get remote.origin.url)"
+    echo "Total number of commits: $(git rev-list --count HEAD)"
+    echo "Size: $(du -sh .git | cut -f1)"
+    echo
+
+    # Summary of files (count each extension)
+    echo "### Files Summary ###"
+    echo
+    git ls-files | sed 's/.*\.//' | sort | uniq -c | sort -nr
+    echo
+
+    # Summary of contributors
+    echo "### Contributors ###"
+    echo
+    git shortlog -sn
+    echo
+
+    # Branches
+    echo "### Most recent Branches ###"
+    echo
+    # List 5 most recent branches
+    git branch --sort=-creatordate | head -n 5
+    echo
+
+    # Tags
+    # Check if there are tags
+    if [ -z "$(git tag)" ]; then
+        echo "No tags found."
+    else
+        echo "### Most recent Tags ###"
+        echo
+        # List 5 most recent tags
+        git tag --sort=-creatordate | head -n 5
+        echo
+    fi
+
+    # Latest commit
+    echo "### Latest Commit ###"
+    echo
+    git log -1 --pretty=format:"Commit: %H%nAuthor: %an%nDate: %ad%nMessage: %s"
+    echo
+    echo
+}

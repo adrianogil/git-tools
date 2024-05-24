@@ -1,11 +1,11 @@
 
-# gtool gt-gerrit-patches-update: Update gerrit patches list
+# gtool gt-gerrit-patches-update: Update gerrit local patches list
 function gt-gerrit-patches-update()
 {
     gt-meta-init
 	gerrit patches > $(gt-meta-get-path)/gerrit_patches.txt
 }
-alias gepu="gt-gerrit-patches-updates"
+alias gepu="gt-gerrit-patches-update"
 
 # gtool gt-gerrit-patches: Show gerrit patches for current repo
 function gt-gerrit-patches()
@@ -18,10 +18,11 @@ alias gep="gt-gerrit-patches"
 # gtool gt-gerrit-checkout: Select a gerrit patch and checkout it
 function gt-gerrit-checkout()
 {
-	target_patch=$(gerrit patches | tail -n +2 | default-fuzzy-finder | awk '{print $1}')
+	target_patch=$(gt-gerrit-patches | tail -n +2 | default-fuzzy-finder | awk '{print $1}')
 	echo "Checkout patch "${target_patch}
 	gerrit checkout ${target_patch}
 }
+alias gec="gt-gerrit-checkout"
 
 # gtool gt-push2gerrit: push commit to gerrit
 function gt-push2gerrit()
@@ -39,6 +40,7 @@ function gt-push2gerrit()
     git push ${target_remote} HEAD:refs/for/${target_branch}
 }
 
+# gtool gt-gerrit-open-patch: Open gerrit patch in browser
 function gt-gerrit-open-patch()
 {
     if [ -z "$1" ]
@@ -50,3 +52,4 @@ function gt-gerrit-open-patch()
 
     gerrit open ${target_patch}
 }
+alias geop="gt-gerrit-open-patch"

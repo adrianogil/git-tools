@@ -2,14 +2,16 @@
 # gtool gt-gerrit-patches-update: Update gerrit patches list
 function gt-gerrit-patches-update()
 {
-	gerrit patches > $(gt-meta-init)/gerrit_patches.txt
+    gt-meta-init
+	gerrit patches > $(gt-meta-get-path)/gerrit_patches.txt
 }
 alias gepu="gt-gerrit-patches-updates"
 
 # gtool gt-gerrit-patches: Show gerrit patches for current repo
 function gt-gerrit-patches()
 {
-    cat $(gt-meta-init)/gerrit_patches.txt
+    gt-meta-init
+    cat $(gt-meta-get-path)/gerrit_patches.txt
 }
 alias gep="gt-gerrit-patches"
 

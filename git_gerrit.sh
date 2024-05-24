@@ -28,3 +28,15 @@ function gt-push2gerrit()
 
     git push ${target_remote} HEAD:refs/for/${target_branch}
 }
+
+function gt-gerrit-open-patch()
+{
+    if [ -z "$1" ]
+    then
+        target_patch=$(gerrit patches | tail -n +2 | default-fuzzy-finder | awk '{print $1}')
+    else
+        target_patch=$1
+    fi
+
+    gerrit open ${target_patch}
+}

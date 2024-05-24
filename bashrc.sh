@@ -20,6 +20,7 @@ source ${GIT_TOOLS_DIR}/analysis/git_analysis_tools.sh
 source ${GIT_TOOLS_DIR}/git_gerrit.sh
 source ${GIT_TOOLS_DIR}/git_ignore.sh
 source ${GIT_TOOLS_DIR}/git_stats.sh
+source ${GIT_TOOLS_DIR}/git_meta.sh
 
 if [ -z "$GITTOOLS_PYTHON_PATH" ]
 then

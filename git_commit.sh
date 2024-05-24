@@ -58,12 +58,20 @@ function gt-squash() {
 function gt-zip-repo()
 {
     zip_name=$1
+
+    if [ -z "$zip_name" ]
+    then
+        zip_name=$(basename $(git rev-parse --show-toplevel))
+    fi
+
     if [ -z "$2" ]
     then
         target_ref=HEAD
     else
         target_ref=$2
     fi
+
+    echo "Zipping repository to $zip_name.zip"
     git archive -o ${zip_name}.zip ${target_ref}
 }
 

@@ -35,3 +35,25 @@ function gt-merge-local-branch()
     echo "Let's merge branch: "$target_branch
     git merge ${target_branch}
 }
+
+# gtool gt-continue: Continue a rebase, merge or cherry-pick operation
+function gt-continue()
+{
+    # Check for ongoing merge, rebase, or cherry-pick
+    if [ -d ".git/rebase-apply" ]; then
+        echo "Continuing rebase..."
+        git rebase --continue
+    elif [ -d ".git/rebase-merge" ]; then
+        echo "Continuing rebase merge..."
+        git rebase --continue
+    elif [ -f ".git/MERGE_HEAD" ]; then
+        echo "Continuing merge..."
+        git merge --continue
+    elif [ -f ".git/CHERRY_PICK_HEAD" ]; then
+        echo "Continuing cherry-pick..."
+        git cherry-pick --continue
+    else
+        echo "No rebase, merge, or cherry-pick in progress."
+    fi
+}
+alias gcontinue="gt-continue"

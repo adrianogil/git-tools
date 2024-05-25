@@ -3,9 +3,14 @@
 alias gb='git rebase'
 alias gbc='git rebase --continue'
 
-# gtool gb-fz: rebase from a remote branch
-alias gb-fz='git rebase $(gbk)'
-
+# gtool gt-rebase: rebase from a remote branch
+function gt-rebase()
+{
+    target_branch=$(gbk)
+    echo "Let's rebase branch: "$target_branch
+    git rebase ${target_branch}
+}
+alias gb-fz="gt-rebase"
 
 function gt-rebase-local-branch()
 {

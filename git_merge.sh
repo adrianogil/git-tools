@@ -39,17 +39,18 @@ function gt-merge-local-branch()
 # gtool gt-continue: Continue a rebase, merge or cherry-pick operation
 function gt-continue()
 {
+    repo_root_path=$(gt-get-root-path)
     # Check for ongoing merge, rebase, or cherry-pick
-    if [ -d ".git/rebase-apply" ]; then
+    if [ -d "${repo_root_path}/.git/rebase-apply" ]; then
         echo "Continuing rebase..."
         git rebase --continue
-    elif [ -d ".git/rebase-merge" ]; then
+    elif [ -d "${repo_root_path}/.git/rebase-merge" ]; then
         echo "Continuing rebase merge..."
         git rebase --continue
-    elif [ -f ".git/MERGE_HEAD" ]; then
+    elif [ -f "${repo_root_path}/.git/MERGE_HEAD" ]; then
         echo "Continuing merge..."
         git merge --continue
-    elif [ -f ".git/CHERRY_PICK_HEAD" ]; then
+    elif [ -f "${repo_root_path}/.git/CHERRY_PICK_HEAD" ]; then
         echo "Continuing cherry-pick..."
         git cherry-pick --continue
     else

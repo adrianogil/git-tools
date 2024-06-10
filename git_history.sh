@@ -67,10 +67,46 @@ function gt-hist-find-string()
     git log -S ${target_string} --source --all
 }
 
-function ghs()
+# gtool gt-hist-range: Show history of commits between two refs
+function gt-hist-range()
 {
-    gh $1 $2 | less
+    ref1=$1
+    ref2=$2
+
+    if [ -z "$ref1" ]
+    then
+        echo "> First ref (HEAD): "
+        read ref1
+    fi
+    if [ -z "$ref1" ]
+    then
+        ref1=$(gha | default-fuzzy-finder | cut -c3- | awk '{print $1}')
+    fi
+    if [ -z "$ref1" ]
+    then
+        ref1="HEAD"
+    fi
+    echo "First ref: "$ref1
+
+    if [ -z "$ref2" ]
+    then
+        echo "> Second ref (HEAD): "
+        read ref2
+    fi
+    if [ -z "$ref2" ]
+    then
+        ref2=$(gha | default-fuzzy-finder | cut -c3- | awk '{print $1}')
+    fi
+    if [ -z "$ref2" ]
+    then
+        ref2="HEAD"
+    fi
+    echo "Second ref: "$ref2
+    echo "## Commit History:"
+
+    git log --pretty=format:'%C(red)%h%Creset %C(cyan)%ad%Creset | %s%C(magenta)%d%Creset [%C(blue)%an%Creset]' --date=short --reverse ${ref1}...${ref2}
 }
+alias ghs="gt-hist-range"
 
 # gtool gt-history-count: count commits in current ref
 function gt-history-count()

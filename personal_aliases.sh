@@ -21,6 +21,7 @@ alias gsquash='python3 $GIT_TOOLS_DIR/python/git_squash.py'
 alias gil='git '
 
 alias gl1='git log -1'
+alias gl2='git log -2'
 alias gw1='git whatchanged -1 '
 
 alias gremotes="git remote -v"

@@ -8,6 +8,7 @@ function gt-config-show()
     cat $(gt-get-root-path)/.git/config
 }
 
+# gtool gt-ckout: checkout a branch
 function gt-cktout()
 {
     target_branch=$(git branch -r | cut -c3- | default-fuzzy-finder)
@@ -198,7 +199,7 @@ function gcountbranches()
     python3 $GIT_TOOLS_DIR/python/gcount_branch.py $1 $2
 }
 
-
+# gtool random-commit-msg: generate random commit messages
 function random-commit-msg() {
     subjects=("Fix" "Add" "Update" "Remove" "Refactor")
     predicates=("bug in authentication" "new feature for sorting" "readme file" "unused code" "database schema")

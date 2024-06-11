@@ -62,7 +62,7 @@ function gt-stats-summarize()
     # Summary of files (count each extension)
     echo "### Files Summary ###"
     echo
-    git ls-files | sed 's/.*\.//' | sort | uniq -c | sort -nr
+    git ls-files | awk -F. '{ if ($0 ~ /\.test\.js$/) print "test.js"; else print $NF }' | sort | uniq -c | sort -nr
     echo
 
     # Summary of contributors

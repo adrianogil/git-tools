@@ -222,6 +222,6 @@ alias gflog-pick="gt-reflog-pick"
 # gtool gt-jira-commit-id: Get JIRA commit ID
 function gt-jira-commit-id()
 {
-    git log -1 --pretty=%B $1 | grep -oE "[A-Z]+-[0-9]+"
+    git log -1 --pretty=%B $1 | grep -oE "[A-Z]+-[0-9]+" | head -1
 }
 alias gjira="gt-jira-commit-id"

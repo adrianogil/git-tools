@@ -26,6 +26,8 @@ alias gw1='git whatchanged -1 '
 
 alias gremotes="git remote -v"
 
+alias lg="lazygit"
+
 # Specific command related to my own scripts that exchange commits and CL between P4 and git repos
 alias perforce-push='git push local master:perforce-master'
 

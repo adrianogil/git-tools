@@ -37,7 +37,15 @@ function gt-push2gerrit()
         target_remote=origin
     fi
 
-    git push ${target_remote} HEAD:refs/for/${target_branch}
+    # Load reviewers from a file (one email per line)
+    reviewers_file="$(gt-meta-get-path)/reviewers.txt"
+    if [ -f "$reviewers_file" ]; then
+        reviewers=$(paste -sd, "$reviewers_file")  # Join emails into a comma-separated string
+        git push "${target_remote}" HEAD:refs/for/"${target_branch}"%r="${reviewers}"
+    else
+        echo "Reviewers file not found: ${reviewers_file}"
+        git push "${target_remote}" HEAD:refs/for/"${target_branch}"
+    fi
 }
 
 # gtool gt-gerrit-open-patch: Open gerrit patch in browser
@@ -53,3 +61,44 @@ function gt-gerrit-open-patch()
     gerrit open ${target_patch}
 }
 alias geop="gt-gerrit-open-patch"
+
+# gtool gt-gerrit-reviewers-add: Add a reviewer to the list
+function gt-gerrit-reviewers-add() {
+    reviewers_file="$(gt-meta-get-path)/reviewers.txt"
+
+    # Check if an email was provided as an argument
+    if [ -z "$1" ]; then
+        echo -n "Enter the reviewer's email address: "
+        read reviewer_email
+    else
+        reviewer_email=$1
+    fi
+
+    # Check if the email is empty after prompting
+    if [ -z "$reviewer_email" ]; then
+        echo "No email address provided. Exiting."
+        return 1
+    fi
+
+    # Check if the email already exists in the file
+    if grep -qx "$reviewer_email" "$reviewers_file"; then
+        echo "Reviewer $reviewer_email is already in the list."
+    else
+        echo "$reviewer_email" >> "$reviewers_file"
+        echo "Reviewer $reviewer_email added to the list."
+    fi
+}
+
+# gtool gt-gerrit-reviewers: Show the list of reviewers
+function gt-gerrit-reviewers() {
+    reviewers_file="$(gt-meta-get-path)/reviewers.txt"
+
+    echo "Reading reviewers from $reviewers_file:"
+
+    if [ -f "$reviewers_file" ]; then
+        cat "$reviewers_file"
+    else
+        echo "No reviewers found."
+    fi
+}
+

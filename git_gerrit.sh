@@ -3,7 +3,7 @@
 function gt-gerrit-patches-update()
 {
     gt-meta-init
-	gerrit patches > $(gt-meta-get-path)/gerrit_patches.txt
+	gerrit patches --oneline > $(gt-meta-get-path)/gerrit_patches.txt
 }
 alias gepu="gt-gerrit-patches-update"
 
@@ -18,7 +18,7 @@ alias gep="gt-gerrit-patches"
 # gtool gt-gerrit-checkout: Select a gerrit patch and checkout it
 function gt-gerrit-checkout()
 {
-	target_patch=$(gt-gerrit-patches | tail -n +2 | default-fuzzy-finder | awk '{print $1}')
+	target_patch=$(gt-gerrit-patches | default-fuzzy-finder | awk '{print $1}')
 	echo "Checkout patch "${target_patch}
 	gerrit checkout ${target_patch}
 }
@@ -30,8 +30,8 @@ function gt-push2gerrit()
     if [ -z "$1" ]
     then
         complete_branch_name=$(gt-branches-fz)
-        target_branch=$(python3 -m gittools.cli.removeremotename ${complete_branch_name})
-        target_remote=$(python3 -m gittools.cli.removeremotename ${complete_branch_name} --get-only-remote)
+        target_branch=$(echo "$complete_branch_name" | cut -d'/' -f2-)
+        target_remote=$(echo "$complete_branch_name" | awk -F'/' '{print $1}')
     else
         target_branch=$1
         target_remote=origin
@@ -45,7 +45,7 @@ function gt-gerrit-open-patch()
 {
     if [ -z "$1" ]
     then
-        target_patch=$(gerrit patches | tail -n +2 | default-fuzzy-finder | awk '{print $1}')
+        target_patch=$(cat $(gt-meta-get-path)/gerrit_patches.txt | default-fuzzy-finder | awk '{print $1}')
     else
         target_patch=$1
     fi

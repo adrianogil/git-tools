@@ -30,3 +30,31 @@ function gt-clone-shallow()
     cd $git_repo
 }
 alias golp="gt-clone-shallow"
+
+# gtool gt-clone-sparse: git clone with sparse checkout and enter repo directory
+function gt-clone-sparse()
+{
+    local repository_url=$1
+    local sparse_path=$2
+    local target_branch=${3:-main}
+
+    # Extract the repository name from the URL to use as the target directory
+    local target_directory
+    target_directory=$(basename -s .git "$repository_url")
+
+    # Step 1: Initialize the target directory
+    git init "$target_directory"
+    cd "$target_directory" || exit
+
+    # Step 2: Set the remote repository
+    git remote add origin "$repository_url"
+
+    # Step 3: Enable sparse checkout
+    git config core.sparseCheckout true
+
+    # Step 4: Set the directory to sparse-checkout
+    echo "$sparse_path" >> .git/info/sparse-checkout
+
+    # Step 5: Pull the specified branch with sparse checkout
+    git pull origin "$target_branch"
+}

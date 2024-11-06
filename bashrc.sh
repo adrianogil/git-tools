@@ -21,6 +21,7 @@ source ${GIT_TOOLS_DIR}/git_gerrit.sh
 source ${GIT_TOOLS_DIR}/git_ignore.sh
 source ${GIT_TOOLS_DIR}/git_stats.sh
 source ${GIT_TOOLS_DIR}/git_meta.sh
+source ${GIT_TOOLS_DIR}/git_clone.sh
 
 if [ -z "$GITTOOLS_PYTHON_PATH" ]
 then

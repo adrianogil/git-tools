@@ -41,7 +41,7 @@ function gt-push2gerrit()
     reviewers_file="$(gt-meta-get-path)/reviewers.txt"
     if [ -f "$reviewers_file" ]; then
         reviewers=$(paste -sd, "$reviewers_file")  # Join emails into a comma-separated string
-        git push "${target_remote}" HEAD:refs/for/"${target_branch}"%r="${reviewers}"
+        git push "${target_remote}" HEAD:refs/for/"${target_branch}"%"${reviewers}"
     else
         echo "Reviewers file not found: ${reviewers_file}"
         git push "${target_remote}" HEAD:refs/for/"${target_branch}"
@@ -84,7 +84,7 @@ function gt-gerrit-reviewers-add() {
     if grep -qx "$reviewer_email" "$reviewers_file"; then
         echo "Reviewer $reviewer_email is already in the list."
     else
-        echo "$reviewer_email" >> "$reviewers_file"
+        echo "r=$reviewer_email" >> "$reviewers_file"
         echo "Reviewer $reviewer_email added to the list."
     fi
 }
@@ -99,6 +99,17 @@ function gt-gerrit-reviewers() {
         cat "$reviewers_file"
     else
         echo "No reviewers found."
+    fi
+}
+
+# gtool gt-gerrit-reviewers-file-open: Open the reviewers file in the default editor
+function gt-gerrit-reviewers-file-open() {
+    reviewers_file="$(gt-meta-get-path)/reviewers.txt"
+
+    if [ -f "$reviewers_file" ]; then
+        $EDITOR "$reviewers_file"
+    else
+        echo "Reviewers file not found: $reviewers_file"
     fi
 }
 

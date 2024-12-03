@@ -6,7 +6,6 @@ function gt-branches-fz()
     else
         git branch -r | grep -v "/HEAD " | cut -c3- | default-fuzzy-finder
     fi
-
 }
 alias gbk='gt-branches-fz'
 

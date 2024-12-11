@@ -231,7 +231,7 @@ function gopen-commit-files-in-sublime()
 {
     if [ -z "$1" ]
     then
-        target_ref=HEAD
+        target_ref=$(gget)
     else
         target_ref=$1
     fi
@@ -248,6 +248,31 @@ function gopen-commit-files-in-sublime()
     cd ${current_dir}
 }
 alias gts="gopen-commit-files-in-sublime"
+
+
+# gtool gopen-commit-files-in-code: open commit files in code (alias gtc)
+function gopen-commit-files-in-code()
+{
+    if [ -z "$1" ]
+    then
+        target_ref=$(gget)
+    else
+        target_ref=$1
+    fi
+
+    current_dir=$PWD
+
+    gt-root
+
+    for file_name in `git diff-tree --no-commit-id --name-only -r ${target_ref}`;
+    do
+        code $file_name
+    done
+
+    cd ${current_dir}
+}
+alias gtc="gopen-commit-files-in-code"
+
 
 # gtool gt-config-user: configure user name and email
 function gt-config-user()

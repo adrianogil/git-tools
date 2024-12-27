@@ -97,3 +97,57 @@ function gt-stats-summarize()
     echo
     echo
 }
+
+# gtool gt-stats-commits-per-month: Commits per month
+function gt-stats-commits-per-month() {
+  if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    echo "Error: This is not a Git repository."
+    return 1
+  fi
+
+  # Detect the `date` command type (GNU or BSD)
+  if date --version >/dev/null 2>&1; then
+    DATE_CMD="gnu" # GNU date
+  else
+    DATE_CMD="bsd" # BSD date (macOS)
+  fi
+
+  # Get the first commit's date
+  first_commit_date=$(git log --reverse --format='%ad' --date=format:'%Y-%m' | head -n 1)
+  if [ -z "$first_commit_date" ]; then
+    echo "Error: No commits found in this repository."
+    return 1
+  fi
+
+  # Loop through months from the first commit to the current month
+  current_date=$(date '+%Y-%m')
+  start_date="$first_commit_date"
+
+  while [ "$start_date" != "$current_date" ]; do
+    if [ "$DATE_CMD" = "gnu" ]; then
+      # GNU date
+      next_month=$(date -d "$start_date-01 +1 month" '+%Y-%m')
+    else
+      # BSD date (macOS)
+      next_month=$(date -v+1m -jf "%Y-%m" "$start_date" "+%Y-%m")
+    fi
+
+    # Count commits and unique authors for the current month
+    commit_count=$(git log --since="${start_date}-01" --until="${next_month}-01" --format='%h' | wc -l)
+    unique_authors=$(git log --since="${start_date}-01" --until="${next_month}-01" --format='%ae' | sort | uniq | wc -l)
+    echo "$start_date: $commit_count commits, $unique_authors unique authors"
+
+    # Increment the month
+    start_date="$next_month"
+  done
+
+  # Print the commits and authors for the current month
+  if [ "$DATE_CMD" = "gnu" ]; then
+    next_month=$(date -d "$current_date-01 +1 month" '+%Y-%m')
+  else
+    next_month=$(date -v+1m -jf "%Y-%m" "$current_date" "+%Y-%m")
+  fi
+  commit_count=$(git log --since="${current_date}-01" --until="${next_month}-01" --format='%h' | wc -l)
+  unique_authors=$(git log --since="${current_date}-01" --until="${next_month}-01" --format='%ae' | sort | uniq | wc -l)
+  echo "$current_date: $commit_count commits, $unique_authors unique authors"
+}

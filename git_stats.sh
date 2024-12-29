@@ -62,7 +62,11 @@ function gt-stats-summarize()
     # Summary of files (count each extension)
     echo "### Files Summary ###"
     echo
-    git ls-files | awk -F. '{ if ($0 ~ /\.test\.js$/) print "test.js"; else print $NF }' | sort | uniq -c | sort -nr
+    git ls-files | awk -F. '{ if ($0 ~ /\.test\.js$/) print "test.js"; else print $NF }' | sort | uniq -c | while read count ext; do \
+        loc=$(git ls-files | grep "\.${ext}$" | xargs wc -l 2>/dev/null | awk '{sum+=$1} END {print sum+0}'); \
+        echo "$count $ext (LOC $loc)"; \
+    done | sort -nr
+
     echo
 
     # Summary of contributors

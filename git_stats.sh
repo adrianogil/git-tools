@@ -109,6 +109,8 @@ function gt-stats-commits-per-month() {
     return 1
   fi
 
+  echo "### Commits Per Month ###"
+
   # Detect the `date` command type (GNU or BSD)
   if date --version >/dev/null 2>&1; then
     DATE_CMD="gnu" # GNU date
@@ -154,4 +156,68 @@ function gt-stats-commits-per-month() {
   commit_count=$(git log --since="${current_date}-01" --until="${next_month}-01" --format='%h' | wc -l)
   unique_authors=$(git log --since="${current_date}-01" --until="${next_month}-01" --format='%ae' | sort | uniq | wc -l)
   echo "$current_date: $commit_count commits, $unique_authors unique authors"
+}
+
+# gtool gt-stats-author-commits-per-month: Author commits per month
+function gt-stats-author-commits-per-month() {
+    if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+        echo "Error: This is not a Git repository."
+        return 1
+    fi
+
+    # Select author
+    author_data=$(git log --format='%aN: <%aE>' | sort -u | fzf --prompt="Select author: ")
+    if [ -z "$author_data" ]; then
+        echo "Error: No author selected."
+        return 1
+    fi
+
+    author_name=$(echo ${author_data} | awk -F'[<>]' '{print $1}')
+    author=$(echo ${author_data} | awk -F'[<>]' '{print $2}')
+
+    echo "### Author Commits Per Month - ${author_name} ###"
+
+    # Detect the `date` command type (GNU or BSD)
+    if date --version >/dev/null 2>&1; then
+        DATE_CMD="gnu" # GNU date
+    else
+        DATE_CMD="bsd" # BSD date (macOS)
+    fi
+
+    # Get the first commit's date by the selected author
+    first_commit_date=$(git log --author="$author" --reverse --format='%ad' --date=format:'%Y-%m' | head -n 1)
+    if [ -z "$first_commit_date" ]; then
+        echo "Error: No commits found for author ${author_name}."
+        return 1
+    fi
+
+    # Loop through months from the first commit to the current month
+    current_date=$(date '+%Y-%m')
+    start_date="$first_commit_date"
+
+    while [ "$start_date" != "$current_date" ]; do
+        if [ "$DATE_CMD" = "gnu" ]; then
+            # GNU date
+            next_month=$(date -d "$start_date-01 +1 month" '+%Y-%m')
+        else
+            # BSD date (macOS)
+            next_month=$(date -v+1m -jf "%Y-%m" "$start_date" "+%Y-%m")
+        fi
+
+        # Count commits for the current month by the selected author
+        commit_count=$(git log --author="$author" --since="${start_date}-01" --until="${next_month}-01" --format='%h' | wc -l)
+        echo "$start_date: $commit_count commits"
+
+        # Increment the month
+        start_date="$next_month"
+    done
+
+    # Print commits for the current month by the selected author
+    if [ "$DATE_CMD" = "gnu" ]; then
+        next_month=$(date -d "$current_date-01 +1 month" '+%Y-%m')
+    else
+        next_month=$(date -v+1m -jf "%Y-%m" "$current_date" "+%Y-%m")
+    fi
+    commit_count=$(git log --author="$author" --since="${current_date}-01" --until="${next_month}-01" --format='%h' | wc -l)
+    echo "$current_date: $commit_count commits"
 }

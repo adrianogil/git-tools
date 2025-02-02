@@ -11,13 +11,14 @@ function gt-save-local-properties()
     git cherry-pick local/props
 }
 
-# gtool gt-bkp: Generate a backup tag
+# gtool gt-bkp: Generate a backup tag with optional commit reference
 function gt-bkp()
 {
     tag_sufix=$1
+    commit_ref=${2:-HEAD}  # Use HEAD if no commit is provided
     bkp_tag=bkp-$(date +%F)${tag_sufix}
-    echo "Generating git tag BKP: "$bkp_tag
-    git tag $bkp_tag
+    echo "Generating git tag BKP: $bkp_tag at commit $commit_ref"
+    git tag $bkp_tag $commit_ref
 }
 
 # gtool gt-list-bkp: List backup tags

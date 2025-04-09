@@ -205,7 +205,8 @@ function gw-file()
 # gtool gt-reflog: Show reflog
 function gt-reflog()
 {
-    git reflog --format='%C(auto)%h %<|(17)%gd %C(blue)%ci%C(reset) %s' $*
+    git reflog --date=format:'%Y-%m-%d %H:%M:%S' --format='%C(auto)%h %<|(17)%gd %C(blue)%cd%C(reset) %s' "$@"
+
 }
 alias gflog="gt-reflog"
 

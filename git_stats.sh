@@ -221,3 +221,26 @@ function gt-stats-author-commits-per-month() {
     commit_count=$(git log --author="$author" --since="${current_date}-01" --until="${next_month}-01" --format='%h' | wc -l)
     echo "$current_date: $commit_count commits"
 }
+
+# gtool gt-stats-commits-per-hour: commits by hour-of-day (00–23)
+function gt-stats-commits-per-hour() {
+    # ensure we’re in a Git repo
+    if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+        echo "Error: not a Git repository."
+        return 1
+    fi
+
+    echo "### Commits Per Hour of Day ###"
+    git log --date=format:'%H' --pretty=format:'%ad' \
+    | awk '{
+        count[$1]++
+      }
+      END {
+        for (i = 0; i < 24; i++) {
+          h   = sprintf("%02d", i)
+          c   = (h in count ? count[h] : 0)
+          lbl = (c == 1 ? "commit" : "commits")
+          printf("%s:00-%s:59: %d %s\n", h, h, c, lbl)
+        }
+      }'
+}

@@ -223,3 +223,40 @@ function gt-jira-commit-id()
     git log -1 --pretty=%B $1 | grep -oE "[A-Z]+-[0-9]+" | head -1
 }
 alias gjira="gt-jira-commit-id"
+
+# gtool gt-log-commits-per-hour: pick an hour and list its commits
+function gt-log-commits-per-hour() {
+    # check for Git repo
+    if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+        echo "Error: not a Git repository."
+        return 1
+    fi
+
+    # check for fzf
+    if ! command -v fzf >/dev/null 2>&1; then
+        echo "Error: fzf is required."
+        return 1
+    fi
+
+    echo "### Choose an hour interval ###"
+
+    # let user pick one
+    local pick
+    pick=$(gt-stats-commits-per-hour | default-fuzzy-finder)
+    if [ -z "$pick" ]; then
+      echo "No hour selected."
+      return 0
+    fi
+
+    # extract the two-digit hour
+    local hour=${pick:0:2}
+    echo
+    echo "Commits in ${hour}:00–${hour}:59:"
+    echo "--------------------------------"
+
+    # list commits whose time is in that hour
+    git log \
+      --pretty=format:'%C(yellow)%h%Creset %ad %s' \
+      --date=format:'%Y-%m-%d %H:%M:%S' \
+    | awk -v H="$hour" '$3 ~ "^"H":"'
+}

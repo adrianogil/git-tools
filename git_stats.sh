@@ -244,3 +244,8 @@ function gt-stats-commits-per-hour() {
         }
       }'
 }
+
+# gtool gt-stats-mean-commits-per-weekday: average commits per weekday (per week)
+function gt-stats-mean-commits-per-weekday() {
+    python3 -m gittools.stats.commits_per_weekday "$@"
+}

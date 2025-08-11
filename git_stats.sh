@@ -249,3 +249,7 @@ function gt-stats-commits-per-hour() {
 function gt-stats-mean-commits-per-weekday() {
     python3 -m gittools.stats.commits_per_weekday "$@"
 }
+
+# gtool gt-stats-conventionalcommit-usage: count feat/fix/merge usage (Conventional Commits style)
+alias gt-stats-conventionalcommit-usage="python3 -m gittools.stats.conventionalcommits_per_type"
+

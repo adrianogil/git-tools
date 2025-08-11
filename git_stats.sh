@@ -253,3 +253,6 @@ function gt-stats-mean-commits-per-weekday() {
 # gtool gt-stats-conventionalcommit-usage: count feat/fix/merge usage (Conventional Commits style)
 alias gt-stats-conventionalcommit-usage="python3 -m gittools.stats.conventionalcommits_per_type"
 
+
+# gtool gt-stats-plot-commits-per-author: plot commits per author
+alias gt-stats-plot-commits-per-author="python3 -m gittools.stats.accumulative_commits_per_author"

@@ -113,3 +113,93 @@ function gt-gerrit-reviewers-file-open() {
     fi
 }
 
+function gt-gerrit-open-cr() {
+  local commit="${1:-HEAD}"
+  local remote="${GERRIT_REMOTE:-origin}"
+
+  # 1) Grab Change-Id from commit message body (first match wins).
+  local change_id
+  change_id="$(git log -1 --format=%B -- "$commit" 2>/dev/null | awk '/^[Cc]hange-[Ii][Dd]:/{print $2; exit}')"
+
+  if [[ -z "$change_id" ]]; then
+    echo "Error: no Change-Id found in commit '$commit'." >&2
+    echo "Hint: Gerrit Change-Id lines look like:  Change-Id: Ixxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" >&2
+    return 1
+  fi
+
+  # 2) Determine Gerrit web base.
+  local base=""
+  if [[ -n "$GERRIT_WEB" ]]; then
+    base="${GERRIT_WEB%/}"
+  else
+    # Try deriving from git remote URL.
+    local rurl
+    rurl="$(git remote get-url --push "$remote" 2>/dev/null || git remote get-url "$remote" 2>/dev/null)"
+    if [[ -z "$rurl" ]]; then
+      echo "Error: could not get remote URL for '$remote'." >&2
+      echo "Set GERRIT_WEB, e.g.: export GERRIT_WEB=https://review.company.com" >&2
+      return 1
+    fi
+
+    # Common cases:
+    #  - https://review.company.com/a/project.git      -> https://review.company.com
+    #  - https://review.company.com/gerrit/project.git -> https://review.company.com/gerrit
+    #  - ssh://user@review.company.com:29418/project.git
+    #  - user@review.company.com:project.git
+    if [[ "$rurl" =~ ^https?:// ]]; then
+      # Split scheme://host[:port]/path...
+      local scheme host rest path firstseg
+      scheme="${rurl%%://*}://"
+      rest="${rurl#*://}"
+      host="${rest%%/*}"     # host[:port]
+      path="${rest#*/}"      # may be 'a/project.git' or 'gerrit/project.git' etc.
+
+      base="${scheme}${host}"
+
+      # Heuristic for optional prefix:
+      # If path starts with 'a/', strip it. If it looks like '<prefix>/<project>.git', keep the prefix.
+      if [[ "$path" == a/* ]]; then
+        : # authenticated HTTP path, UI uses just host root
+      else
+        firstseg="${path%%/*}"
+        # If first segment is not the project itself (ends with .git), assume it's a Gerrit prefix like 'gerrit'
+        if [[ ! "$firstseg" =~ \.git$ && "$firstseg" != "$path" ]]; then
+          base="${base}/${firstseg}"
+        fi
+      fi
+    else
+      # SSH forms
+      if [[ "$rurl" =~ ^ssh:// ]]; then
+        local rest hostport
+        rest="${rurl#ssh://}"
+        hostport="${rest%%/*}"                  # user@host:port
+        hostport="${hostport##*@}"              # host:port
+        hostport="${hostport%:*}"               # host
+        base="https://${hostport}"
+      else
+        # scp-like: user@host:project.git OR host:project.git
+        local hostpart
+        hostpart="${rurl%%:*}"
+        hostpart="${hostpart##*@}"
+        base="https://${hostpart}"
+      fi
+    fi
+  fi
+
+  # 3) Build a PolyGerrit search URL for the Change-Id and open it.
+  # This lands on the exact change (or search results, if multiple).
+  local url="${base%/}/q/${change_id}"
+
+  # Cross-platform opener
+  if command -v xdg-open >/dev/null 2>&1; then
+    xdg-open "$url" >/dev/null 2>&1 &
+  elif command -v open >/dev/null 2>&1; then
+    open "$url"
+  elif command -v cygstart >/dev/null 2>&1; then
+    cygstart "$url"
+  elif grep -qi microsoft /proc/version 2>/dev/null; then
+    powershell.exe -NoProfile -Command "Start-Process '$url'" >/dev/null 2>&1
+  else
+    echo "$url"
+  fi
+}

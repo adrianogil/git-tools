@@ -35,6 +35,15 @@ function gt-hist-pick-commit()
 }
 alias gget="gt-hist-pick-commit"
 
+# gtool gt-flog-pick-commit: search for a commit in reflog and copy the hash to clipboard
+function gt-flog-pick-commit()
+{
+    target_commit=$(gflog | default-fuzzy-finder | awk '{print $1}')
+    echo ${target_commit} | copy-text-to-clipboard
+    echo ${target_commit}
+}
+alias gget-flog="gt-flog-pick-commit"
+
 function gt-hist-reflog-pick-commit()
 {
     target_commit=$(gflog | default-fuzzy-finder | awk '{print $1}')

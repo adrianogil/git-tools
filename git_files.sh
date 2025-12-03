@@ -155,3 +155,26 @@ function gt-files-to-prompt() {
         done <<< "$file_list"
     } | copy-text-to-clipboard
 }
+
+# gtool gt-files-to-prompt-pick-commit: copy only the files changed in a picked commit to the clipboard
+function gt-files-to-prompt-pick-commit() {
+    local commit
+    commit=$(gt-hist-pick-commit) || {
+        printf 'gt-files-to-prompt-pick-commit: failed to pick commit\n' >&2
+        return 1
+    }
+
+    gt-files-to-prompt "$commit"
+}
+
+
+# gtool gt-files-to-prompt-pick-commit-flog: copy only the files changed in a picked commit (from git reflog) to the clipboard
+function gt-files-to-prompt-pick-commit-flog() {
+    local commit
+    commit=$(gt-flog-pick-commit) || {
+        printf 'gt-files-to-prompt-pick-commit-flog: failed to pick commit\n' >&2
+        return 1
+    }
+
+    gt-files-to-prompt "$commit"
+}

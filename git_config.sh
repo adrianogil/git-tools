@@ -107,14 +107,32 @@ function ghard-reset()
     git reset --hard $target_commit
 }
 
-function ghard-reset-fz()
-{
-    target_commit=$(git branch -a | cut -c3- | default-fuzzy-finder)
+function ghard-reset-fz() {
+    # Build a nice list with:
+    # <ref> | <short-hash> | <author> | <date> | <subject>
+    local line ref
 
-    echo 'Git hard reset to ref '${target_commit}
-    git reset --hard ${target_commit}
+    line=$(
+        git for-each-ref \
+            --sort=-committerdate \
+            --format='%(refname:short) | %(objectname:short) | %(authorname) | %(committerdate:short) | %(subject)' \
+            refs/heads refs/remotes \
+        | default-fuzzy-finder
+    ) || return 1  # user aborted
+
+    # Take only the first field (the ref name before the first '|')
+    ref=$(awk -F'|' '{gsub(/^ *| *$/, "", $1); print $1}' <<< "$line")
+
+    if [ -z "$ref" ]; then
+        echo "No ref selected."
+        return 1
+    fi
+
+    echo "Git hard reset to ref $ref"
+    git reset --hard "$ref"
 }
-alias ghrk="ghard-reset-fz"
+alias ghrfz="ghard-reset-fz"
+
 
 function ghard-reset-tags()
 {

@@ -54,6 +54,25 @@ function gt-squash() {
     git reset --soft HEAD~"$N" && git commit --amend -m "$MSG"
 }
 
+# gtool gt-squash-until: Squash until a specific commit
+function gt_squash_until()
+{
+    target_commit=$1
+    if [ -z "$target_commit" ]
+    then
+        read -p "Enter the target commit (hash or ref): " target_commit
+    fi
+
+    if [ -z "$target_commit" ]
+    then
+        echo "Invalid target commit: $target_commit"
+        return 1
+    fi
+
+    git reset --soft $target_commit && git commit --amend --no-verify
+}
+alias gt-squash-until=gt_squash_until
+
 # gtool gt-zip-repo: Zips a target commit
 function gt-zip-repo()
 {

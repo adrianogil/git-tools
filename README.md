@@ -51,6 +51,10 @@ And you should also define an alias default-fuzzy-finder to the fuzzy-finder you
 alias default-fuzzy-finder='fzf'
 ```
 
+## Navigation helpers
+
+- `gt-move-dir-from-change` (alias: `cdg`): choose a directory changed in a commit (defaults to `HEAD`) and `cd` into it.
+
 ## Contributing
 
 Feel free to submit PRs. I will do my best to review and merge them if I consider them essential.

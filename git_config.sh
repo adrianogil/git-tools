@@ -132,6 +132,7 @@ function ghard-reset-fz() {
     git reset --hard "$ref"
 }
 alias ghrfz="ghard-reset-fz"
+alias gz="ghard-reset-fz"
 
 
 function ghard-reset-tags()

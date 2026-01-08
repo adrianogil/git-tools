@@ -178,3 +178,57 @@ function gt-files-to-prompt-pick-commit-flog() {
 
     gt-files-to-prompt "$commit"
 }
+
+# gtool gt-files-to-prompt-to-code-review: copy changed files and commit details into a code review prompt
+function gt-files-to-prompt-to-code-review() {
+    local commit="${1:-HEAD}"
+    echo "Copying code review prompt for commit ${commit} to clipboard"
+
+    # ensure we're in a git repo
+    local root
+    if ! root=$(git rev-parse --show-toplevel 2>/dev/null); then
+        printf 'gt-files-to-prompt-to-code-review: not a git repo\n' >&2
+        return 1
+    fi
+    cd "$root"
+
+    # list only the files changed in that commit
+    local file_list
+    file_list=$(git diff-tree --no-commit-id --name-only -r "$commit") || {
+        printf 'gt-files-to-prompt-to-code-review: failed to list files for %s\n' "$commit" >&2
+        return 1
+    }
+
+    if [[ -z $file_list ]]; then
+        printf 'gt-files-to-prompt-to-code-review: no files changed in commit %s\n' "$commit" >&2
+        return 1
+    fi
+
+    {
+        printf 'Help me to code review this commit. Give me comments per file.\n\n'
+        printf 'Here is the commit:\n'
+        git show "$commit" | sed '/^Author:/d'
+        printf '\n\nAnd below is full content version of each file:\n'
+
+        while IFS= read -r file; do
+            # skip unreadable
+            if [[ ! -r $file ]]; then
+                printf 'gt-files-to-prompt-to-code-review: %s: missing or unreadable\n' "$file" >&2
+                continue
+            fi
+
+            # detect binary vs text
+            local mime
+            mime=$(file --mime-type -b -- "$file")
+            if [[ $mime != text/* ]]; then
+                printf 'gt-files-to-prompt-to-code-review: %s is binary (%s), skipping\n' "$file" "$mime" >&2
+                continue
+            fi
+
+            # fence with filename
+            printf '```%s\n' "$file"
+            cat -- "$file"
+            printf '\n```\n'
+        done <<< "$file_list"
+    } | copy-text-to-clipboard
+}

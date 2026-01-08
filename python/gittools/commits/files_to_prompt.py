@@ -109,11 +109,37 @@ def copy_to_clipboard(text: str) -> None:
             check=False,
         )
     except FileNotFoundError:
-        print(
-            "gt-files-to-prompt-to-code-review: copy-text-to-clipboard not found",
-            file=sys.stderr,
-        )
-        raise SystemExit(1)
+        process = None
+
+    if process is None:
+        try:
+            import pyperclip
+        except ImportError:
+            pyperclip = None
+
+        if pyperclip is not None:
+            try:
+                pyperclip.copy(text)
+                return
+            except pyperclip.PyperclipException:
+                pass
+
+        try:
+            import tkinter
+
+            root = tkinter.Tk()
+            root.withdraw()
+            root.clipboard_clear()
+            root.clipboard_append(text)
+            root.update()
+            root.destroy()
+            return
+        except Exception:
+            print(
+                "gt-files-to-prompt-to-code-review: no clipboard utility available",
+                file=sys.stderr,
+            )
+            raise SystemExit(1)
 
     if process.returncode != 0:
         print(

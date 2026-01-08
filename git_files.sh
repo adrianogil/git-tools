@@ -178,3 +178,8 @@ function gt-files-to-prompt-pick-commit-flog() {
 
     gt-files-to-prompt "$commit"
 }
+
+# gtool gt-files-to-prompt-to-code-review: copy a code-review prompt for a commit to the clipboard
+function gt-files-to-prompt-to-code-review() {
+    python3 -m gittools.commits.files_to_prompt "$@"
+}

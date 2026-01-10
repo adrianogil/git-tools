@@ -275,19 +275,22 @@ EOF
         | awk '{printf "%d %s\n", $1, $2}'
     echo
 
-    echo "### Commits Per Weekday ###"
-    git log --author="$author_email" --date=format:'%a' --pretty=format:'%ad' \
-        | awk '{
-            count[$1]++
-        }
-        END {
-            split("Mon Tue Wed Thu Fri Sat Sun", days, " ")
-            for (i = 1; i <= 7; i++) {
-                d = days[i]
-                c = (d in count ? count[d] : 0)
-                printf "%s: %d\n", d, c
+    echo "### Conventional Commit Types ###"
+    git log --author="$author_email" --pretty=format:'%s' \
+        | awk '
+            BEGIN {
+                types["feat"]=0; types["fix"]=0; types["docs"]=0; types["merge"]=0; types["chore"]=0;
             }
-        }'
+            {
+                if ($0 ~ /^Merge /) { types["merge"]++; next }
+                if ($0 ~ /^feat(\(|!|:)/) { types["feat"]++; next }
+                if ($0 ~ /^fix(\(|!|:)/) { types["fix"]++; next }
+                if ($0 ~ /^docs(\(|!|:)/) { types["docs"]++; next }
+                if ($0 ~ /^chore(\(|!|:)/) { types["chore"]++; next }
+            }
+            END {
+                printf "feat: %d\nfix: %d\ndocs: %d\nmerge: %d\nchore: %d\n", types["feat"], types["fix"], types["docs"], types["merge"], types["chore"]
+            }'
     echo
 
     echo "### Commits Per Month (Last 12 Months) ###"

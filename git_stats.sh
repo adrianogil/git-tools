@@ -222,6 +222,80 @@ function gt-stats-author-commits-per-month() {
     echo "$current_date: $commit_count commits"
 }
 
+# gtool gt-stats-developer: Show detailed stats for a selected developer
+function gt-stats-developer() {
+    if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+        echo "Error: This is not a Git repository."
+        return 1
+    fi
+
+    if ! command -v fzf >/dev/null 2>&1; then
+        echo "Error: fzf is required."
+        return 1
+    fi
+
+    author_data=$(git log --format='%aN: <%aE>' | sort -u | fzf --prompt="Select author: ")
+    if [ -z "$author_data" ]; then
+        echo "Error: No author selected."
+        return 1
+    fi
+
+    author_name=$(echo "$author_data" | awk -F'[<>]' '{print $1}' | sed 's/: $//')
+    author_email=$(echo "$author_data" | awk -F'[<>]' '{print $2}')
+
+    echo "### Developer Stats - ${author_name} <${author_email}> ###"
+    echo
+
+    total_commits=$(git log --author="$author_email" --format='%h' | wc -l)
+    echo "Total commits: ${total_commits}"
+
+    first_commit=$(git log --author="$author_email" --reverse --pretty=format:'%ad %h %s' --date=short | head -n 1)
+    last_commit=$(git log --author="$author_email" --pretty=format:'%ad %h %s' --date=short | head -n 1)
+    echo "First commit: ${first_commit:-N/A}"
+    echo "Latest commit: ${last_commit:-N/A}"
+
+    read -r lines_added lines_deleted <<EOF
+$(git log --author="$author_email" --numstat --pretty=format: \
+    | awk '{if ($1 ~ /^[0-9]+$/) add+=$1; if ($2 ~ /^[0-9]+$/) del+=$2} END {printf "%d %d", add, del}')
+EOF
+    lines_net=$((lines_added - lines_deleted))
+
+    echo "Lines added: ${lines_added}"
+    echo "Lines deleted: ${lines_deleted}"
+    echo "Net lines: ${lines_net}"
+
+    files_touched=$(git log --author="$author_email" --name-only --pretty=format: \
+        | sed '/^$/d' | sort -u | wc -l)
+    echo "Files touched: ${files_touched}"
+    echo
+
+    echo "### Top Files Touched ###"
+    git log --author="$author_email" --name-only --pretty=format: \
+        | sed '/^$/d' | sort | uniq -c | sort -nr | head -n 10 \
+        | awk '{printf "%d %s\n", $1, $2}'
+    echo
+
+    echo "### Commits Per Weekday ###"
+    git log --author="$author_email" --date=format:'%a' --pretty=format:'%ad' \
+        | awk '{
+            count[$1]++
+        }
+        END {
+            split("Mon Tue Wed Thu Fri Sat Sun", days, " ")
+            for (i = 1; i <= 7; i++) {
+                d = days[i]
+                c = (d in count ? count[d] : 0)
+                printf "%s: %d\n", d, c
+            }
+        }'
+    echo
+
+    echo "### Commits Per Month (Last 12 Months) ###"
+    git log --author="$author_email" --date=format:'%Y-%m' --pretty=format:'%ad' \
+        | sort | uniq -c | sort -r | head -n 12 \
+        | awk '{printf "%s: %d commits\n", $2, $1}'
+}
+
 # gtool gt-stats-commits-per-hour: commits by hour-of-day (00–23)
 function gt-stats-commits-per-hour() {
     # ensure we’re in a Git repo

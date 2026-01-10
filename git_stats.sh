@@ -283,10 +283,10 @@ EOF
             }
             {
                 if ($0 ~ /^Merge /) { types["merge"]++; next }
-                if ($0 ~ /^feat(\(|!|:)/) { types["feat"]++; next }
-                if ($0 ~ /^fix(\(|!|:)/) { types["fix"]++; next }
-                if ($0 ~ /^docs(\(|!|:)/) { types["docs"]++; next }
-                if ($0 ~ /^chore(\(|!|:)/) { types["chore"]++; next }
+                if (match($0, /(^|[^a-zA-Z])(feat|fix|docs|chore)(\(|!|:)/, m)) {
+                    types[m[2]]++
+                    next
+                }
             }
             END {
                 printf "feat: %d\nfix: %d\ndocs: %d\nmerge: %d\nchore: %d\n", types["feat"], types["fix"], types["docs"], types["merge"], types["chore"]

@@ -299,6 +299,55 @@ EOF
         | awk '{printf "%s: %d commits\n", $2, $1}'
 }
 
+# gtool gt-stats-developer-files: Show top changed files and extension counts for a developer
+function gt-stats-developer-files() {
+    if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+        echo "Error: This is not a Git repository."
+        return 1
+    fi
+
+    if ! command -v fzf >/dev/null 2>&1; then
+        echo "Error: fzf is required."
+        return 1
+    fi
+
+    author_data=$(git log --format='%aN: <%aE>' | sort -u | fzf --prompt="Select author: ")
+    if [ -z "$author_data" ]; then
+        echo "Error: No author selected."
+        return 1
+    fi
+
+    author_name=$(echo "$author_data" | awk -F'[<>]' '{print $1}' | sed 's/: $//')
+    author_email=$(echo "$author_data" | awk -F'[<>]' '{print $2}')
+
+    echo "### Developer File Stats - ${author_name} <${author_email}> ###"
+    echo
+
+    echo "### Top 20 Files Changed ###"
+    git log --author="$author_email" --name-only --pretty=format: \
+        | sed '/^$/d' | sort | uniq -c | sort -nr | head -n 20 \
+        | awk '{printf "%d %s\n", $1, $2}'
+    echo
+
+    echo "### File Extension Counts ###"
+    git log --author="$author_email" --name-only --pretty=format: \
+        | sed '/^$/d' \
+        | awk -F/ '{
+            name=$NF
+            if (match(name, /\.[^.]+$/)) {
+                ext=substr(name, RSTART)
+            } else {
+                ext="(none)"
+            }
+            count[ext]++
+        }
+        END {
+            for (ext in count) {
+                printf "%d %s\n", count[ext], ext
+            }
+        }' | sort -nr
+}
+
 # gtool gt-stats-commits-per-hour: commits by hour-of-day (00–23)
 function gt-stats-commits-per-hour() {
     # ensure we’re in a Git repo

@@ -189,37 +189,7 @@ function gt-tree-tracked() {
 
     cd "$root" || return 1
 
-    git ls-files | python - <<'PY'
-import sys
-
-paths = [line.strip() for line in sys.stdin if line.strip()]
-tree = {}
-
-for path in paths:
-    parts = path.split("/")
-    node = tree
-    for part in parts[:-1]:
-        node = node.setdefault(part, {})
-    node.setdefault("__files__", []).append(parts[-1])
-
-
-def print_tree(node, prefix=""):
-    dirs = sorted([key for key in node.keys() if key != "__files__"])
-    files = sorted(node.get("__files__", []))
-    entries = dirs + files
-
-    for index, name in enumerate(entries):
-        last = index == len(entries) - 1
-        connector = "└── " if last else "├── "
-        print(prefix + connector + name)
-
-        if name in node:
-            extension = "    " if last else "│   "
-            print_tree(node[name], prefix + extension)
-
-
-print_tree(tree)
-PY
+    git ls-files | python3 "$GIT_TOOLS_DIR/python/git_tree_tracked.py"
 }
 
 # gtool gt-files-to-prompt-to-code-review: copy changed files and commit details into a code review prompt

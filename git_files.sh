@@ -179,6 +179,19 @@ function gt-files-to-prompt-pick-commit-flog() {
     gt-files-to-prompt "$commit"
 }
 
+# gtool gt-tree-tracked: show a tree of files tracked by git
+function gt-tree-tracked() {
+    local root
+    if ! root=$(git rev-parse --show-toplevel 2>/dev/null); then
+        printf 'gt-tree-tracked: not a git repo\n' >&2
+        return 1
+    fi
+
+    cd "$root" || return 1
+
+    git ls-files | python3 "$GIT_TOOLS_DIR/python/git_tree_tracked.py"
+}
+
 # gtool gt-files-to-prompt-to-code-review: copy changed files and commit details into a code review prompt
 function gt-files-to-prompt-to-code-review() {
     local commit="${1:-HEAD}"

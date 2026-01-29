@@ -203,6 +203,7 @@ function gt-show-files-tree() {
 
     cd "$root" || return 1
 
+    git log -n 1 --format="%h %s | %an | %ad" --date=short "$commit"
     git diff-tree --no-commit-id --numstat -r --root "$commit" | \
         python3 "$GIT_TOOLS_DIR/python/git_tree_changed.py"
 }

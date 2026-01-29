@@ -192,6 +192,21 @@ function gt-tree-tracked() {
     git ls-files | python3 "$GIT_TOOLS_DIR/python/git_tree_tracked.py"
 }
 
+# gtool gt-show-files-tree: show a tree of files changed in a commit with added/deleted counts
+function gt-show-files-tree() {
+    local commit="${1:-HEAD}"
+    local root
+    if ! root=$(git rev-parse --show-toplevel 2>/dev/null); then
+        printf 'gt-show-files-tree: not a git repo\n' >&2
+        return 1
+    fi
+
+    cd "$root" || return 1
+
+    git diff-tree --no-commit-id --numstat -r --root "$commit" | \
+        python3 "$GIT_TOOLS_DIR/python/git_tree_changed.py"
+}
+
 # gtool gt-files-to-prompt-to-code-review: copy changed files and commit details into a code review prompt
 function gt-files-to-prompt-to-code-review() {
     local commit="${1:-HEAD}"

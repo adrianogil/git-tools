@@ -102,7 +102,7 @@ function gt-stats-summarize()
     echo
 }
 
-# gtool gt-stats-file-changes: show commit stats for a file
+# gtool gt-stats-file-changes: show summary commit stats for a file
 function gt-stats-file-changes() {
     if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
         echo "Error: This is not a Git repository."
@@ -136,36 +136,39 @@ function gt-stats-file-changes() {
     git log --follow --format='%aN' -- "$target_file" \
         | sort | uniq -c | sort -nr \
         | awk '{count=$1; $1=""; sub(/^ /,""); printf "%d %s\n", count, $0}'
-    echo
+}
+alias gstats-file="gt-stats-file-changes"
 
-    echo "### Commit list per user ###"
-    git log --follow --format='%aN%x09%h %s' -- "$target_file" \
-        | awk -F'\t' '
-            {
-                author=$1
-                commit=$2
-                if (!(author in seen)) {
-                    seen[author]=1
-                    order[++n]=author
-                }
-                commits[author]=commits[author] (commits[author]=="" ? "" : "\n  - ") commit
-            }
-            END {
-                for (i=1; i<=n; i++) {
-                    author=order[i]
-                    printf "%s:\n  - %s\n", author, commits[author]
-                }
-            }'
-    echo
+# gtool gt-stats-file-change-history: show history of changes for a file
+function gt-stats-file-change-history() {
+    if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+        echo "Error: This is not a Git repository."
+        return 1
+    fi
 
-    echo "### Change history (date, user, stats) ###"
+    local target_file=$1
+    if [ -z "$target_file" ]; then
+        target_file=$(git ls-files | default-fuzzy-finder)
+    fi
+
+    if [ -z "$target_file" ]; then
+        echo "Error: No file selected."
+        return 1
+    fi
+
+    if [ ! -e "$target_file" ]; then
+        echo "Error: File not found: ${target_file}"
+        return 1
+    fi
+
+    echo "### Change history (date, user, stats) - ${target_file} ###"
     git log --follow --date=short --pretty=format:'%ad%x09%aN' --numstat -- "$target_file" \
         | awk -F'\t' '
             NF==2 {date=$1; author=$2; next}
             NF==3 {adds=$1; dels=$2; printf "%s\t%s\t(+%s, -%s)\n", date, author, adds, dels}
         '
 }
-alias gstats-file="gt-stats-file-changes"
+alias gstats-file-history="gt-stats-file-change-history"
 
 # gtool gt-stats-commits-per-month: Commits per month
 function gt-stats-commits-per-month() {

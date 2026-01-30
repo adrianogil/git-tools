@@ -102,6 +102,74 @@ function gt-stats-summarize()
     echo
 }
 
+# gtool gt-stats-file-changes: show summary commit stats for a file
+function gt-stats-file-changes() {
+    if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+        echo "Error: This is not a Git repository."
+        return 1
+    fi
+
+    local target_file=$1
+    if [ -z "$target_file" ]; then
+        target_file=$(git ls-files | default-fuzzy-finder)
+    fi
+
+    if [ -z "$target_file" ]; then
+        echo "Error: No file selected."
+        return 1
+    fi
+
+    if [ ! -e "$target_file" ]; then
+        echo "Error: File not found: ${target_file}"
+        return 1
+    fi
+
+    echo "### File Change Stats - ${target_file} ###"
+    echo
+
+    local commit_count
+    commit_count=$(git log --follow --format='%h' -- "$target_file" | wc -l | tr -d ' ')
+    echo "Total commits: ${commit_count}"
+    echo
+
+    echo "### Commits per user ###"
+    git log --follow --format='%aN' -- "$target_file" \
+        | sort | uniq -c | sort -nr \
+        | awk '{count=$1; $1=""; sub(/^ /,""); printf "%d %s\n", count, $0}'
+}
+alias gstats-file="gt-stats-file-changes"
+
+# gtool gt-stats-file-change-history: show history of changes for a file
+function gt-stats-file-change-history() {
+    if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+        echo "Error: This is not a Git repository."
+        return 1
+    fi
+
+    local target_file=$1
+    if [ -z "$target_file" ]; then
+        target_file=$(git ls-files | default-fuzzy-finder)
+    fi
+
+    if [ -z "$target_file" ]; then
+        echo "Error: No file selected."
+        return 1
+    fi
+
+    if [ ! -e "$target_file" ]; then
+        echo "Error: File not found: ${target_file}"
+        return 1
+    fi
+
+    echo "### Change history (date, user, stats) - ${target_file} ###"
+    git log --follow --date=short --pretty=format:'%ad%x09%aN' --numstat -- "$target_file" \
+        | awk -F'\t' '
+            NF==2 {date=$1; author=$2; next}
+            NF==3 {adds=$1; dels=$2; printf "%s\t%s\t(+%s, -%s)\n", date, author, adds, dels}
+        '
+}
+alias gstats-file-history="gt-stats-file-change-history"
+
 # gtool gt-stats-commits-per-month: Commits per month
 function gt-stats-commits-per-month() {
   if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then

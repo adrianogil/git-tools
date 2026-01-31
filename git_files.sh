@@ -156,6 +156,78 @@ function gt-files-to-prompt() {
     } | copy-text-to-clipboard
 }
 
+# gtool gt-dir-to-prompt: copy only the files tracked by git under a selected directory to the clipboard
+function gt-dir-to-prompt() {
+    echo "Copying tracked files for selected directory to clipboard"
+
+    # ensure we're in a git repo
+    local root
+    if ! root=$(git rev-parse --show-toplevel 2>/dev/null); then
+        printf 'gt-dir-to-prompt: not a git repo\n' >&2
+        return 1
+    fi
+    cd "$root"
+
+    local target_directory
+    target_directory=$(
+        {
+            printf '.\n'
+            find . -mindepth 1 -type d -not -path '*/\.*'
+        } | default-fuzzy-finder | sed 's|^\./||'
+    )
+
+    if [[ -z $target_directory ]]; then
+        printf 'gt-dir-to-prompt: no directory selected\n' >&2
+        return 1
+    fi
+
+    local dir_prefix=''
+    if [[ $target_directory != '.' ]]; then
+        dir_prefix="${target_directory%/}/"
+    fi
+
+    local file_list
+    if [[ -z $dir_prefix ]]; then
+        file_list=$(git ls-files) || {
+            printf 'gt-dir-to-prompt: failed to list tracked files\n' >&2
+            return 1
+        }
+    else
+        file_list=$(git ls-files -- "$dir_prefix") || {
+            printf 'gt-dir-to-prompt: failed to list tracked files under %s\n' "$target_directory" >&2
+            return 1
+        }
+    fi
+
+    if [[ -z $file_list ]]; then
+        printf 'gt-dir-to-prompt: no tracked files under %s\n' "$target_directory" >&2
+        return 1
+    fi
+
+    {
+        while IFS= read -r file; do
+            # skip unreadable
+            if [[ ! -r $file ]]; then
+                printf 'gt-dir-to-prompt: %s: missing or unreadable\n' "$file" >&2
+                continue
+            fi
+
+            # detect binary vs text
+            local mime
+            mime=$(file --mime-type -b -- "$file")
+            if [[ $mime != text/* ]]; then
+                printf 'gt-dir-to-prompt: %s is binary (%s), skipping\n' "$file" "$mime" >&2
+                continue
+            fi
+
+            # fence with filename
+            printf '```%s\n' "$file"
+            cat -- "$file"
+            printf '\n```\n'
+        done <<< "$file_list"
+    } | copy-text-to-clipboard
+}
+
 # gtool gt-files-to-prompt-pick-commit: copy only the files changed in a picked commit to the clipboard
 function gt-files-to-prompt-pick-commit() {
     local commit

@@ -156,10 +156,9 @@ function gt-files-to-prompt() {
     } | copy-text-to-clipboard
 }
 
-# gtool gt-dir-to-prompt: copy only the files changed in a commit under a selected directory to the clipboard
+# gtool gt-dir-to-prompt: copy only the files tracked by git under a selected directory to the clipboard
 function gt-dir-to-prompt() {
-    local commit="${1:-HEAD}"
-    echo "Copying files changed in commit ${commit} for selected directory to clipboard"
+    echo "Copying tracked files for selected directory to clipboard"
 
     # ensure we're in a git repo
     local root
@@ -187,24 +186,21 @@ function gt-dir-to-prompt() {
         dir_prefix="${target_directory%/}/"
     fi
 
-    # list only the files changed in that commit
     local file_list
-    file_list=$(git diff-tree --no-commit-id --name-only -r "$commit") || {
-        printf 'gt-dir-to-prompt: failed to list files for %s\n' "$commit" >&2
-        return 1
-    }
+    if [[ -z $dir_prefix ]]; then
+        file_list=$(git ls-files) || {
+            printf 'gt-dir-to-prompt: failed to list tracked files\n' >&2
+            return 1
+        }
+    else
+        file_list=$(git ls-files -- "$dir_prefix") || {
+            printf 'gt-dir-to-prompt: failed to list tracked files under %s\n' "$target_directory" >&2
+            return 1
+        }
+    fi
 
-    local filtered_list
-    filtered_list=$(
-        while IFS= read -r file; do
-            if [[ -z $dir_prefix || $file == "$dir_prefix"* ]]; then
-                printf '%s\n' "$file"
-            fi
-        done <<< "$file_list"
-    )
-
-    if [[ -z $filtered_list ]]; then
-        printf 'gt-dir-to-prompt: no files changed in commit %s under %s\n' "$commit" "$target_directory" >&2
+    if [[ -z $file_list ]]; then
+        printf 'gt-dir-to-prompt: no tracked files under %s\n' "$target_directory" >&2
         return 1
     fi
 
@@ -228,7 +224,7 @@ function gt-dir-to-prompt() {
             printf '```%s\n' "$file"
             cat -- "$file"
             printf '\n```\n'
-        done <<< "$filtered_list"
+        done <<< "$file_list"
     } | copy-text-to-clipboard
 }
 

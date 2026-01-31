@@ -156,6 +156,82 @@ function gt-files-to-prompt() {
     } | copy-text-to-clipboard
 }
 
+# gtool gt-dir-to-prompt: copy only the files changed in a commit under a selected directory to the clipboard
+function gt-dir-to-prompt() {
+    local commit="${1:-HEAD}"
+    echo "Copying files changed in commit ${commit} for selected directory to clipboard"
+
+    # ensure we're in a git repo
+    local root
+    if ! root=$(git rev-parse --show-toplevel 2>/dev/null); then
+        printf 'gt-dir-to-prompt: not a git repo\n' >&2
+        return 1
+    fi
+    cd "$root"
+
+    local target_directory
+    target_directory=$(
+        {
+            printf '.\n'
+            find . -mindepth 1 -type d -not -path '*/\.*'
+        } | default-fuzzy-finder | sed 's|^\./||'
+    )
+
+    if [[ -z $target_directory ]]; then
+        printf 'gt-dir-to-prompt: no directory selected\n' >&2
+        return 1
+    fi
+
+    local dir_prefix=''
+    if [[ $target_directory != '.' ]]; then
+        dir_prefix="${target_directory%/}/"
+    fi
+
+    # list only the files changed in that commit
+    local file_list
+    file_list=$(git diff-tree --no-commit-id --name-only -r "$commit") || {
+        printf 'gt-dir-to-prompt: failed to list files for %s\n' "$commit" >&2
+        return 1
+    }
+
+    local filtered_list
+    filtered_list=$(
+        while IFS= read -r file; do
+            if [[ -z $dir_prefix || $file == "$dir_prefix"* ]]; then
+                printf '%s\n' "$file"
+            fi
+        done <<< "$file_list"
+    )
+
+    if [[ -z $filtered_list ]]; then
+        printf 'gt-dir-to-prompt: no files changed in commit %s under %s\n' "$commit" "$target_directory" >&2
+        return 1
+    fi
+
+    {
+        while IFS= read -r file; do
+            # skip unreadable
+            if [[ ! -r $file ]]; then
+                printf 'gt-dir-to-prompt: %s: missing or unreadable\n' "$file" >&2
+                continue
+            fi
+
+            # detect binary vs text
+            local mime
+            mime=$(file --mime-type -b -- "$file")
+            if [[ $mime != text/* ]]; then
+                printf 'gt-dir-to-prompt: %s is binary (%s), skipping\n' "$file" "$mime" >&2
+                continue
+            fi
+
+            # fence with filename
+            printf '```%s\n' "$file"
+            cat -- "$file"
+            printf '\n```\n'
+        done <<< "$filtered_list"
+    } | copy-text-to-clipboard
+}
+
 # gtool gt-files-to-prompt-pick-commit: copy only the files changed in a picked commit to the clipboard
 function gt-files-to-prompt-pick-commit() {
     local commit

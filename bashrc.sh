@@ -34,6 +34,6 @@ function gt-fz()
 {
     gitaction=$(cat ${GIT_TOOLS_DIR}/git_*.sh | grep '# gtool' | cut -c9- | default-fuzzy-finder | tr ":" " " | awk '{print $1}')
 
-    eval ${gitaction}
+    eval ${gitaction} $@
 }
 alias g="gt-fz"

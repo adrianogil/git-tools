@@ -58,3 +58,25 @@ function gt-clone-sparse()
     # Step 5: Pull the specified branch with sparse checkout
     git pull origin "$target_branch"
 }
+
+# gtool gt-clone-local: create a local clone as <repo dir>-1
+function gt-clone-local()
+{
+    local repo_root
+    repo_root=$(git rev-parse --show-toplevel) || return 1
+
+    local repo_name
+    repo_name=$(basename "$repo_root")
+
+    local target_dir
+    target_dir="$(dirname "$repo_root")/${repo_name}-1"
+
+    if [ -e "$target_dir" ]
+    then
+        echo "Target directory already exists: $target_dir"
+        return 1
+    fi
+
+    git clone "$repo_root" "$target_dir"
+}
+alias gclocal="gt-clone-local"

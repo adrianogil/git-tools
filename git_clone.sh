@@ -71,14 +71,24 @@ function gt-clone-local()
     local parent_dir
     parent_dir=$(dirname "$repo_root")
 
-    local suffix=1
-    local target_dir="${parent_dir}/${repo_name}-${suffix}"
-    while [ -e "$target_dir" ]
-    do
-        suffix=$((suffix + 1))
-        target_dir="${parent_dir}/${repo_name}-${suffix}"
-    done
+    local count=${1:-1}
+    if [ "$count" -lt 1 ] 2>/dev/null
+    then
+        echo "Usage: gt-clone-local [count]"
+        return 1
+    fi
 
-    git clone "$repo_root" "$target_dir"
+    local created=0
+    local suffix=1
+    while [ "$created" -lt "$count" ]
+    do
+        local target_dir="${parent_dir}/${repo_name}-${suffix}"
+        if [ ! -e "$target_dir" ]
+        then
+            git clone "$repo_root" "$target_dir" || return 1
+            created=$((created + 1))
+        fi
+        suffix=$((suffix + 1))
+    done
 }
 alias gclocal="gt-clone-local"

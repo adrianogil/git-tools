@@ -68,14 +68,16 @@ function gt-clone-local()
     local repo_name
     repo_name=$(basename "$repo_root")
 
-    local target_dir
-    target_dir="$(dirname "$repo_root")/${repo_name}-1"
+    local parent_dir
+    parent_dir=$(dirname "$repo_root")
 
-    if [ -e "$target_dir" ]
-    then
-        echo "Target directory already exists: $target_dir"
-        return 1
-    fi
+    local suffix=1
+    local target_dir="${parent_dir}/${repo_name}-${suffix}"
+    while [ -e "$target_dir" ]
+    do
+        suffix=$((suffix + 1))
+        target_dir="${parent_dir}/${repo_name}-${suffix}"
+    done
 
     git clone "$repo_root" "$target_dir"
 }

@@ -58,3 +58,37 @@ function gt-clone-sparse()
     # Step 5: Pull the specified branch with sparse checkout
     git pull origin "$target_branch"
 }
+
+# gtool gt-clone-local: create a local clone as <repo dir>-1
+function gt-clone-local()
+{
+    local repo_root
+    repo_root=$(git rev-parse --show-toplevel) || return 1
+
+    local repo_name
+    repo_name=$(basename "$repo_root")
+
+    local parent_dir
+    parent_dir=$(dirname "$repo_root")
+
+    local count=${1:-1}
+    if [ "$count" -lt 1 ] 2>/dev/null
+    then
+        echo "Usage: gt-clone-local [count]"
+        return 1
+    fi
+
+    local created=0
+    local suffix=1
+    while [ "$created" -lt "$count" ]
+    do
+        local target_dir="${parent_dir}/${repo_name}-${suffix}"
+        if [ ! -e "$target_dir" ]
+        then
+            git clone "$repo_root" "$target_dir" || return 1
+            created=$((created + 1))
+        fi
+        suffix=$((suffix + 1))
+    done
+}
+alias gclocal="gt-clone-local"

@@ -131,6 +131,21 @@ function gt-stats-file-changes() {
     commit_count=$(git log --follow --format='%h' -- "$target_file" | wc -l | tr -d ' ')
     echo "Total commits: ${commit_count}"
     echo
+    local added_date
+    added_date=$(git log --follow --diff-filter=A --format='%ad' --date=iso-strict -- "$target_file" | tail -n 1)
+    local last_update
+    last_update=$(git log -1 --format='%ad' --date=iso-strict -- "$target_file")
+    if [ -n "$added_date" ]; then
+        echo "Added to git: ${added_date}"
+    else
+        echo "Added to git: Unknown"
+    fi
+    if [ -n "$last_update" ]; then
+        echo "Last update: ${last_update}"
+    else
+        echo "Last update: Unknown"
+    fi
+    echo
 
     echo "### Commits per user ###"
     git log --follow --format='%aN' -- "$target_file" \

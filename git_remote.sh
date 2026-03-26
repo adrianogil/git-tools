@@ -43,8 +43,18 @@ function gt-send-branch()
         if [ -z "$1" ]
         then
             complete_branch_name=$(gt-branches-fz)
-            target_branch=$(python3 -m gittools.cli.removeremotename ${complete_branch_name})
-            target_remote=$(python3 -m gittools.cli.removeremotename ${complete_branch_name} --get-only-remote)
+            if [ -z "$complete_branch_name" ]
+            then
+                target_branch=$(git rev-parse --abbrev-ref HEAD)
+                target_remote=$(git remote | head -1)
+                if [ -z "$target_remote" ]
+                then
+                    target_remote='origin'
+                fi
+            else
+                target_branch=$(python3 -m gittools.cli.removeremotename ${complete_branch_name})
+                target_remote=$(python3 -m gittools.cli.removeremotename ${complete_branch_name} --get-only-remote)
+            fi
         else
             target_branch=$1
             target_remote=$(git remote | default-fuzzy-finder)

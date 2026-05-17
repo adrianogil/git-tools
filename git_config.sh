@@ -35,6 +35,21 @@ function gt-fetch-last()
 # gtool gt-fetch: Fetch new commits
 function gt-fetch()
 {
+    local git_dir=""
+    local before_kb=""
+    local after_kb=""
+    local diff_kb=""
+    local start_time=""
+    local end_time=""
+    local elapsed=""
+    local exit_status=""
+    local target_remote=""
+
+    git_dir=$(git rev-parse --git-dir 2>/dev/null) || {
+        echo "Error: not inside a Git repository."
+        return 1
+    }
+
     if [ -z "$1" ]
     then
         if [[ $(git remote | wc -l) -le 1 ]]; then
@@ -43,10 +58,88 @@ function gt-fetch()
             target_remote=$(git remote | default-fuzzy-finder)
         fi
     else
-          target_remote=$1
+        target_remote=$1
     fi
 
-    git remote update ${target_remote}
+    if [ -z "$target_remote" ]; then
+        echo "Error: no Git remote selected."
+        return 1
+    fi
+
+    before_kb=$(du -sk "$git_dir" | awk '{print $1}')
+    start_time=$(date +%s)
+
+    git remote update "$target_remote"
+    exit_status=$?
+
+    end_time=$(date +%s)
+    after_kb=$(du -sk "$git_dir" | awk '{print $1}')
+
+    elapsed=$((end_time - start_time))
+    diff_kb=$((after_kb - before_kb))
+
+    echo
+
+    awk -v s="$elapsed" 'BEGIN {
+        if (s < 60) {
+            printf "Time elapsed: %ds\n", s
+        } else if (s < 3600) {
+            printf "Time elapsed: %dm %ds\n", int(s / 60), s % 60
+        } else {
+            printf "Time elapsed: %dh %dm %ds\n", int(s / 3600), int((s % 3600) / 60), s % 60
+        }
+    }'
+
+    awk -v before="$before_kb" -v after="$after_kb" -v diff="$diff_kb" -v elapsed="$elapsed" '
+        function human(kb) {
+            if (kb < 0) {
+                return "-" human(-kb)
+            }
+
+            if (kb < 1024) {
+                return kb " KiB"
+            } else if (kb < 1024 * 1024) {
+                return sprintf("%.2f MiB", kb / 1024)
+            } else {
+                return sprintf("%.2f GiB", kb / 1024 / 1024)
+            }
+        }
+
+        function human_velocity(kb_per_sec) {
+            if (kb_per_sec < 0) {
+                return "-" human_velocity(-kb_per_sec)
+            }
+
+            if (kb_per_sec < 1024) {
+                return sprintf("%.2f KiB/s", kb_per_sec)
+            } else if (kb_per_sec < 1024 * 1024) {
+                return sprintf("%.2f MiB/s", kb_per_sec / 1024)
+            } else {
+                return sprintf("%.2f GiB/s", kb_per_sec / 1024 / 1024)
+            }
+        }
+
+        BEGIN {
+            if (diff > 0) {
+                delta = "+" human(diff)
+            } else if (diff < 0) {
+                delta = human(diff)
+            } else {
+                delta = "0 KiB"
+            }
+
+            if (elapsed > 0) {
+                velocity = human_velocity(diff / elapsed)
+            } else {
+                velocity = "n/a"
+            }
+
+            print "Repo Download delta:  " delta
+            print "Estimated download velocity: " velocity
+        }
+    '
+
+    return "$exit_status"
 }
 alias gr='gt-fetch'
 alias gro='gt-fetch origin'

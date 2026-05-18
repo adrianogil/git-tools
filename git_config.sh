@@ -39,6 +39,9 @@ function gt-fetch()
     local before_kb=""
     local after_kb=""
     local diff_kb=""
+    local before_commits=""
+    local after_commits=""
+    local new_commits=""
     local start_time=""
     local end_time=""
     local elapsed=""
@@ -67,6 +70,7 @@ function gt-fetch()
     fi
 
     before_kb=$(du -sk "$git_dir" | awk '{print $1}')
+    before_commits=$(git log --all --oneline --graph --decorate=short | wc -l)
     start_time=$(date +%s)
 
     git remote update "$target_remote"
@@ -74,11 +78,14 @@ function gt-fetch()
 
     end_time=$(date +%s)
     after_kb=$(du -sk "$git_dir" | awk '{print $1}')
+    after_commits=$(git log --all --oneline --graph --decorate=short | wc -l)
 
     elapsed=$((end_time - start_time))
     diff_kb=$((after_kb - before_kb))
+    new_commits=$((after_commits - before_commits))
 
     echo
+    echo "New commits: $new_commits"
 
     awk -v s="$elapsed" 'BEGIN {
         if (s < 60) {

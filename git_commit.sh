@@ -110,7 +110,9 @@ function gt-commit-generate-date-msg()
 alias gcm="gt-commit-generate-date-msg"
 
 alias gc='git commit '
+alias gcnov='gc --no-verify '
 alias gm='git commit -m '
 alias gca='git commit --amend '
+alias gcanov='gca --no-verify '
 alias gcg="git commit --author='Adriano Gil <adrianogil.san@gmail.com>'"
 alias git-author-update="gc --amend --author='Adriano Gil <adrianogil.san@gmail.com>'"

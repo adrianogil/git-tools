@@ -205,6 +205,12 @@ function ghard-reset()
 }
 
 function ghard-reset-fz() {
+    if [ -n "$1" ]; then
+        echo "Git hard reset to ref $1"
+        git reset --hard "$1"
+        return $?
+    fi
+
     # Build a nice list with:
     # <ref> | <short-hash> | <author> | <date> | <subject>
     local line ref

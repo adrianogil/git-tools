@@ -64,11 +64,14 @@ alias geop="gt-gerrit-open-patch"
 
 # gtool gt-gerrit-reviewers-add: Add a reviewer to the list
 function gt-gerrit-reviewers-add() {
+    gt-meta-init
+
     reviewers_file="$(gt-meta-get-path)/reviewers.txt"
+    reviewers_dir="$(dirname "$reviewers_file")"
 
     # Check if an email was provided as an argument
     if [ -z "$1" ]; then
-        echo -n "Enter the reviewer's email address: "
+        printf "Enter the reviewer's email address: "
         read reviewer_email
     else
         reviewer_email=$1
@@ -80,8 +83,12 @@ function gt-gerrit-reviewers-add() {
         return 1
     fi
 
+    # Ensure reviewer directory and file exist
+    mkdir -p "$reviewers_dir"
+    touch "$reviewers_file"
+
     # Check if the email already exists in the file
-    if grep -qx "$reviewer_email" "$reviewers_file"; then
+    if grep -qx "r=$reviewer_email" "$reviewers_file"; then
         echo "Reviewer $reviewer_email is already in the list."
     else
         echo "r=$reviewer_email" >> "$reviewers_file"

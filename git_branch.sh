@@ -84,11 +84,45 @@ alias gbupstream='gt-branch-set-upstream'
 alias gbranch='git branch'
 
 # gtool gt-branches-summary: summarize local/remote branch counts and highlights
+function gt-format-unix-time-utc()
+{
+    local timestamp=$1
+
+    if [ -z "$timestamp" ]; then
+        echo ""
+        return
+    fi
+
+    if command -v python3 >/dev/null 2>&1; then
+        python3 - "$timestamp" <<'PY'
+import datetime
+import sys
+
+ts = int(sys.argv[1])
+print(datetime.datetime.fromtimestamp(ts, datetime.timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC'))
+PY
+        return
+    fi
+
+    if date -u -d "@${timestamp}" '+%Y-%m-%d %H:%M:%S UTC' >/dev/null 2>&1; then
+        date -u -d "@${timestamp}" '+%Y-%m-%d %H:%M:%S UTC'
+        return
+    fi
+
+    if date -u -r "${timestamp}" '+%Y-%m-%d %H:%M:%S UTC' >/dev/null 2>&1; then
+        date -u -r "${timestamp}" '+%Y-%m-%d %H:%M:%S UTC'
+        return
+    fi
+
+    echo "${timestamp}"
+}
+
 function gt-branches-summary()
 {
     local local_count remote_count branch branch_count commit_count
     local top_branch="" top_count=-1
     local newest_branch="" newest_ts=0
+    local newest_time_formatted=""
 
     local_count=$(git for-each-ref refs/heads --format='%(refname:short)' | wc -l)
     remote_count=$(git for-each-ref refs/remotes --format='%(refname:short)' | grep -v '/HEAD$' | wc -l)
@@ -117,9 +151,23 @@ function gt-branches-summary()
               done
     )
 
+    if [ -n "$newest_branch" ]; then
+        newest_time_formatted=$(gt-format-unix-time-utc "$newest_ts")
+    fi
+
     echo "Local branches: ${local_count}"
     echo "Remote branches: ${remote_count}"
-    echo "Branch with most commits: ${top_branch} (${top_count} commits)"
-    echo "Branch with most recent commit: ${newest_branch} ($(date -u -d "@${newest_ts}" '+%Y-%m-%d %H:%M:%S UTC'))"
+
+    if [ -n "$top_branch" ]; then
+        echo "Branch with most commits: ${top_branch} (${top_count} commits)"
+    else
+        echo "Branch with most commits: n/a"
+    fi
+
+    if [ -n "$newest_branch" ]; then
+        echo "Branch with most recent commit: ${newest_branch} (${newest_time_formatted})"
+    else
+        echo "Branch with most recent commit: n/a"
+    fi
 }
 alias gbranches-summary='gt-branches-summary'

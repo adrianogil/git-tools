@@ -21,6 +21,7 @@ Commands related to push commits
 ```
 gp # alias to git push
 gt-send-to-branch # uses a fuzzy-finder to select a branch
+gbranches-summary # summarize local/remote counts, branch with most commits, and newest branch commit
 ```
 
 ## Planned features

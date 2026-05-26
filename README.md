@@ -24,6 +24,12 @@ gt-send-to-branch # uses a fuzzy-finder to select a branch
 gbranches-summary # summarize local/remote counts, branch with most commits, and newest branch commit
 ```
 
+Commands related to commits
+```
+gt-conventional-commit # interactively create a Conventional Commits message and commit
+gt-cc                  # short alias for gt-conventional-commit
+```
+
 ## Planned features
 - Save and track each branch update
 - Suggest commit message from "git diff --cached"

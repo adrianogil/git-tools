@@ -1,5 +1,226 @@
 # Utilities that creates or edit commits
 
+function _gt_cc_prompt()
+{
+    prompt_message=$1
+    printf "%s" "$prompt_message" >&2
+    if IFS= read -r gt_cc_prompt_result
+    then
+        return 0
+    fi
+
+    gt_cc_prompt_result=""
+    return 1
+}
+
+function _gt_cc_type_from_number()
+{
+    target_number=$1
+    current_number=1
+
+    for conventional_type in feat fix docs style refactor perf test build ci chore revert
+    do
+        if [ "$current_number" = "$target_number" ]
+        then
+            printf "%s" "$conventional_type"
+            return 0
+        fi
+
+        current_number=$((current_number + 1))
+    done
+
+    return 1
+}
+
+function _gt_cc_is_known_type()
+{
+    target_type=$1
+
+    for conventional_type in feat fix docs style refactor perf test build ci chore revert
+    do
+        if [ "$conventional_type" = "$target_type" ]
+        then
+            return 0
+        fi
+    done
+
+    return 1
+}
+
+function _gt_cc_print_message()
+{
+    commit_type=$1
+    commit_scope=$2
+    commit_subject=$3
+    commit_body=$4
+
+    if [ -n "$commit_scope" ]
+    then
+        printf "%s(%s): %s\n" "$commit_type" "$commit_scope" "$commit_subject"
+    else
+        printf "%s: %s\n" "$commit_type" "$commit_subject"
+    fi
+
+    if [ -n "$commit_body" ]
+    then
+        printf "\n%s\n" "$commit_body"
+    fi
+}
+
+# gtool gt-conventional-commit: Create a Conventional Commits message interactively
+function gt-conventional-commit()
+{
+    print_only=0
+
+    while [ $# -gt 0 ]
+    do
+        case "$1" in
+            --print|--preview|--dry-run)
+                print_only=1
+                ;;
+            --help|-h)
+                echo "Usage: gt-conventional-commit [--print]"
+                echo "Interactively build a Conventional Commits message and commit with it."
+                echo "Use --print, --preview, or --dry-run to only print the generated message."
+                return 0
+                ;;
+            *)
+                echo "Unknown option: $1"
+                echo "Usage: gt-conventional-commit [--print]"
+                return 1
+                ;;
+        esac
+
+        shift
+    done
+
+    echo "Conventional commit type:"
+    current_number=1
+    for conventional_type in feat fix docs style refactor perf test build ci chore revert
+    do
+        printf "  %2d) %s\n" "$current_number" "$conventional_type"
+        current_number=$((current_number + 1))
+    done
+
+    while :
+    do
+        _gt_cc_prompt "Type [feat]: "
+        selected_type=$gt_cc_prompt_result
+
+        if [ -z "$selected_type" ]
+        then
+            selected_type=feat
+            break
+        fi
+
+        case "$selected_type" in
+            *[!0-9]*)
+                if _gt_cc_is_known_type "$selected_type"
+                then
+                    break
+                fi
+
+                case "$selected_type" in
+                    *[!A-Za-z0-9_-]*)
+                        echo "Invalid type. Use one of the listed types, a number, or a custom alphanumeric type."
+                        ;;
+                    *)
+                        break
+                        ;;
+                esac
+                ;;
+            *)
+                selected_type=$(_gt_cc_type_from_number "$selected_type")
+                if [ -n "$selected_type" ]
+                then
+                    break
+                fi
+
+                echo "Invalid type number."
+                ;;
+        esac
+    done
+
+    while :
+    do
+        _gt_cc_prompt "Scope (optional): "
+        commit_scope=$gt_cc_prompt_result
+
+        case "$commit_scope" in
+            *" "*|*"("*|*")"*|*":"*)
+                echo "Invalid scope. Avoid spaces, parentheses, and colons."
+                ;;
+            *)
+                break
+                ;;
+        esac
+    done
+
+    while :
+    do
+        _gt_cc_prompt "Subject: "
+        commit_subject=$gt_cc_prompt_result
+
+        if [ -n "$commit_subject" ]
+        then
+            break
+        fi
+
+        echo "Subject is required."
+    done
+
+    echo "Description/body (optional). Press Enter on an empty line to finish."
+    commit_body=""
+    while :
+    do
+        _gt_cc_prompt "> "
+        commit_body_line=$gt_cc_prompt_result
+
+        if [ -z "$commit_body_line" ]
+        then
+            break
+        fi
+
+        if [ -z "$commit_body" ]
+        then
+            commit_body=$commit_body_line
+        else
+            commit_body="${commit_body}
+${commit_body_line}"
+        fi
+    done
+
+    echo
+    echo "Commit message:"
+    echo "----------------"
+    _gt_cc_print_message "$selected_type" "$commit_scope" "$commit_subject" "$commit_body"
+    echo "----------------"
+
+    if [ "$print_only" = "1" ]
+    then
+        return 0
+    fi
+
+    _gt_cc_prompt "Commit with this message? [y/N] "
+    confirm_commit=$gt_cc_prompt_result
+
+    case "$confirm_commit" in
+        y|Y|yes|YES)
+            message_file=$(mktemp "${TMPDIR:-/tmp}/gt-conventional-commit.XXXXXX") || return 1
+            _gt_cc_print_message "$selected_type" "$commit_scope" "$commit_subject" "$commit_body" > "$message_file"
+            git commit -F "$message_file"
+            commit_status=$?
+            rm -f "$message_file"
+            return $commit_status
+            ;;
+        *)
+            echo "Commit cancelled."
+            return 0
+            ;;
+    esac
+}
+alias gt-cc='gt-conventional-commit'
+
 # gtool gt-pop-last-commits: Pop the last N commits
 function gt-pop-last-commits()
 {

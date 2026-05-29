@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ repo_root_name }} Git Treemap</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+  <body data-current-path="{{ current_path }}">
+    <header class="app-header">
+      <div>
+        <h1>{{ repo_root_name }}</h1>
+        <p class="subtitle">Git HEAD treemap by LOC and contributor ownership</p>
+      </div>
+      <div class="meta" id="cache-meta"></div>
+    </header>
+
+    <nav class="breadcrumbs" id="breadcrumbs" aria-label="Breadcrumb"></nav>
+    <section class="legend" id="legend" aria-label="Contributor legend"></section>
+    <main class="treemap-shell">
+      <div id="treemap" class="treemap" role="img" aria-label="Repository treemap"></div>
+      <div id="empty-state" class="empty-state" hidden>No versioned files at HEAD.</div>
+    </main>
+    <div id="tooltip" class="tooltip" hidden></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+  </body>
+</html>

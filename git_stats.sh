@@ -154,6 +154,17 @@ function gt-stats-file-changes() {
 }
 alias gstats-file="gt-stats-file-changes"
 
+# gtool gt-repo-treemap: start a local Flask/D3 treemap for the current Git repo
+function gt-repo-treemap() {
+    local script_path="${GIT_TOOLS_DIR}/python/repo_treemap.py"
+    if [ ! -f "${script_path}" ]; then
+        echo "gt-repo-treemap: missing ${script_path}" >&2
+        return 1
+    fi
+    python3 "${script_path}" "$@"
+}
+alias gt-treemap="gt-repo-treemap"
+
 # gtool gt-stats-file-change-history: show history of changes for a file
 function gt-stats-file-change-history() {
     if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then

@@ -30,6 +30,12 @@ gt-conventional-commit # interactively create a Conventional Commits message and
 gt-cc                  # short alias for gt-conventional-commit
 ```
 
+Visualization
+```
+gt-repo-treemap # start a local Flask/D3 treemap for the current Git repo
+gt-treemap      # short alias for gt-repo-treemap
+```
+
 ## Planned features
 - Save and track each branch update
 - Suggest commit message from "git diff --cached"

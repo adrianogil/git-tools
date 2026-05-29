@@ -1,0 +1,9 @@
+{
+  "aliases": {
+    "canonical_dev_1": {
+      "display_name": "Alice",
+      "emails": ["alice@corp.com", "alice@gmail.com"],
+      "names": ["Alice", "Alice Smith", "asmith"]
+    }
+  }
+}

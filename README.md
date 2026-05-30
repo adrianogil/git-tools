@@ -24,6 +24,11 @@ gt-send-to-branch # uses a fuzzy-finder to select a branch
 gbranches-summary # summarize local/remote counts, branch with most commits, and newest branch commit
 ```
 
+Commands related to repositories
+```
+gt-repos # list directories below the current directory that contain a .git subdirectory
+```
+
 Commands related to commits
 ```
 gt-conventional-commit # interactively create a Conventional Commits message and commit

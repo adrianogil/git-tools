@@ -1,7 +1,7 @@
 # gtool gt-repos: Find repos
 function gfrepos()
 {
-    f '.git' | xa echo {} | rev | cut -c6- | rev
+    find "$PWD" -type d -name .git -prune -exec dirname {} \;
 }
 alias gt-repos="gfrepos"
 

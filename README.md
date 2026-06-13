@@ -36,6 +36,36 @@ gt-repo-treemap # start a local Flask/D3 treemap for the current Git repo
 gt-treemap      # short alias for gt-repo-treemap
 ```
 
+Git internals
+```
+gt-file-object-path README.md
+```
+
+Prints the blob object id for the current contents of a tracked file, the loose-object path under `.git/objects`, and whether that loose object currently exists. It works from subdirectories and accepts either repository-relative paths or working-tree paths.
+
+Example output:
+```
+repository: /tmp/example-repo
+file: README.md
+object_format: sha1
+blob_oid: 9daeafb9864cf43055ae93beb0afd6c7d144bfa4
+loose_object_path: /tmp/example-repo/.git/objects/9d/aeafb9864cf43055ae93beb0afd6c7d144bfa4
+loose_object_exists: yes
+```
+
+Manual smoke test:
+```
+tmpdir=$(mktemp -d)
+cd "$tmpdir"
+git init
+git config user.email test@example.com
+git config user.name Test
+printf 'hello world\n' > 'file with spaces.txt'
+git add 'file with spaces.txt'
+git commit -m 'add spaced file'
+gt-file-object-path 'file with spaces.txt'
+```
+
 ## Planned features
 - Save and track each branch update
 - Suggest commit message from "git diff --cached"

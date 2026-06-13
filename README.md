@@ -27,6 +27,8 @@ gbranches-summary # summarize local/remote counts, branch with most commits, and
 Commands related to repositories
 ```
 gt-repos # list directories below the current directory that contain a .git subdirectory
+gt-repos-cd # choose one of those repositories with default-fuzzy-finder and cd into it
+cdr # alias for gt-repos-cd
 ```
 
 Commands related to commits

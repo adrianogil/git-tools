@@ -6,6 +6,20 @@ function gfrepos()
 alias gt-repos="gfrepos"
 
 
+# gtool gt-repos-cd: Select and enter a repo
+function gt-repos-cd()
+{
+    local repo
+    repo=$(gfrepos | default-fuzzy-finder)
+
+    if [ -n "$repo" ]
+    then
+        cd "$repo"
+    fi
+}
+alias cdr="gt-repos-cd"
+
+
 function gt-repos-urls-current-folder()
 {
     gfrepos | xa cat {}/.git/config | grep "url = " | cut -c8-

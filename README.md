@@ -24,6 +24,16 @@ gt-send-to-branch # uses a fuzzy-finder to select a branch
 gbranches-summary # summarize local/remote counts, branch with most commits, and newest branch commit
 ```
 
+Commands related to merge and rebase
+```
+gt-merge              # preview commits from a remote branch, then merge after confirmation
+gt-merge-local-branch # preview commits from a local branch, then merge after confirmation
+gt-rebase             # preview incoming/replayed commits from a remote branch, then rebase after confirmation
+gt-rebase-local-branch # preview incoming/replayed commits from a local branch, then rebase after confirmation
+```
+
+Set `GT_TOOLS_ASSUME_YES=1` to skip the confirmation prompt in scripts after the preview is printed.
+
 Commands related to repositories
 ```
 gt-repos # list directories below the current directory that contain a .git subdirectory

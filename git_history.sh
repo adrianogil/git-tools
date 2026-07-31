@@ -257,7 +257,7 @@ function gt-reflog-cherry-pick()
     echo "Cherry-picking $target_commit..."
     git cherry-pick "$target_commit"
 }
-alias gflog-cherry-pick="gt-reflog-cherry-pick"
+alias gflog-cereja="gt-reflog-cherry-pick"
 
 # gtool gt-jira-commit-id: Get JIRA commit ID
 function gt-jira-commit-id()

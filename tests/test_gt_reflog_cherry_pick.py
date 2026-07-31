@@ -56,6 +56,35 @@ gt-reflog-cherry-pick
             encoding="utf-8",
         )
 
+    def inspect_alias(self, alias_name):
+        script = 'source "$1/git_history.sh"; alias "$2"'
+        return subprocess.run(
+            [
+                "bash",
+                "-c",
+                script,
+                "gt-reflog-test",
+                str(PROJECT_ROOT),
+                alias_name,
+            ],
+            check=False,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            encoding="utf-8",
+        )
+
+    def test_defines_cereja_alias(self):
+        new_alias = self.inspect_alias("gflog-cereja")
+        old_alias = self.inspect_alias("gflog-cherry-pick")
+
+        self.assertEqual(new_alias.returncode, 0, new_alias.stderr)
+        self.assertEqual(
+            new_alias.stdout,
+            "alias gflog-cereja='gt-reflog-cherry-pick'\n",
+        )
+        self.assertNotEqual(old_alias.returncode, 0)
+
     def test_selects_reflog_commit_and_cherry_picks_it(self):
         with tempfile.TemporaryDirectory(prefix="gt-reflog-test-") as temp_dir:
             repo = Path(temp_dir) / "repo"

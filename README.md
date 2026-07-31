@@ -47,7 +47,7 @@ Commands related to commits
 gt-conventional-commit # interactively create a Conventional Commits message and commit
 gt-cc                  # short alias for gt-conventional-commit
 gt-reflog-cherry-pick  # select a reflog commit with the configured fzf command and cherry-pick it
-gflog-cherry-pick      # short alias for gt-reflog-cherry-pick
+gflog-cereja           # short alias for gt-reflog-cherry-pick
 ```
 
 Visualization

@@ -226,6 +226,39 @@ function gt-reflog-pick()
 }
 alias gflog-pick="gt-reflog-pick"
 
+# gtool gt-reflog-cherry-pick: select a reflog commit and cherry-pick it
+function gt-reflog-cherry-pick()
+{
+    if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+        echo "Error: not inside a Git worktree." >&2
+        return 1
+    fi
+
+    if ! type default-fuzzy-finder >/dev/null 2>&1; then
+        echo "Error: default-fuzzy-finder is not configured." >&2
+        return 1
+    fi
+
+    local selected_entry
+    local target_commit
+
+    selected_entry=$(gt-reflog "$@" | default-fuzzy-finder)
+    if [ $? -ne 0 ] || [ -z "$selected_entry" ]; then
+        echo "No commit selected."
+        return 0
+    fi
+
+    target_commit="${selected_entry%% *}"
+    if ! git rev-parse --verify --quiet "${target_commit}^{commit}" >/dev/null; then
+        echo "Error: selected reflog entry is not a commit: $target_commit" >&2
+        return 1
+    fi
+
+    echo "Cherry-picking $target_commit..."
+    git cherry-pick "$target_commit"
+}
+alias gflog-cherry-pick="gt-reflog-cherry-pick"
+
 # gtool gt-jira-commit-id: Get JIRA commit ID
 function gt-jira-commit-id()
 {

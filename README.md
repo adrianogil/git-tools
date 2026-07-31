@@ -30,6 +30,7 @@ gt-merge              # preview commits from a remote branch, then merge after c
 gt-merge-local-branch # preview commits from a local branch, then merge after confirmation
 gt-rebase             # preview incoming/replayed commits from a remote branch, then rebase after confirmation
 gt-rebase-local-branch # preview incoming/replayed commits from a local branch, then rebase after confirmation
+gt-conflicts          # summarize only unresolved conflicts and their conflict types
 ```
 
 Set `GT_TOOLS_ASSUME_YES=1` to skip the confirmation prompt in scripts after the preview is printed.

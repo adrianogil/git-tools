@@ -14,8 +14,40 @@ gflog # git reflog with a pretty format
 
 Commands related to log history
 ```
-gh # show commit graph, similar to git log --oneline --graph
+gh              # show commit graph, similar to git log --oneline --graph
+gt-file-history # follow one file's history across renames
 ```
+
+### File history across renames
+
+`gt-file-history` prints a concise, newest-first log for one path and uses
+Git's rename-following history. Paths are resolved from the repository root,
+so the command works from subdirectories and with deleted files, spaces,
+Unicode, and leading dashes.
+
+```bash
+gt-file-history 'docs/file name.md'
+gt-file-history -- '-leading-dash.txt'
+```
+
+Use `--diff REV` to show the patch that changed the file in a specific commit.
+The helper resolves the filename used at that point in history, including before
+one or more renames:
+
+```bash
+gt-file-history --diff HEAD~3 -- 'docs/file name.md'
+```
+
+Omit `REV` to select a commit with `default-fuzzy-finder` and show its file
+patch:
+
+```bash
+gt-file-history --diff -- 'docs/file name.md'
+```
+
+Run `gt-file-history --help` for the complete command syntax. In a shallow
+clone, fetch the missing history (for example, with `git fetch --unshallow`)
+before tracing renames.
 
 Commands related to push commits
 ```

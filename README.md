@@ -46,8 +46,14 @@ gt-file-history --diff -- 'docs/file name.md'
 ```
 
 Run `gt-file-history --help` for the complete command syntax. In a shallow
-clone, fetch the missing history (for example, with `git fetch --unshallow`)
+clone, fetch the missing history with `gt-unshallow` (`git fetch --unshallow`)
 before tracing renames.
+
+Commands related to fetching history
+```bash
+gt-unshallow        # fetch the missing history of a shallow clone
+gt-unshallow origin # optionally specify a remote or other git fetch arguments
+```
 
 Commands related to push commits
 ```

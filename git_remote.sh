@@ -1,4 +1,10 @@
 
+# gtool gt-unshallow: Fetch the missing history of a shallow clone
+function gt-unshallow()
+{
+    git fetch --unshallow "$@"
+}
+
 # gtool gt-rename-url: Rename url of a target remote
 function gt-rename-url()
 {

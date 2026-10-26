@@ -1,7 +1,8 @@
 
-# gtool gt-unshallow: Fetch the missing history of a shallow clone
+# gtool gt-unshallow: Restore origin's all-branch fetch mapping and fetch missing history
 function gt-unshallow()
 {
+    git config --replace-all remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*' || return $?
     git fetch --unshallow "$@"
 }
 

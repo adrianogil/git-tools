@@ -51,9 +51,15 @@ before tracing renames.
 
 Commands related to fetching history
 ```bash
-gt-unshallow        # fetch the missing history of a shallow clone
+gt-unshallow        # restore origin's all-branch fetch mapping and fetch missing history
 gt-unshallow origin # optionally specify a remote or other git fetch arguments
 ```
+
+`gt-unshallow` first runs
+`git config --replace-all remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'`
+to undo origin's single-branch fetch restriction, then runs
+`git fetch --unshallow` with any supplied arguments. The configuration change
+always applies to `origin`, even when a different remote is passed to the fetch.
 
 Commands related to push commits
 ```

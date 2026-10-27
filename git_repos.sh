@@ -1,7 +1,7 @@
 # gtool gt-repos: Find repos
 function gfrepos()
 {
-    find "$PWD" -type d -name .git -prune -exec dirname {} \;
+    python3 "${GIT_TOOLS_DIR}/python/git_repos.py" "$@"
 }
 alias gt-repos="gfrepos"
 
@@ -9,12 +9,25 @@ alias gt-repos="gfrepos"
 # gtool gt-repos-cd: Select and enter a repo
 function gt-repos-cd()
 {
-    local repo
-    repo=$(gfrepos | default-fuzzy-finder)
+    local repo repos arg
+    for arg in "$@"
+    do
+        case "$arg" in
+            -h|--help) gfrepos "$@"; return $? ;;
+        esac
+    done
+    repos=$(gfrepos "$@") || return $?
+    [ -n "$repos" ] || return 0
+    repo=$(printf '%s\n' "$repos" | default-fuzzy-finder) || return $?
 
     if [ -n "$repo" ]
     then
-        cd "$repo"
+        if [ ! -d "$repo/.git" ] && [ ! -f "$repo/.git" ]
+        then
+            printf 'cdr: repository no longer exists; try cdr --refresh\n' >&2
+            return 1
+        fi
+        cd -- "$repo"
     fi
 }
 alias cdr="gt-repos-cd"
@@ -22,7 +35,15 @@ alias cdr="gt-repos-cd"
 
 function gt-repos-urls-current-folder()
 {
-    gfrepos | xa cat {}/.git/config | grep "url = " | cut -c8-
+    local repos repo
+    repos=$(gfrepos "$@") || return $?
+    [ -n "$repos" ] || return 0
+    while IFS= read -r repo
+    do
+        git -C "$repo" config --get-regexp '^remote\..*\.url$' | cut -d ' ' -f2-
+    done <<EOF
+$repos
+EOF
 }
 
 # gtool gt-repos-urls: List repo urls

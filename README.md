@@ -81,10 +81,31 @@ Set `GT_TOOLS_ASSUME_YES=1` to skip the confirmation prompt in scripts after the
 
 Commands related to repositories
 ```
-gt-repos # list directories below the current directory that contain a .git subdirectory
+gt-repos # list repositories below the current directory (including itself)
 gt-repos-cd # choose one of those repositories with default-fuzzy-finder and cd into it
 cdr # alias for gt-repos-cd
+cdr --recursive # also discover nested repositories and submodules
+cdr --refresh # rescan now, e.g. after cloning or moving a repository
+cdr --no-cache # scan without reading or updating the cache
 ```
+
+Repository discovery requires Python 3 and recognizes both `.git` directories
+and `.git` files (worktrees and submodules). By default, it stops descending as
+soon as it finds a repository, avoiding scans of its dependencies and build
+outputs. `--recursive` (or `-r`) searches inside repositories too, skipping Git
+metadata; this can be much slower. Directory symlinks are not followed.
+
+Results are cached separately for each starting directory and recursive mode
+for five minutes. Removed repositories are filtered from cached results; new or
+moved repositories appear after expiration or `--refresh`. Combine flags as
+needed, for example `cdr -r --refresh`. The same flags work with `gt-repos`
+(`gfrepos`) and `gt-repos-urls-current-folder`. Use `cdr --help` for details.
+
+Set `GT_REPOS_CACHE_TTL` to a nonnegative number of seconds (`0` disables the
+cache). Set `GT_REPOS_CACHE_DIR` to override the cache location, which defaults
+to `$XDG_CACHE_HOME/git-tools/repos` or `~/.cache/git-tools/repos`. Cache writes
+are atomic; if the cache cannot be written, discovery still works. Paths are
+listed one per line, so repository paths containing newlines are unsupported.
 
 Clone every remote branch at depth 1 and create a local tracking branch for each:
 

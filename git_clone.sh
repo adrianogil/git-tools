@@ -31,6 +31,47 @@ function gt-clone-shallow()
 }
 alias golp="gt-clone-shallow"
 
+# gtool gt-clone-shallow-all-branches: Clone depth 1 with all branches available locally and enter repo
+function gt-clone-shallow-all-branches()
+{
+    if [ "$#" -lt 1 ] || [ "$#" -gt 2 ] || [ -z "$1" ]
+    then
+        echo "Usage: gt-clone-shallow-all-branches <repository> [directory]" >&2
+        return 2
+    fi
+
+    local repository_url="$1"
+    local target_directory
+    if [ "$#" -eq 2 ]
+    then
+        target_directory="$2"
+    else
+        target_directory="${repository_url%/}"
+        target_directory="${target_directory##*/}"
+        target_directory="${target_directory##*:}"
+        target_directory="${target_directory%.git}"
+    fi
+
+    # --no-local makes --depth apply to local filesystem sources, too.
+    git clone --depth 1 --no-single-branch --no-local -- "$repository_url" "$target_directory" || return $?
+
+    local remote_refs remote_ref symbolic_target branch_name
+    remote_refs=$(git -C "$target_directory" for-each-ref \
+        --format='%(refname) %(symref)' refs/remotes/origin/) || return $?
+    while read -r remote_ref symbolic_target
+    do
+        # Skip symbolic refs such as origin/HEAD, and empty output.
+        [ -n "$remote_ref" ] && [ -z "$symbolic_target" ] || continue
+        branch_name="${remote_ref#refs/remotes/origin/}"
+        if ! git -C "$target_directory" show-ref --verify --quiet "refs/heads/$branch_name"
+        then
+            git -C "$target_directory" branch --track -- "$branch_name" "$remote_ref" || return $?
+        fi
+    done <<< "$remote_refs"
+
+    cd -- "$target_directory"
+}
+
 # gtool gt-clone-sparse: git clone with sparse checkout and enter repo directory
 function gt-clone-sparse()
 {

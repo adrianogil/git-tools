@@ -86,6 +86,18 @@ gt-repos-cd # choose one of those repositories with default-fuzzy-finder and cd 
 cdr # alias for gt-repos-cd
 ```
 
+Clone every remote branch at depth 1 and create a local tracking branch for each:
+
+```bash
+gt-clone-shallow-all-branches https://github.com/owner/repo.git
+gt-clone-shallow-all-branches https://github.com/owner/repo.git 'my repo'
+```
+
+The command enters the cloned directory with the remote's default branch checked
+out. Each branch initially has only its tip commit available; switch between
+them with `git switch <branch>`. Local filesystem sources also respect depth 1.
+Use `gt-unshallow` later to download the full history.
+
 Commands related to commits
 ```
 gt-conventional-commit # interactively create a Conventional Commits message and commit
